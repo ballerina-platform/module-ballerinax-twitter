@@ -1,0 +1,1 @@
+{"ballerinax/twitter:0.0.1:Trend":{"tweetVolume":"int","name":"string","url":"string","trendQuery":"string","promotedContent":"string"}}

@@ -4,8 +4,9 @@ Connects to Twitter using Ballerina.
 # Introduction
 The Twitter API can be used to programmatically retrieve and analyze data, as well as engage with the conversation on Twitter.
 This connector provides access to a variety of different resources in Twitter including the following:
-* Tweets
-* Users
+
+    * Tweets
+    * Users
  
 The Twitter API currently consists of two supported versions, as well as different access tiers.
 When user wants to access the connector, they are required to register an application. By default, applications can only access public information on Twitter. Certain operations, such as those responsible for sending or receiving Direct Messages and posting a Tweet, require additional permissions from user before access user information. These permissions are not granted by default; you choose on a per-application basis whether to provide this access, and can control all the applications authorized on your account.
@@ -30,22 +31,6 @@ When user wants to access the connector, they are required to register an applic
 
 The connector doesn't support all the operations offered by Twitter API V1.1.
 
-## Prerequisites
-    **Step 1:** Apply for a developer account and receive approval.
-    https://developer.twitter.com/en/apply-for-access
-    **Step 2:** Create a project and an associated developer App in the developer portal.
-    https://developer.twitter.com/en/portal/dashboard
-    **Step 3:** In App permissions you have to give permission of Read, write and access Direct Messages. If a permission level is changed, any user tokens already given to that Twitter app must be revoked and users should authorize the App again in order for the token to acquire the latest permissions.
-    ![App Permissions Step 3](docs/images/step3.png)
-    **Step 4:** In the app created go to  “Keys and tokens” tab and save your API Key, API Secret, Access Tokens and Access Token Secret in a trusted place as they are not visible after. If you lost those keys and secrets regenerate those.
-    ![API Keys](docs/images/step4.png)
-    **Step 5:** Then in App settings you have to enable 3-legged OAuth
-
-**Add project configurations file**
-
-Add the project configuration file by creating a `Config.toml` file under the root path of the project structure.
-This file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
-
 ## Connector Overview
 
 In order to use the Twitter Connector, first you need to create a Twitter Client endpoint.
@@ -61,9 +46,7 @@ twitter:TwitterConfiguration twitterConfig = {
 twitter:Client twitterClient = check new(twitterConfig);
 ```
 
-#### Example
-
-##### Post tweet
+##### Example
 
 ```ballerina
 import ballerina/io;
@@ -85,83 +68,6 @@ public function main() {
         io:println("Tweet: ", result.toString());
     } else {
         io:println("Error: ", result.toString());
-    }
-}
-```
-##### Search using a string
-
-```ballerina
-import ballerina/io;
-import ballerinax/twitter;
-
-twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
-    accessToken: "<accessToken>",
-    accessTokenSecret: "<accessTokenSecret>"
-};
-
-twitter:Client twitterClient = check new(twitterConfig);
-
-public function main() {
-    string queryStr = "SriLanka";
-    twitter:SearchOptions request = {
-        count: 10
-    };
-
-    twitter:Status[]|error response = twitterClient->search(queryStr, request);
-    if (response is twitter:Status[]) {
-        log:printInfo("Statuses Details: " + response.toString());
-    } else {
-        log:printError("Error: " + response.toString());
-    }
-}
-```
-##### Get tweets in user timeline
-
-```ballerina
-import ballerina/io;
-import ballerinax/twitter;
-
-twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
-    accessToken: "<accessToken>",
-    accessTokenSecret: "<accessTokenSecret>"
-};
-
-twitter:Client twitterClient = check new(twitterConfig);
-
-public function main() {
-    twitter:Status[]|error response = twitterClient->getUserTimeline();
-    if (response is twitter:Status[]) {
-        log:printInfo("Statuses Details: " + response.toString());
-    } else {
-        log:printError("Error: " + response.toString());
-    }
-}
-```
-##### Get user
-
-```ballerina
-import ballerina/io;
-import ballerinax/twitter;
-
-twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
-    accessToken: "<accessToken>",
-    accessTokenSecret: "<accessTokenSecret>"
-};
-
-twitter:Client twitterClient = check new(twitterConfig);
-
-public function main() {
-    twitter:User|error response = twitterClient->getUser(userId);
-    if (response is twitter:User) {
-        log:printInfo("User Details: " + response.toString());
-    } else {
-        log:printError("Error: " + response.toString());
     }
 }
 ```
