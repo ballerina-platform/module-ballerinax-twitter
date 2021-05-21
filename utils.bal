@@ -48,10 +48,10 @@ function createRequestHeaders(http:Request request, string httpMethod, string re
         string consumerSecret, string accessToken, string accessTokenSecret, string paramStr) returns error? {
     string serviceEndpoint = "https://api.twitter.com" + resourcePath;
     string paramString = paramStr.substring(0, paramStr.length() - 1);
-    string encodedServiceEPValue = check url:encode(serviceEndpoint, "UTF-8");
-    string encodedParamStrValue = check url:encode(paramString, "UTF-8");
-    string encodedConsumerSecretValue = check url:encode(consumerSecret, "UTF-8");
-    string encodedAccessTokenSecretValue = check url:encode(accessTokenSecret, "UTF-8");
+    string encodedServiceEPValue = check url:encode(serviceEndpoint, UTF_8);
+    string encodedParamStrValue = check url:encode(paramString, UTF_8);
+    string encodedConsumerSecretValue = check url:encode(consumerSecret, UTF_8);
+    string encodedAccessTokenSecretValue = check url:encode(accessTokenSecret, UTF_8);
 
     //Create a signature
     string baseString = httpMethod + "&" + encodedServiceEPValue + "&" + encodedParamStrValue;
@@ -60,8 +60,8 @@ function createRequestHeaders(http:Request request, string httpMethod, string re
     byte[] keyArrByte = keyStr.toBytes();
     string signature = (check crypto:hmacSha1(baseStringByte, keyArrByte)).toBase64();
 
-    string encodedSignatureValue = check url:encode(signature, "UTF-8");
-    string encodedaccessTokenValue = check url:encode(accessToken, "UTF-8");
+    string encodedSignatureValue = check url:encode(signature, UTF_8);
+    string encodedaccessTokenValue = check url:encode(accessToken, UTF_8);
 
     string oauthHeaderString = "OAuth oauth_consumer_key=\"" + consumerKey +
         "\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"" + timeStamp +
@@ -75,10 +75,10 @@ function createRequestHeaderMap(http:Request request, string httpMethod, string 
         string consumerSecret, string accessToken, string accessTokenSecret, string paramStr) returns map<string>|error {
     string serviceEndpoint = "https://api.twitter.com" + resourcePath;
     string paramString = paramStr.substring(0, paramStr.length() - 1);
-    string encodedServiceEPValue = check url:encode(serviceEndpoint, "UTF-8");
-    string encodedParamStrValue = check url:encode(paramString, "UTF-8");
-    string encodedConsumerSecretValue = check url:encode(consumerSecret, "UTF-8");
-    string encodedAccessTokenSecretValue = check url:encode(accessTokenSecret, "UTF-8");
+    string encodedServiceEPValue = check url:encode(serviceEndpoint, UTF_8);
+    string encodedParamStrValue = check url:encode(paramString, UTF_8);
+    string encodedConsumerSecretValue = check url:encode(consumerSecret, UTF_8);
+    string encodedAccessTokenSecretValue = check url:encode(accessTokenSecret, UTF_8);
 
     string baseString = httpMethod + "&" + encodedServiceEPValue + "&" + encodedParamStrValue;
     byte[] baseStringByte = baseString.toBytes();
@@ -86,8 +86,8 @@ function createRequestHeaderMap(http:Request request, string httpMethod, string 
     byte[] keyStringByte = keyStr.toBytes();
     string signature = (check crypto:hmacSha1(baseStringByte, keyStringByte)).toBase64();
 
-    string encodedSignatureValue = check url:encode(signature, "UTF-8");
-    string encodedaccessTokenValue = check url:encode(accessToken, "UTF-8");
+    string encodedSignatureValue = check url:encode(signature, UTF_8);
+    string encodedaccessTokenValue = check url:encode(accessToken, UTF_8);
 
     string oauthHeaderString = "OAuth oauth_consumer_key=\"" + consumerKey +
         "\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"" + timeStamp +

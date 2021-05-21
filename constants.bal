@@ -44,5 +44,8 @@ const string POST = "POST";
 const string GET = "GET";
 const string JSON = ".json";
 
+const string AMBERSAND = "&"
+const string QUESTION_MARK = "?"
+
 // Error Codes
 const string TWITTER_ERROR = "Twitter Error";
