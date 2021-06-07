@@ -1,1 +1,0 @@
-{"ballerinax/twitter:1.0.0:SearchOptions":{"result_type":"string","count":"int","geocode":"string","include_entities":"boolean","max_id":"int","until":"string","lang":"string","locale":"string","since_id":"int"}}

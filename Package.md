@@ -64,7 +64,7 @@ twitter:Client twitterClient = check new(twitterConfig);
 public function main() {
     string tweetContent = "Sample tweet";
     var result = twitterClient->tweet(tweetContent);
-    if (result is twitter:Status) {
+    if (result is twitter:Tweet) {
         io:println("Tweet: ", result.toString());
     } else {
         io:println("Error: ", result.toString());

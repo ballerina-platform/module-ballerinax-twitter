@@ -8,7 +8,7 @@ This connector provides access to a variety of different resources in Twitter in
 * Users
  
 The Twitter API currently consists of two supported versions, as well as different access tiers.
-When user wants to access the connector, they are required to register an application. By default, applications can only access public information on Twitter. Certain operations, such as those responsible for sending or receiving Direct Messages and posting a Tweet, require additional permissions from user before access user information. These permissions are not granted by default; you choose on a per-application basis whether to provide this access, and can control all the applications authorized on your account.
+When user wants to access Twitter through Ballerina Twitter Connector, they are required to register an application. By default, applications can only access public information on Twitter. Certain operations, such as those responsible for sending or receiving Direct Messages and posting a Tweet, require additional permissions from user before access user information. These permissions are not granted by default; you choose on a per-application basis whether to provide this access, and can control all the applications authorized on your account.
 
 ## What is Twitter?
 Twitter is a social networking service on which users can post and communicate with status called as "Tweets". Authenticated users can post, like, and retweet tweets.  Main use case is to connect people and allow people to express their thoughts to large set of people.
@@ -81,7 +81,7 @@ twitter:Client twitterClient = check new(twitterConfig);
 public function main() {
     string tweetContent = "Sample tweet";
     var result = twitterClient->tweet(tweetContent);
-    if (result is twitter:Status) {
+    if (result is twitter:Tweet) {
         io:println("Tweet: ", result.toString());
     } else {
         io:println("Error: ", result.toString());
@@ -109,8 +109,8 @@ public function main() {
         count: 10
     };
 
-    twitter:Status[]|error response = twitterClient->search(queryStr, request);
-    if (response is twitter:Status[]) {
+    twitter:Tweet[]|error response = twitterClient->search(queryStr, request);
+    if (response is twitter:Tweet[]) {
         log:printInfo("Statuses Details: " + response.toString());
     } else {
         log:printError("Error: " + response.toString());
@@ -133,8 +133,8 @@ twitter:TwitterConfiguration twitterConfig = {
 twitter:Client twitterClient = check new(twitterConfig);
 
 public function main() {
-    twitter:Status[]|error response = twitterClient->getUserTimeline();
-    if (response is twitter:Status[]) {
+    twitter:Tweet[]|error response = twitterClient->getUserTimeline();
+    if (response is twitter:Tweet[]) {
         log:printInfo("Statuses Details: " + response.toString());
     } else {
         log:printError("Error: " + response.toString());

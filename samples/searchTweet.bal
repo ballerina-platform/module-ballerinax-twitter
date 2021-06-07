@@ -37,8 +37,8 @@ public function main() {
         count: 10
     };
 
-    twitter:Status[]|error response = twitterClient->search(queryStr, request);
-    if (response is twitter:Status[]) {
+    twitter:Tweet[]|error response = twitterClient->search(queryStr, request);
+    if (response is twitter:Tweet[]) {
         log:printInfo("Statuses Details: " + response.toString());
     } else {
         log:printError("Error: " + response.toString());

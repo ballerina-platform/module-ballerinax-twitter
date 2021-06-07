@@ -10,12 +10,12 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@master
+              uses: ballerina-platform/ballerina-action/@slalpha5
               with:
                   args:
                       build -c
               env:
-                  CLIENT_ID: ${{ secrets.CLIENT_ID }}
-                  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+                  CLIENT_ID: ${{ secrets.API__ID }}
+                  CLIENT_SECRET: ${{ secrets.API_SECRET }}
                   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
                   ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}

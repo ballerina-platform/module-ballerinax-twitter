@@ -29,8 +29,82 @@ isolated function handleResponse(http:Response httpResponse) returns @tainted js
     if (httpResponse.statusCode is http:STATUS_OK) {
         return response;
     } else {
-        json err = check response.'error.message;
-        return error(err.toString());
+        return response;
+    }
+}
+
+isolated function handleStatusResponse(http:Response httpResponse) returns @tainted Tweet|error {
+    json response = check httpResponse.getJsonPayload();
+    if (httpResponse.statusCode is http:STATUS_OK) {
+        return check response.cloneWithType(Tweet);
+    } else {
+        return error(response.toString());
+    }
+}
+
+isolated function handleStatusArrayResponse(http:Response httpResponse) returns @tainted Tweet[]|error {
+    json response = check httpResponse.getJsonPayload();
+    if (httpResponse.statusCode is http:STATUS_OK) {
+        Tweet[] statuses = [];
+        int i = 0;
+        foreach json jsonStatus in <json[]>response {
+            statuses[i] = check jsonStatus.cloneWithType(Tweet);
+            i = i + 1;
+        }
+        return statuses;
+    } else {
+        return error(response.toString());
+    }
+}
+
+isolated function handleUserResponse(http:Response httpResponse) returns @tainted User|error {
+    json response = check httpResponse.getJsonPayload();
+    if (httpResponse.statusCode is http:STATUS_OK) {
+        return check response.cloneWithType(User);
+    } else {
+        return error(response.toString());
+    }
+}
+
+isolated function handleSearchTweetResponse(http:Response httpResponse) returns @tainted Tweet[]|error {
+    json response = check httpResponse.getJsonPayload();
+    if (httpResponse.statusCode is http:STATUS_OK) {
+        Tweet[] searchResponse = [];
+        var tweetResponse = response.statuses;
+        if (tweetResponse is json) {
+            int i = 0;
+            foreach json jsonStatus in <json[]>tweetResponse {
+                searchResponse[i] = check jsonStatus.cloneWithType(Tweet);
+                i = i + 1;
+            }
+            return searchResponse;
+        }
+        else {
+            return setResponseError(response);
+        }
+    } else {
+        return error(response.toString());
+    }
+}
+
+isolated function handleUserArrayResponse(http:Response httpResponse) returns @tainted User[]|error {
+    json response = check httpResponse.getJsonPayload();
+    if (httpResponse.statusCode is http:STATUS_OK) {
+        User[] userResponse = [];
+        var userListResponse = response.users;
+        if (userListResponse is json) {
+            int i = 0;
+            foreach json jsonStatus in <json[]>userListResponse {
+                userResponse[i] = check jsonStatus.cloneWithType(User);
+                i = i + 1;
+            }
+            return userResponse;
+        }
+        else {
+            return setResponseError(response);
+        }
+    } else {
+        return error(response.toString());
     }
 }
 
@@ -93,8 +167,6 @@ function createRequestHeaderMap(http:Request request, string httpMethod, string 
         "\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"" + timeStamp +
         "\",oauth_nonce=\"" + nonce + "\",oauth_version=\"1.0\",oauth_signature=\"" +
         encodedSignatureValue + "\",oauth_token=\"" + encodedaccessTokenValue + "\"";
-    // request.setHeader("Authorization", regex:replaceAll(oauthHeaderString, "\\\\", ""));
-    // return map<string> headerMap;
     return {
         ["Authorization"] : regex:replaceAll(oauthHeaderString, "\\\\", "")
     };

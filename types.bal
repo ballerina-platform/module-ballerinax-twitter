@@ -15,34 +15,50 @@
 // under the License.
 
 # Define the status.
-# + createdAt - Created time of the status
+# 
+# + created_at - Created time of the status
 # + id - Id of the status
+# + id_str -
 # + text - Text message of the status
 # + source - Source app of the status
 # + truncated - Whether the status is truncated or not
-# + inReplyToStatusId - The ID of an existing status that the update is in reply to
+# + in_reply_to_status_id - The ID of an existing status that the update is in reply to
 # + geo - Geo location details (longitude and latitude)
 # + favorited - Whether the status is favorited or not
 # + retweeted - Whether the status is retweeted or not
-# + favouritesCount - Count of the favourites
-# + retweetCount - Count of the retweeted status
+# + favorite_count - Count of the favourites
+# + retweet_count - Count of the retweeted status
+# + possibly_sensitive - Sensitivie or not
 # + lang - Language
-public type Status record {
-    string createdAt;
+public type Tweet record {
+    string created_at;
     int id;
+    string id_str?;
     string text;
-    string 'source?;
     boolean truncated?;
-    int inReplyToStatusId?;
-    GeoLocation geo?;
+    json entities?;
+    json 'source?;
+    int? in_reply_to_status_id?;
+    string? in_reply_to_status_id_str?;
+    int? in_reply_to_user_id?;
+    string? in_reply_to_user_id_str?;
+    string? in_reply_to_screen_name?;
+    User? user?;
+    GeoLocation? geo?;
+    json coordinates?;
+    json place?;
+    json contributors?;
+    boolean is_quote_status?;
+    int retweet_count?;
+    int favorite_count?;
     boolean favorited?;
-    boolean retweeted;
-    int favouritesCount?;
-    int retweetCount?;
+    boolean retweeted?;
+    boolean possibly_sensitive?;
     string lang?;
 };
 
 # Define the geo location details.
+# 
 # + latitude - Latitude of the location
 # + longitude - Longitude of the location
 public type GeoLocation record {
@@ -51,6 +67,7 @@ public type GeoLocation record {
 };
 
 # Define the location details.
+# 
 # + woeid - Where On Earth IDentifier
 # + countryName - Country name
 # + countryCode - Country code
@@ -67,6 +84,7 @@ public type Location record {
 };
 
 # Define the place type.
+# 
 # + name - Name of the place
 # + code - Location code of the place
 public type PlaceType record {
@@ -74,15 +92,30 @@ public type PlaceType record {
     int code?;
 };
 
-# Define the User.
-# + id - Id of a user
-# + screen_name - Screen name of user
-public type User record {
-    string id?;
-    string screen_name?;
+public type Entity record {
+    json hashtags?;
+    json symbols?;
+    json user_mentions?;
+    json urls?;
 };
 
-# Define the search request.
+# Define User.
+# + id - Id of user
+# + screen_name - Screen name of user
+public type User record {
+    int id?;
+    string id_str?;
+    string name?;
+    string screen_name?;
+    string location?;
+    string description?;
+    string? url?;
+    int followers_count?;
+    int friends_count?;
+};
+
+# Define search request.
+# 
 # + count - The number of tweets to return per page, up to a maximum of 100
 # + geocode - Geo location of tweets by users
 # + lang - Restricts tweets to a language
@@ -104,7 +137,7 @@ public type SearchOptions record {
     boolean include_entities?;
 };
 
-public type UpdateStatusOptions record {
+public type UpdateTweetOptions record {
     int in_reply_to_status_id?;
     boolean auto_populate_reply_metadata?;
     string exclude_reply_user_ids?;

@@ -36,9 +36,9 @@ public function main() {
 
     // Add a tweet to timeline
     string tweetContent = "Sample tweet";
-    twitter:Status|error response = twitterClient->tweet(tweetContent);
-    if (response is twitter:Status) {
-        log:printInfo("Status Details: " + response.toString());
+    twitter:Tweet|error response = twitterClient->tweet(tweetContent);
+    if (response is twitter:Tweet) {
+        log:printInfo("Tweet Details: " + response.toString());
         tweetId = response.id;
     } else {
         log:printError("Error: " + response.toString());

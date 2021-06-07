@@ -1,1 +1,0 @@
-{"ballerinax/twitter:0.0.1:S":{"geo":"ballerinax/twitter:0.0.1:GeoLocation","createdAt":"string","inReplyToStatusId":"int","truncated":"boolean","favouritesCount":"int","id":"int","text":"string","source":"string","lang":"string","retweetCount":"int","favorited":"boolean","retweeted":"boolean"}}

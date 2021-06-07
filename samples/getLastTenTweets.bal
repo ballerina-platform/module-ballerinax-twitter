@@ -33,8 +33,8 @@ twitter:Client twitterClient = check new (twitterConfig);
 
 public function main() {
 
-    twitter:Status[]|error response = twitterClient->getLast10Tweets();
-    if (response is twitter:Status[]) {
+    twitter:Tweet[]|error response = twitterClient->getLast10Tweets();
+    if (response is twitter:Tweet[]) {
         log:printInfo("Statuses Details: " + response.toString());
     } else {
         log:printError("Error: " + response.toString());
