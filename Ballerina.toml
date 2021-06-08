@@ -1,0 +1,12 @@
+[package]
+org = "ballerinax"
+name = "twitter"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+version= "1.0.0"
+repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
+keywords = ["ballerina", "Twitter", "connector"]
+
+[build-options]
+observability-included=true
+taintCheck = true
