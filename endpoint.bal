@@ -19,10 +19,10 @@ import ballerina/url;
 
 # Twitter Client object.
 #
-# + apiId - The consumer key of the Twitter account
-# + apiSecret - The consumer secret of the Twitter account
-# + accessToken - The access token of the Twitter account
-# + accessTokenSecret - The access token secret of the Twitter account
+# + apiId - Consumer key of the Twitter account
+# + apiSecret - Consumer secret of the Twitter account
+# + accessToken - Access token of the Twitter account
+# + accessTokenSecret - Access token secret of the Twitter account
 # + twitterClient - HTTP Client endpoint
 @display {label: "Twitter"}
 public client class  Client {
@@ -45,10 +45,10 @@ public client class  Client {
 
     # Update the user's Tweet.
     #
-    # + tweetText - The text of tweet to update
+    # + tweetText - Text of tweet to update
     # + url - Link attachment url
     # + updateTweetOptions - Options for tweet update
-    # + return - If success, returns Tweet object, else returns error.
+    # + return - If success, returns 'Tweet' object, else returns error.
     @display {label: "Post Tweet"}
     remote function tweet(@display {label: "Tweet Text"} string tweetText, 
                           @display {label: "Url To Link"} string? url = (),
@@ -92,11 +92,11 @@ public client class  Client {
 
     # Reply to a Tweet.
     #
-    # + tweetText - The text of tweet to update
+    # + tweetText - Text of tweet to update
     # + replyID - Tweet id to be replyed
     # + url - Url of attachment
     # + mediaIds - List of medias have to be attached
-    # + return - If success, returns Tweet object, else returns error.
+    # + return - If success, returns 'Tweet' object, else returns error.
     @display {label: "Reply Tweet"} 
     remote function replyTweet(@display {label: "Text To Reply"} string tweetText, 
                                @display {label: "Tweet Id To Reply"} int replyID, 
@@ -147,9 +147,9 @@ public client class  Client {
 
     # Retweet a Tweet.
     #
-    # + id - The numerical ID of a status
+    # + id - Numerical ID of a status
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
-    # + return - If success, returns Tweet object, else returns error
+    # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Make Retweet"} 
     remote function retweet(@display {label: "Tweet Id To Retweet"} int id, 
                             @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
@@ -187,9 +187,9 @@ public client class  Client {
 
     # Delete a Retweet.
     #
-    # + id - The numerical ID of a status
+    # + id - Numerical ID of a status
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
-    # + return - If success, returns Tweet object, else returns error
+    # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Delete Retweet"} 
     remote function deleteRetweet(@display {label: "ReTweet Id To Delete"} int id, 
                                   @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
@@ -213,9 +213,9 @@ public client class  Client {
 
     # Search for Tweets matching a query.
     #
-    # + queryStr - The query string need to be searched
+    # + queryStr - Query string need to be searched
     # + searchOptions - Optional parameter which specify the search options
-    # + return - If success, returns Tweet object, else returns error
+    # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Search Tweet By String"} 
     remote function search(@display {label: "Query String To Search"} string queryStr, 
                            @display {label: "Optional Search Options"} SearchOptions? searchOptions = ()) 
@@ -254,13 +254,13 @@ public client class  Client {
 
     # Show a Tweet.
     #
-    # + id - The numerical ID of a status  
+    # + id - Numerical ID of a status  
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object  
     # + includeMyRetweet - Include retweets 
     # + includeEntities - Include entities nodes 
     # + includeExtAltText - Include alt text of media entities  
     # + includeCardUri - Include card uri attributes
-    # + return - If success, returns Tweet object, else returns error
+    # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Show Tweet"} 
     remote function showStatus(@display {label: "Tweet Id To Show"} int id, 
                                @display {label: "Trim User Or Not"} boolean? trimUser = (), 
@@ -291,8 +291,8 @@ public client class  Client {
 
     # Delete a Tweet.
     #
-    # + id - The numerical ID of a status
-    # + return - If success, returns Tweet object, else returns error
+    # + id - Numerical ID of a status
+    # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Delete Tweet"} 
     remote function deleteTweet(@display {label: "Tweet Id"} int id) 
                                 returns @tainted @display {label: "Tweet"} Tweet|error {
@@ -315,8 +315,8 @@ public client class  Client {
 
     # Get a User object.
     #
-    # + userId - The numerical ID of a specific user
-    # + return - If success, returns User object, else returns error
+    # + userId - Numerical ID of a specific user
+    # + return - If success, returns 'User' object, else returns error
     @display {label: "Get User's Detail"} 
     remote function getUser(@display {label: "User Id"} int userId) 
                             returns @tainted @display {label: "User"} User|error {
@@ -346,8 +346,8 @@ public client class  Client {
 
     # Get a user's followers.
     #
-    # + userId - The numerical ID of a specific user
-    # + return - If success, returns User object array, else returns error
+    # + userId - Numerical Id of a specific user
+    # + return - If success, returns 'User' object array, else returns error
     @display {label: "Get User's Followers"} 
     remote function getFollowers(@display {label: "User Id"} int userId) 
                                  returns @tainted @display {label: "Array Of User"} User[]|error {
@@ -374,8 +374,8 @@ public client class  Client {
 
     # Get a user's following.
     #
-    # + userId - The numerical ID of a specific user
-    # + return - If success, returns User object array, else returns error
+    # + userId - Numerical ID of a specific user
+    # + return - If success, returns 'User' object array, else returns error
     @display {label: "Get User's Following"} 
     remote function getFollowing(@display {label: "User Id"} int userId) 
                                  returns @tainted @display {label: "Array of User"} User[]|error {
@@ -408,7 +408,7 @@ public client class  Client {
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object  
     # + excludeReplies - Include retweets 
     # + includeEntities - Include entities nodes
-    # + return - If success, returns Tweet object array, else returns error
+    # + return - If success, returns 'Tweet' object array, else returns error
     @display {label: "Get Current User's Timeline"} 
     remote function getUserTimeline(@display {label: "Count"} int? count = (), 
                                     @display {label: "Minimum Tweet Id"} int? sinceId = (), 
@@ -449,7 +449,7 @@ public client class  Client {
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object  
     # + excludeReplies - Include retweets 
     # + includeEntities - Include entities nodes 
-    # + return - If success, returns Tweet object array, else returns error
+    # + return - If success, returns 'Tweet' object array, else returns error
     @display {label: "Get Last Ten Tweets"} 
     remote function getLast10Tweets(@display {label: "Minimum Tweet Id"} int? sinceId = (), 
                                     @display {label: "Maximum Tweet Id"} int? maxId = (), 
@@ -485,10 +485,15 @@ public client class  Client {
 # + accessToken - Access token
 # + accessTokenSecret - Access token secret
 # + clientConfig - Client configuration  
+@display{label: "Connection Config"} 
 public type TwitterConfiguration record {
+    @display {label: "API Id"}
     string apiId;
+    @display {label: "API Secret"}
     string apiSecret;
+    @display {label: "Access Token"}
     string accessToken;
+    @display {label: "Access Token Secret"}
     string accessTokenSecret;
     http:ClientConfiguration clientConfig = {};
 };
