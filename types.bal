@@ -22,14 +22,24 @@
 # + text - Text message of the status
 # + source - Source app of the status
 # + truncated - Whether the status is truncated or not
-# + in_reply_to_status_id - The ID of an existing status that the update is in reply to
+# + entities - Entity of status
+# + in_reply_to_status_id - ID of an existing status that update is in reply to
+# + in_reply_to_status_id_str - ID of an existing status that update is in reply to in string
+# + in_reply_to_user_id - ID of an existing user update is in reply to
+# + in_reply_to_user_id_str - ID of an existing user update is in reply to in string
+# + in_reply_to_screen_name - Screen name of an existing user update is in reply to in string
+# + user - Detail of user post
+# + coordinates - Coordinates of location where posted
 # + geo - Geo location details (longitude and latitude)
+# + place - Location name where posted
+# + contributors - Contributors to a tweet
+# + is_quote_status - Indicate the quote status
 # + favorited - Whether the status is favorited or not
 # + retweeted - Whether the status is retweeted or not
 # + favorite_count - Count of the favourites
 # + retweet_count - Count of the retweeted status
 # + possibly_sensitive - Sensitivie or not
-# + lang - Language
+# + lang - Language of tweet
 public type Tweet record {
     string created_at;
     int id;
@@ -92,6 +102,12 @@ public type PlaceType record {
     int code?;
 };
 
+# Define Entity.
+# 
+# + hashtags - Hashtags mentioned in the tweet
+# + symbols - Symbols exists
+# + user_mentions - Users mentioned in the tweet
+# + urls - Urls retated to that tweet
 public type Entity record {
     json hashtags?;
     json symbols?;
@@ -100,8 +116,16 @@ public type Entity record {
 };
 
 # Define User.
+# 
 # + id - Id of user
+# + id_str - Id of user in string
+# + name - Display name of user 
 # + screen_name - Screen name of user
+# + location - Location of user
+# + description - Description about the user
+# + url - Urls associated with user 
+# + followers_count - Count of the followers
+# + friends_count - Count of the friends(User's following)
 public type User record {
     int id?;
     string id_str?;
@@ -114,9 +138,9 @@ public type User record {
     int friends_count?;
 };
 
-# Define search request.
+# Define search request options.
 # 
-# + count - The number of tweets to return per page, up to a maximum of 100
+# + count - Number of tweets to return per page, up to a maximum of 100
 # + geocode - Geo location of tweets by users
 # + lang - Restricts tweets to a language
 # + locale - Specify the language of the query sent
@@ -126,30 +150,48 @@ public type User record {
 # + max_id - Maximum tweet Id 
 # + include_entities - Include entities nodes 
 public type SearchOptions record {
+    @display {label: "Tweets Count"}
     int count?;
+    @display {label: "Geo Location"}
     string geocode?;
+    @display {label: "Language"}
     string lang?;
+    @display {label: "Query String Language"}
     string locale?;
+    @display {label: "Result Type"}
     string result_type?;
+    @display {label: "Tweet Date Filter"}
     string until?;
+    @display {label: "Minimum Tweet Id"}
     int since_id?;
+    @display {label: "Maximum Tweet Id"}
     int max_id?;
+    @display {label: "Include Entities Or Not"}
     boolean include_entities?;
 };
 
+# Define update tweet options.
+# 
+# + media_ids - Specify the language of the query sent
+# + possibly_sensitive - Whether sensitve ot not
+# + lat - Latitude of tweet posted location
+# + long - Longitude of tweet posted location
+# + place_id - Place Id of tweet posted location
+# + display_coordinates - Cordinates related to tweet posted location
+# + trim_user - Reduce user details to show(only ID) 
 public type UpdateTweetOptions record {
-    int in_reply_to_status_id?;
-    boolean auto_populate_reply_metadata?;
-    string exclude_reply_user_ids?;
-    string attachment_url?;
+    @display {label: "Media Id"}
     string media_ids?;
+    @display {label: "Sensitivie Or Not"}
     boolean possibly_sensitive?;
+    @display {label: "Latitude"}
     string lat?;
+    @display {label: "Longitude"}
     string long?;
+    @display {label: "Place Id"}
     string place_id?;
+    @display {label: "Coordinates"}
     boolean display_coordinates?;
+    @display {label: "Trim User or Not"}
     boolean trim_user?;
-    boolean enable_dmcommands?;
-    boolean fail_dmcommands?;
-    string card_uri?;
 };
