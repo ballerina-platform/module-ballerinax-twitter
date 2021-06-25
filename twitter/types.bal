@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Define the status.
+# Define a Tweet.
 # 
 # + created_at - Created time of the status
 # + id - Id of the status
@@ -53,7 +53,7 @@ public type Tweet record {
     int? in_reply_to_user_id?;
     string? in_reply_to_user_id_str?;
     string? in_reply_to_screen_name?;
-    User? user?;
+    User user;
     GeoLocation? geo?;
     json coordinates?;
     json place?;
@@ -127,9 +127,9 @@ public type Entity record {
 # + followers_count - Count of the followers
 # + friends_count - Count of the friends(User's following)
 public type User record {
-    int id?;
-    string id_str?;
-    string name?;
+    int id;
+    string id_str;
+    string name;
     string screen_name?;
     string location?;
     string description?;

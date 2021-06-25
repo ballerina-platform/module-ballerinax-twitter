@@ -19,7 +19,7 @@ import ballerina/url;
 
 # Twitter Client object.
 #
-# + apiId - Consumer key of the Twitter account
+# + apiKey - Consumer key of the Twitter account
 # + apiSecret - Consumer secret of the Twitter account
 # + accessToken - Access token of the Twitter account
 # + accessTokenSecret - Access token secret of the Twitter account
@@ -27,7 +27,7 @@ import ballerina/url;
 @display {label: "Twitter"}
 public client class  Client {
     
-    string apiId;
+    string apiKey;
     string apiSecret;
     string accessToken;
     string accessTokenSecret;
@@ -37,7 +37,7 @@ public client class  Client {
     public isolated function init(@display {label: "Connection Configuration"} TwitterConfiguration twitterConfig) 
                                   returns error? {
         self.twitterClient = check new(TWITTER_API_URL, twitterConfig.clientConfig);
-        self.apiId = twitterConfig.apiId;
+        self.apiKey = twitterConfig.apiKey;
         self.apiSecret = twitterConfig.apiSecret;
         self.accessToken = twitterConfig.accessToken;
         self.accessTokenSecret = twitterConfig.accessTokenSecret;
@@ -58,6 +58,7 @@ public client class  Client {
 
         string mediaIds = "";
         string tweetTextWithUrl = "";
+        string encodedStatusValue = "";
 
         if (updateTweetOptions?.media_ids is string) {
             mediaIds = <string>updateTweetOptions?.media_ids;
@@ -66,8 +67,11 @@ public client class  Client {
         string resourcePath = TWEET_ENDPOINT;
         if (url is string) {
             tweetTextWithUrl = tweetText + "\n" + url;
+            encodedStatusValue = check url:encode(tweetTextWithUrl, UTF_8);
+        } else {
+            encodedStatusValue = check url:encode(tweetText, UTF_8);
         }
-        string encodedStatusValue = check url:encode(tweetTextWithUrl, UTF_8);
+
         string urlParams = STATUS + encodedStatusValue + AMBERSAND;
         string oauthString = "";
 
@@ -76,9 +80,9 @@ public client class  Client {
             urlParams = urlParams + MEDIA_IDS + encodedMediaValue + AMBERSAND;
             oauthString = oauthString + MEDIA_IDS + encodedMediaValue + AMBERSAND;
         }
-        oauthString = oauthString + getOAuthParameters(self.apiId, self.accessToken) + STATUS + encodedStatusValue + AMBERSAND;
+        oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken) + STATUS + encodedStatusValue + AMBERSAND;
 
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             return requestHeaders;
@@ -99,9 +103,9 @@ public client class  Client {
     # + return - If success, returns 'Tweet' object, else returns error.
     @display {label: "Reply Tweet"} 
     remote function replyTweet(@display {label: "Text To Reply"} string tweetText, 
-                               @display {label: "Tweet Id To Reply"} int replyID, 
+                               @display {label: "Tweet ID To Reply"} int replyID, 
                                @display {label: "Url To Link"} string? url = (),
-                               @display {label: "Media Id"} string? mediaIds = ()) 
+                               @display {label: "Media ID"} string? mediaIds = ()) 
                                returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
 
@@ -131,9 +135,9 @@ public client class  Client {
         }
 
         oauthString = oauthString + REPLY_IDS + encodedReplyValue + AMBERSAND;
-        oauthString = oauthString + getOAuthParameters(self.apiId, self.accessToken) + STATUS + encodedStatus + AMBERSAND;
+        oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken) + STATUS + encodedStatus + AMBERSAND;
 
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             return requestHeaders;
@@ -151,7 +155,7 @@ public client class  Client {
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Make Retweet"} 
-    remote function retweet(@display {label: "Tweet Id To Retweet"} int id, 
+    remote function retweet(@display {label: "Tweet ID To Retweet"} int id, 
                             @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
                             returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
@@ -169,10 +173,10 @@ public client class  Client {
             oauthString = "trim_user=" + trim_user + AMBERSAND;
         }
 
-        oauthString = oauthString + getOAuthParameters(self.apiId, self.accessToken);
+        oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken);
 
         string resourcePath = RETWEET_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -191,14 +195,14 @@ public client class  Client {
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Delete Retweet"} 
-    remote function deleteRetweet(@display {label: "ReTweet Id To Delete"} int id, 
+    remote function deleteRetweet(@display {label: "ReTweet ID To Delete"} int id, 
                                   @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
                                   returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken);
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken);
 
         string resourcePath = UN_RETWEET_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -219,13 +223,13 @@ public client class  Client {
     @display {label: "Search Tweet By String"} 
     remote function search(@display {label: "Query String To Search"} string queryStr, 
                            @display {label: "Optional Search Options"} SearchOptions? searchOptions = ()) 
-                           returns @tainted @display {label: "Array of Tweet"} Tweet[]|error {
+                           returns @tainted @display {label: "Array Of Tweet"} Tweet[]|error {
         string resourcePath = SEARCH_ENDPOINT;
         string encodedQueryValue = check url:encode(queryStr, UTF_8);
         string urlParams = "q=" + encodedQueryValue + AMBERSAND;
         int? count = searchOptions?.count;
         string? geocode = searchOptions?.geocode;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken) + urlParams;
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken) + urlParams;
         if (count is int) {
             oauthString = "count=" + count.toString() + AMBERSAND + oauthString;
         }
@@ -234,7 +238,7 @@ public client class  Client {
         }
 
         http:Request request = new;
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret, self.accessToken,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret, self.accessToken,
             self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -262,7 +266,7 @@ public client class  Client {
     # + includeCardUri - Include card uri attributes
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Show Tweet"} 
-    remote function showStatus(@display {label: "Tweet Id To Show"} int id, 
+    remote function showStatus(@display {label: "Tweet ID To Show"} int id, 
                                @display {label: "Trim User Or Not"} boolean? trimUser = (), 
                                @display {label: "Include Retweet Or Not"} boolean? includeMyRetweet = (), 
                                @display {label: "Include Entities Or Not"} boolean? includeEntities = (), 
@@ -272,9 +276,9 @@ public client class  Client {
         http:Request request = new;
         string resourcePath = SHOW_STATUS_ENDPOINT;
         string urlParams = ID + id.toString();
-        string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiId, self.accessToken);
+        string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken);
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -294,13 +298,13 @@ public client class  Client {
     # + id - Numerical ID of a status
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Delete Tweet"} 
-    remote function deleteTweet(@display {label: "Tweet Id"} int id) 
+    remote function deleteTweet(@display {label: "Tweet ID"} int id) 
                                 returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken);
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken);
 
         string resourcePath = DESTROY_STATUS_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -318,15 +322,15 @@ public client class  Client {
     # + userId - Numerical ID of a specific user
     # + return - If success, returns 'User' object, else returns error
     @display {label: "Get User's Detail"} 
-    remote function getUser(@display {label: "User Id"} int userId) 
+    remote function getUser(@display {label: "User ID"} int userId) 
                             returns @tainted @display {label: "User"} User|error {
         http:Request request = new;
         string resourcePath = GET_USER_ENDPOINT;
         string encodedValue = check url:encode((userId.toString()), UTF_8);
         string urlParams = USER_ID + encodedValue + AMBERSAND;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken) + urlParams;
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -346,18 +350,18 @@ public client class  Client {
 
     # Get a user's followers.
     #
-    # + userId - Numerical Id of a specific user
+    # + userId - Numerical ID of a specific user
     # + return - If success, returns 'User' object array, else returns error
     @display {label: "Get User's Followers"} 
-    remote function getFollowers(@display {label: "User Id"} int userId) 
+    remote function getFollowers(@display {label: "User ID"} int userId) 
                                  returns @tainted @display {label: "Array Of User"} User[]|error {
         http:Request request = new;
         string resourcePath = FOLLOWERS_ENDPOINT;
         string encodedValue = check url:encode((userId.toString()), UTF_8);
         string urlParams = USER_ID + encodedValue + AMBERSAND;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken) + urlParams;
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -377,15 +381,15 @@ public client class  Client {
     # + userId - Numerical ID of a specific user
     # + return - If success, returns 'User' object array, else returns error
     @display {label: "Get User's Following"} 
-    remote function getFollowing(@display {label: "User Id"} int userId) 
-                                 returns @tainted @display {label: "Array of User"} User[]|error {
+    remote function getFollowing(@display {label: "User ID"} int userId) 
+                                 returns @tainted @display {label: "Array Of User"} User[]|error {
         http:Request request = new;
         string resourcePath = FOLLOWINGS_ENDPOINT;
         string encodedValue = check url:encode((userId.toString()), UTF_8);
         string urlParams = USER_ID + encodedValue + AMBERSAND;
-        string oauthString = getOAuthParameters(self.apiId, self.accessToken) + urlParams;
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -403,32 +407,32 @@ public client class  Client {
     # Get a user's tweets in timeline.
     # 
     # + count - Number of tweets returned 
-    # + sinceId - Minimum tweet Id 
-    # + maxId - Maximum tweet Id 
+    # + sinceId - Minimum tweet ID 
+    # + maxId - Maximum tweet ID 
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object  
     # + excludeReplies - Include retweets 
     # + includeEntities - Include entities nodes
     # + return - If success, returns 'Tweet' object array, else returns error
     @display {label: "Get Current User's Timeline"} 
     remote function getUserTimeline(@display {label: "Count"} int? count = (), 
-                                    @display {label: "Minimum Tweet Id"} int? sinceId = (), 
-                                    @display {label: "Maximum Tweet Id"} int? maxId = (), 
+                                    @display {label: "Minimum Tweet ID"} int? sinceId = (), 
+                                    @display {label: "Maximum Tweet ID"} int? maxId = (), 
                                     @display {label: "Trim User Or Not"} boolean? trimUser = (), 
                                     @display {label: "Exclude Replies Or Not"} boolean? excludeReplies = (), 
                                     @display {label: "Include Entities Or Not"} boolean? includeEntities = ()) 
-                                    returns @tainted @display {label: "Array of Tweet"} Tweet[]|error {
+                                    returns @tainted @display {label: "Array Of Tweet"} Tweet[]|error {
         http:Request request = new;
 
         string resourcePath = USER_TIMELINE_ENDPOINT;
         string oauthString = "";
         string urlParams = "";
-        oauthString = oauthString + getOAuthParameters(self.apiId, self.accessToken);                    
+        oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken);                    
         if (count is int) {
             urlParams = COUNT + count.toString();
-            oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiId, self.accessToken);
+            oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken);
         }
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -444,15 +448,15 @@ public client class  Client {
 
     # Get a user's last ten tweets.
     # 
-    # + sinceId - Minimum tweet Id 
-    # + maxId - Maximum tweet Id 
+    # + sinceId - Minimum tweet ID 
+    # + maxId - Maximum tweet ID 
     # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object  
     # + excludeReplies - Include retweets 
     # + includeEntities - Include entities nodes 
     # + return - If success, returns 'Tweet' object array, else returns error
     @display {label: "Get Last Ten Tweets"} 
-    remote function getLast10Tweets(@display {label: "Minimum Tweet Id"} int? sinceId = (), 
-                                    @display {label: "Maximum Tweet Id"} int? maxId = (), 
+    remote function getLast10Tweets(@display {label: "Minimum Tweet ID"} int? sinceId = (), 
+                                    @display {label: "Maximum Tweet ID"} int? maxId = (), 
                                     @display {label: "Trim User Or Not"} boolean? trimUser = (), 
                                     @display {label: "Exclude Replies Or Not"} boolean? excludeReplies = (), 
                                     @display {label: "Include Entities Or Not"} boolean? includeEntities = ()) 
@@ -461,9 +465,9 @@ public client class  Client {
         string resourcePath = USER_TIMELINE_ENDPOINT ;
         int count = 10;
         string urlParams = COUNT + count.toString();
-        string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiId, self.accessToken);
+        string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken);
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiId, self.apiSecret,
+        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString);
         if (requestHeaders is error) {
             error err = error(TWITTER_ERROR,
@@ -480,15 +484,15 @@ public client class  Client {
 
 # Twitter configuration
 #
-# + apiId - Api Key
+# + apiKey - Api Key
 # + apiSecret - Api Secret
 # + accessToken - Access token
 # + accessTokenSecret - Access token secret
 # + clientConfig - Client configuration  
 @display{label: "Connection Config"} 
 public type TwitterConfiguration record {
-    @display {label: "API Id"}
-    string apiId;
+    @display {label: "API Key"}
+    string apiKey;
     @display {label: "API Secret"}
     string apiSecret;
     @display {label: "Access Token"}
