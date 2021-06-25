@@ -10,3 +10,9 @@ keywords = ["ballerina", "Twitter", "connector"]
 [build-options]
 observability-included=true
 taintCheck = true
+
+[[platform.java11.dependency]]
+path = "../java-wrapper/build/libs/java-wrapper-1.0.0.jar"
+groupId = "org.ballerinalang.twitter"
+artifactId = "java-wrapper"
+version = "1.0.0"

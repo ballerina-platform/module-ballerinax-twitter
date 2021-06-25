@@ -46,14 +46,30 @@ https://developer.twitter.com/en/portal/dashboard
 Add the project configuration file by creating a `Config.toml` file under the root path of the project structure.
 This file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
 
+## Twitter Listener and configuration
+
+### Event Types Supported
+When there is a New Tweet, ReTweet, Reply to a tweet, Favourited, Mentioned, Quote tweet, Follows, Delete
+
+### How to use the listener
+1. Obtain access to an approved twitter developer account or cooperate twitter account by submitting relavant information about how you will use the data from Twitter and create a Twitter app.
+2. Get all the credentials needed including API key(Consumer Key), API Secret(Consumer Secret), Access token and Access Token Secret.
+3. Twitter App Id should be also noted as it is required to create a dev environment for Account Activity API.
+4. Navigate to the dev environment creation page. https://developer.twitter.com/en/account/environments. There we can set up a dev environment by providing Twitter App Id and we have to provide a dev environment name which will be used in calling Account Activity API endpoints.
+5. There are two pricing options available under the Premium Account Activity API. These option can be choosen according to the demand.
+    * Free Sandbox (Provide access to Account Activity API for free)
+    * Paid Premium
+6. In the twitter app you have to add the callback url before running the listener with suffix "webhook/twitter" example: <YOUR_CALL_BACK_URL>/webhook/twitter
+7. Now events will be sent to the callback url as payloads for each activity of the subscribed user.
+
 ## Connector Overview
 
 In order to use the Twitter Connector, first you need to create a Twitter Client endpoint.
 
 ```ballerina
 twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
+    apiKey: "<apiKey>",
+    apiSecret: "<apiSecret>",
     accessToken: "<accessToken>",
     accessTokenSecret: "<accessTokenSecret>"
 };
@@ -95,8 +111,8 @@ import ballerina/io;
 import ballerinax/twitter;
 
 twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
+    apiKey: "<apiKey>",
+    apiSecret: "<apiSecret>",
     accessToken: "<accessToken>",
     accessTokenSecret: "<accessTokenSecret>"
 };
@@ -124,8 +140,8 @@ import ballerina/io;
 import ballerinax/twitter;
 
 twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
+    apiKey: "<apiKey>",
+    apiSecret: "<apiSecret>",
     accessToken: "<accessToken>",
     accessTokenSecret: "<accessTokenSecret>"
 };
@@ -148,8 +164,8 @@ import ballerina/io;
 import ballerinax/twitter;
 
 twitter:TwitterConfiguration twitterConfig = {
-    clientId: "<clientId>",
-    clientSecret: "<clientSecret>",
+    apiKey: "<apiKey>",
+    apiSecret: "<apiSecret>",
     accessToken: "<accessToken>",
     accessTokenSecret: "<accessTokenSecret>"
 };
@@ -165,6 +181,45 @@ public function main() {
     }
 }
 ```
+## Twitter Listener Operation
+
+This examples shows how you can start a ballerina twitter listener using localhost. you will need to use ngork to expose a web server running on your local machine to the internet. 
+
+```ballerina
+import ballerina/log;
+import ballerinax/twitter;
+import ballerinax/twitter.'listener as twitterListener;
+
+configurable string & readonly apiKey = ?;
+configurable string & readonly apiSecret = ?;
+configurable string & readonly accessToken = ?;
+configurable string & readonly accessTokenSecret = ?;
+configurable string & readonly environmentName = ?;
+configurable string & readonly callbackUrl = ?;
+configurable int & readonly port = ?;
+
+listener twitterListener:Listener twitterListener = new (port, apiKey, apiSecret,          accessToken, accessTokenSecret, callbackUrl, environmentName);
+
+service / on twitterListener {
+    isolated remote function onTweet(TweetEvent event) returns error? {
+        log:printInfo("New Tweet", event);
+    }
+}
+
+public function main() {
+    twitter:TwitterConfiguration twitterConfig = {
+        apiKey: "<apiKey>",
+        apiSecret: "<apiSecret>",
+        accessToken: "<accessToken>",
+        accessTokenSecret: "<accessTokenSecret>"
+    };
+    twitter:Client twitterClient = new (twitterConfig);
+    var tweetResponse = twitterClient->tweet("Sample Tweet);
+    if (tweetResponse is error) {
+        log:printInfo(tweetResponse.message());
+    }
+}
+```
 
 ### Building the Source
 
@@ -175,17 +230,19 @@ Clone this repository using the following command:
 ```shell
     git clone https://github.com/ballerina-platform/module-ballerinax-twitter
 ```
-Execute the commands below to build from the source after installing Ballerina SwanLake Alpha 5 version.
-
-2. To build the library:
-Run this command from the module-ballerinax-twitter root directory:
-```shell script
-    bal build
+2. To build java libraries execute the following command.
+```shell
+    ./gradlew clean build
 ```
 
-3. To build the module without the tests:
+3. To build the library:
 ```shell script
-    bal build -c --skip-tests
+    bal build -c ./twitter
+```
+
+4. To build the module without the tests:
+```shell script
+    bal build -c --skip-tests ./twitter
 ```
 
 ## Contributing to Ballerina
