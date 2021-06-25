@@ -27,7 +27,7 @@ jobs:
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@slalpha5
               with:
-                  args: build -c ./twitter
+                  args: build -c --skip-tests ./twitter
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
                   API_KEY: ${{ secrets.API_KEY }}
