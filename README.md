@@ -8,7 +8,7 @@
 
 This connector provides operations for connecting and interacting with Twitter endpoints over the network. 
 For more information about configuration and operations, go to the module. 
-- [`ballerinax/twitter`](https://docs.central.ballerina.io/ballerinax/twitter/latest)
+- [`ballerinax/twitter`](twitter/Module.md)
 
 # Building from the Source
 ## Setting Up the Prerequisites
