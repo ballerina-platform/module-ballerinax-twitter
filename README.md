@@ -7,42 +7,38 @@
 [Twitter](https://twitter.com/) is a social media service provided by Twitter.
 
 This connector provides operations for connecting and interacting with Twitter endpoints over the network. 
-For more information about configuration and operations, go to the module. 
-- [`ballerinax/twitter`](https://docs.central.ballerina.io/ballerinax/twitter/latest)
+For more information about configuration and operations, go to the module(s).
+- [`twitter`](twitter/Module.md)
 
-# Building from the Source
-## Setting Up the Prerequisites
+## Building from the source
+### Setting up the prerequisites
 
-1. Download and install Java SE Development Kit (JDK) version 11 (from one of the following locations).
+1. Download and install Java SE Development Kit (JDK) version 11. You can install either [OpenJDK](https://adoptopenjdk.net/) or [Oracle JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
 
-   * [Oracle](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+   > **Note:** Set the JAVA_HOME environment variable to the path name of the directory into which you installed JDK.
 
-   * [OpenJDK](https://adoptopenjdk.net/)
+2. Download and install [Ballerina Swan Lake Beta2](https://ballerina.io/). 
 
-        > **Note:** Set the JAVA_HOME environment variable to the path name of the directory into which you installed JDK.
+### Building the source
+Execute the following commands to build from the source:
 
-2. Download and install [Ballerina Beta 2](https://ballerina.io/). 
-
-## Building the Source
-Execute the commands below to build from the source after installing Ballerina SL Beta 2 version.
-
-1. To build the package:
+* To build the package:
     ```    
     bal build -c ./twitter
     ```
-2. To run the without tests:
+* To build the package without tests:
     ```
     bal build -c --skip-tests ./twitter
     ```
-# Contributing to Ballerina
+## Contributing to Ballerina
 As an open source project, Ballerina welcomes contributions from the community. 
 
-For more information, go to the [contribution guidelines](https://github.com/ballerina-platform/ballerina-lang/blob/main/CONTRIBUTING.md).
+For more information, see the [Contribution Guidelines](https://github.com/ballerina-platform/ballerina-lang/blob/master/CONTRIBUTING.md).
 
-# Code of Conduct
+## Code of conduct
 All contributors are encouraged to read the [Ballerina Code of Conduct](https://ballerina.io/code-of-conduct).
 
-# Useful Links
-* Discuss about code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+## Useful links
+* Discuss about code changes of the Ballerina project via [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 * Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
 * Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.
