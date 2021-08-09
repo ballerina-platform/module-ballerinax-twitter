@@ -59,7 +59,7 @@ public isolated client class  Client {
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Post Tweet"}
     isolated remote function tweet(@display {label: "Tweet Text"} string tweetText, 
-                          @display {label: "Url To Link"} string? url = (),
+                          @display {label: "URL To Link"} string? url = (),
                           @display {label: "Optional Update Options"} UpdateTweetOptions? updateTweetOptions = ()) 
                           returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
@@ -109,25 +109,17 @@ public isolated client class  Client {
     #
     # + tweetText - Text of tweet to update
     # + replyID - Tweet id to be replyed
-    # + url - Url of attachment
-    # + mediaIds - List of medias have to be attached
+    # + url - URL of attachment
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Reply Tweet"} 
     isolated remote function replyTweet(@display {label: "Text To Reply"} string tweetText, 
                                @display {label: "Tweet ID To Reply"} int replyID, 
-                               @display {label: "Url To Link"} string? url = (),
-                               @display {label: "Media ID"} string? mediaIds = ()) 
+                               @display {label: "URL To Link"} string? url = ()) 
                                returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
 
-        string media_Ids = "";
         string tweetTextWithUrl = "";
         string in_reply_to_status_id = replyID.toString();
-        
-
-        if (mediaIds is string) {
-            media_Ids = mediaIds != "" ? mediaIds : "";
-        }
 
         string resourcePath = TWEET_ENDPOINT;
         if (url is string) {
@@ -139,11 +131,6 @@ public isolated client class  Client {
         urlParams = urlParams + REPLY_IDS + encodedReplyValue + AMBERSAND;
         string oauthString = "";
 
-        if (media_Ids != "") {
-            string encodedMediaValue = check url:encode(media_Ids, UTF_8);
-            urlParams = urlParams + MEDIA_IDS + encodedMediaValue + AMBERSAND;
-            oauthString = oauthString + MEDIA_IDS + encodedMediaValue + AMBERSAND;
-        }
         string nonce = uuid:createType1AsString();
         [int, decimal] & readonly currentTime = time:utcNow();
         string timeStamp = currentTime[0].toString();
@@ -165,26 +152,14 @@ public isolated client class  Client {
     # Retweet a Tweet.
     #
     # + id - Numerical ID of a status
-    # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Make Retweet"} 
-    isolated remote function retweet(@display {label: "Tweet ID To Retweet"} int id, 
-                            @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
+    isolated remote function retweet(@display {label: "Tweet ID To Retweet"} int id) 
                             returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
 
-        string trim_user = "";
         string urlParams = "";
         string oauthString = "";
-        if (trimUser is boolean) {
-            trim_user = trimUser.toString();
-        }
-
-        if (trim_user != "") {
-            string encodedValue = check url:encode(trim_user, UTF_8);
-            urlParams = urlParams + "trim_user=" + trim_user + AMBERSAND;
-            oauthString = "trim_user=" + trim_user + AMBERSAND;
-        }
         string nonce = uuid:createType1AsString();
         [int, decimal] & readonly currentTime = time:utcNow();
         string timeStamp = currentTime[0].toString();
@@ -207,11 +182,9 @@ public isolated client class  Client {
     # Delete a Retweet.
     #
     # + id - Numerical ID of a status
-    # + trimUser - User object including only numerical ID. Omit parameter to receive the complete user object
     # + return - If success, returns 'Tweet' object, else returns error
     @display {label: "Delete Retweet"} 
-    isolated remote function deleteRetweet(@display {label: "ReTweet ID To Delete"} int id, 
-                                  @display {label: "Trim User Or Not"} boolean? trimUser = ()) 
+    isolated remote function deleteRetweet(@display {label: "ReTweet ID To Delete"} int id) 
                                   returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
         string nonce = uuid:createType1AsString();

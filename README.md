@@ -4,7 +4,7 @@
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-twitter.svg)](https://github.com/ballerina-platform/module-ballerinax-twitter/commits/master)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[Twitter](https://twitter.com/) is a social media service provided by Twitter.
+[Twitter](https://twitter.com/) is a social networking service on which users can post and communicate with a status called "Tweets". Authenticated users can post, like, and retweet tweets. The main goal of Twitter is to connect people and to provide a platform for every person to express their thoughts to a large set of people freely.
 
 This connector provides operations for connecting and interacting with Twitter endpoints over the network. 
 For more information about configuration and operations, go to the module(s).
@@ -20,7 +20,7 @@ For more information about configuration and operations, go to the module(s).
 2. Download and install [Ballerina Swan Lake Beta2](https://ballerina.io/). 
 
 ### Building the source
-Execute the following commands to build from the source:
+Execute the following commands to build from the source.
 
 * To build the package:
     ```    

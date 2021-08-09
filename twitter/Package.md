@@ -1,15 +1,15 @@
 Connects to Twitter from Ballerina
 
 ## Package overview
-The `ballerinax/twitter` is a [Ballerina](https://ballerina.io/) connector for Twitter API.
+The `ballerinax/twitter` is a [Ballerina](https://ballerina.io/) connector for Twitter.
 
 This package provides the capability to perform Tweets and users related operations.
 
 ### Compatibility
-|                     | Version         |
-|---------------------|-----------------|
-| Ballerina Language  | Swan Lake Beta2 |
-| Twitter API         | V1.1            |
+|                     | Version                   |
+|---------------------|---------------------------|
+| Ballerina Language  | Ballerina Swan Lake Beta2 |
+| Twitter API         | V1.1                      |
 
 ## Report issues
 
