@@ -45,8 +45,9 @@ public class Listener {
         self.httpListener = check new (port);
     }
 
-    public isolated function attach(SimpleHttpService s, string[]|string? name) returns @tainted error? {       
-        self.httpService = new HttpService(s, self.apiKey, self.apiSecret, self.accessKey, self.accessKeySecret, self.callbackUrl, self.environment);
+    public isolated function attach(service object {} s, string[]|string? name) returns @tainted error? {       
+        HttpToTwitterAdaptor adaptor = check new (s);
+        self.httpService = new HttpService(adaptor, self.apiKey, self.apiSecret, self.accessKey, self.accessKeySecret, self.callbackUrl, self.environment);
         check self.httpListener.attach(self.httpService, name);
     }
 
