@@ -34,6 +34,11 @@ public client class  Client {
 
     http:Client twitterClient;
 
+
+    # Initializes the Twitter connector client endpoint.
+    #
+    # + twitterConfig - Configurations required to initialize the `Client` endpoint
+    # + return - Error at failure of client initialization
     public isolated function init(@display {label: "Connection Configuration"} TwitterConfiguration twitterConfig) 
                                   returns error? {
         self.twitterClient = check new(TWITTER_API_URL, twitterConfig.clientConfig);
