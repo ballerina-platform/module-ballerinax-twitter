@@ -17,12 +17,7 @@
 import ballerina/crypto;
 import ballerina/http;
 import ballerina/regex;
-import ballerina/time;
 import ballerina/url;
-import ballerina/uuid;
-
-string timeStamp = "";
-string nonce = "";
 
 isolated function handleResponse(http:Response httpResponse) returns @tainted json|error {
     json response = check httpResponse.getJsonPayload();
@@ -108,18 +103,15 @@ isolated function handleUserArrayResponse(http:Response httpResponse) returns @t
     }
 }
 
-function getOAuthParameters(string consumerKey, string accessToken) returns string {
-    nonce = uuid:createType1AsString();
-    [int, decimal] & readonly currentTime = time:utcNow();
-    timeStamp = currentTime[0].toString();
+isolated function getOAuthParameters(string consumerKey, string accessToken, string nonce, string timeStamp) returns string {
     string paramStr = "oauth_consumer_key=" + consumerKey + "&oauth_nonce=" + nonce +
         "&oauth_signature_method=HMAC-SHA1&oauth_timestamp=" + timeStamp + "&oauth_token=" + accessToken
         + "&oauth_version=1.0&";
     return paramStr;
 }
 
-function createRequestHeaders(http:Request request, string httpMethod, string resourcePath, string consumerKey,
-        string consumerSecret, string accessToken, string accessTokenSecret, string paramStr) returns error? {
+isolated function createRequestHeaders(http:Request request, string httpMethod, string resourcePath, string consumerKey,
+        string consumerSecret, string accessToken, string accessTokenSecret, string paramStr, string nonce, string timeStamp) returns error? {
     string serviceEndpoint = "https://api.twitter.com" + resourcePath;
     string paramString = paramStr.substring(0, paramStr.length() - 1);
     string encodedServiceEPValue = check url:encode(serviceEndpoint, UTF_8);
@@ -145,8 +137,8 @@ function createRequestHeaders(http:Request request, string httpMethod, string re
     return ();
 }
 
-function createRequestHeaderMap(http:Request request, string httpMethod, string resourcePath, string consumerKey,
-        string consumerSecret, string accessToken, string accessTokenSecret, string paramStr) returns map<string>|error {
+isolated function createRequestHeaderMap(http:Request request, string httpMethod, string resourcePath, string consumerKey,
+        string consumerSecret, string accessToken, string accessTokenSecret, string paramStr, string nonce, string timeStamp) returns map<string>|error {
     string serviceEndpoint = "https://api.twitter.com" + resourcePath;
     string paramString = paramStr.substring(0, paramStr.length() - 1);
     string encodedServiceEPValue = check url:encode(serviceEndpoint, UTF_8);
