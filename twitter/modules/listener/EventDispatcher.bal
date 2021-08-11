@@ -26,18 +26,19 @@ isolated class EventDispatcher {
     private final boolean isOnDelete;
     private final boolean isOnMention;
     private final HttpToTwitterAdaptor adaptor;
+    
     isolated function init(HttpToTwitterAdaptor adaptor) {
         self.adaptor = adaptor;
         
         string[] methodNames = adaptor.getServiceMethodNames();
         self.isOnTweet = isMethodAvailable("onTweet", methodNames);
-        self.isOnReply = isMethodAvailable("onTweet", methodNames);
-        self.isOnReTweet = isMethodAvailable("onTweet", methodNames);
-        self.isOnQuoteTweet = isMethodAvailable("onTweet", methodNames);
-        self.isOnFollower = isMethodAvailable("onTweet", methodNames);
-        self.isOnFavourite = isMethodAvailable("onTweet", methodNames);
-        self.isOnDelete = isMethodAvailable("onTweet", methodNames);
-        self.isOnMention = isMethodAvailable("onTweet", methodNames);
+        self.isOnReply = isMethodAvailable("onReply", methodNames);
+        self.isOnReTweet = isMethodAvailable("onReTweet", methodNames);
+        self.isOnQuoteTweet = isMethodAvailable("onQuoteTweet", methodNames);
+        self.isOnFollower = isMethodAvailable("onFollower", methodNames);
+        self.isOnFavourite = isMethodAvailable("onFavourite", methodNames);
+        self.isOnDelete = isMethodAvailable("onDelete", methodNames);
+        self.isOnMention = isMethodAvailable("onMention", methodNames);
                         
         if (methodNames.length() > 0) {
             foreach string methodName in methodNames {
