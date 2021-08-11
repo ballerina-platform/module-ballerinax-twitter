@@ -158,3 +158,19 @@ isolated function createRequestHeaders(http:Request request, string httpMethod, 
     request.setHeader("Authorization", regex:replaceAll(oauthHeaderString, "\\\\", ""));
     return ();
 }
+
+# Retrieves whether the particular remote method is available.
+#
+# + methodName - Name of the required method
+# + methods - All available methods
+# + return - `true` if method available or else `false`
+isolated function isMethodAvailable(string methodName, string[] methods) returns boolean {
+    boolean isAvailable = methods.indexOf(methodName) is int;
+    if (isAvailable) {
+        var index = methods.indexOf(methodName);
+        if (index is int) {
+            _ = methods.remove(index);
+        }
+    }
+    return isAvailable;
+}
