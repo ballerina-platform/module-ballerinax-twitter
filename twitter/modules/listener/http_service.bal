@@ -16,58 +16,24 @@
 
 import ballerina/crypto;
 import ballerina/http;
-import ballerina/log;
 
-service class HttpService {
-    final SupportedRemoteFunctionImpl supportedRemoteFunctionImpl = {};
-    private SimpleHttpService httpService;
-    private EventDispatcher eventDispatcher;
-    private string apiKey;
-    private string apiSecret;
-    private string accessKey;
-    private string accessKeySecret;
-    private string callbackUrl;
+isolated service class HttpService {
+    private final HttpToTwitterAdaptor adaptor;
+    private final EventDispatcher eventDispatcher;
+    private final string apiKey;
+    private final string apiSecret;
+    private final string accessKey;
+    private final string accessKeySecret;
+    private final string callbackUrl;
 
-    public isolated function init(SimpleHttpService httpService, string apiKey, string apiSecret, string accessKey, string accessKeySecret, string callbackUrl, string environmentName) {
-        self.eventDispatcher = new (httpService);
-        self.httpService = httpService;
+    isolated function init(HttpToTwitterAdaptor adaptor, string apiKey, string apiSecret, string accessKey, string accessKeySecret, string callbackUrl, string environmentName) {
+        self.adaptor = adaptor;
+        self.eventDispatcher = new (adaptor);
         self.callbackUrl = callbackUrl;
         self.apiKey = apiKey;
         self.apiSecret = apiSecret;
         self.accessKey = accessKey;
         self.accessKeySecret = accessKeySecret;
-        string[] methodNames = getServiceMethodNames(httpService);
-        foreach var methodName in methodNames {
-            match methodName {
-                "onTweet" => {
-                    self.supportedRemoteFunctionImpl.isOnTweet = true;
-                }
-                "onReply" => {
-                    self.supportedRemoteFunctionImpl.isOnReply = true;
-                }
-                "onReTweet" => {
-                    self.supportedRemoteFunctionImpl.isOnReTweet = true;
-                }
-                "onQuoteTweet" => {
-                    self.supportedRemoteFunctionImpl.isOnQuoteTweet = true;
-                }
-                "onFollower" => {
-                    self.supportedRemoteFunctionImpl.isOnFollower = true;
-                }
-                "onFavourite" => {
-                    self.supportedRemoteFunctionImpl.isOnFavourite = true;
-                }
-                "onDelete" => {
-                    self.supportedRemoteFunctionImpl.isOnDelete = true;
-                }
-                "onMention" => {
-                    self.supportedRemoteFunctionImpl.isOnMention = true;
-                }
-                _ => {
-                    log:printError("Unrecognized method [" + methodName + "] found in the implementation");
-                }
-            }
-        }
     }
 
     isolated resource function post webhook/twitter(http:Caller caller, http:Request twitterRequest) returns 

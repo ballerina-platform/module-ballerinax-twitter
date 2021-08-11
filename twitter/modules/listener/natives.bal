@@ -16,50 +16,60 @@
 
 import ballerina/jballerina.java;
 
-isolated function callOnTweet(SimpleHttpService httpService, TweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+isolated class HttpToTwitterAdaptor {
 
-isolated function callOnReTweet(SimpleHttpService httpService, TweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function init(SimpleHttpService serviceObj) returns error? {
+        externInit(self, serviceObj);
+    }
 
-isolated function callOnReply(SimpleHttpService httpService, TweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnTweet(TweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-isolated function callOnFollower(SimpleHttpService httpService, FollowEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnReTweet(TweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-isolated function callOnFavourite(SimpleHttpService httpService, FavouriteEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnReply(TweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-isolated function callOnDelete(SimpleHttpService httpService, DeleteTweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnFollower(FollowEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-isolated function callOnQuoteTweet(SimpleHttpService httpService, TweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnFavourite(FavouriteEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-isolated function callOnMention(SimpleHttpService httpService, TweetEvent event)
-                                returns error? = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
-} external;
+    isolated function callOnDelete(DeleteTweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
 
-# Invoke native method to retrieve implemented method names in the subscriber service
-#
-# + httpService - current http service
-# + return - {@code string[]} containing the method-names in current implementation
-isolated function getServiceMethodNames(SimpleHttpService httpService) returns string[] = @java:Method {
-    'class: "org.ballerinalang.twitter.HttpNativeOperationHandler"
+    isolated function callOnQuoteTweet(TweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
+
+    isolated function callOnMention(TweetEvent event)
+                                    returns error? = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
+
+    # Invoke native method to retrieve implemented method names in the subscriber service
+    #
+    # + return - {@code string[]} containing the method-names in current implementation
+    isolated function getServiceMethodNames() returns string[] = @java:Method {
+        'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
+    } external;
+}
+
+isolated function externInit(HttpToTwitterAdaptor adaptor, SimpleHttpService serviceObj) = @java:Method {
+    'class: "org.ballerinalang.twitter.NativeHttpToTwitterAdaptor"
 } external;

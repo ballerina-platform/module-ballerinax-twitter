@@ -347,14 +347,3 @@ public type GeoLocation record {
     float latitude?;
     float longitude?;
 };
-
-type SupportedRemoteFunctionImpl record {
-    boolean isOnTweet = false;
-    boolean isOnReply = false;
-    boolean isOnReTweet = false;
-    boolean isOnFollower = false;
-    boolean isOnFavourite = false;
-    boolean isOnDelete = false;
-    boolean isOnMention = false;
-    boolean isOnQuoteTweet = false;
-};
