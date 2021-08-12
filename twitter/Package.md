@@ -8,7 +8,7 @@ This package provides the capability to perform Tweets and users related operati
 ### Compatibility
 |                     | Version                   |
 |---------------------|---------------------------|
-| Ballerina Language  | Ballerina Swan Lake Beta2 |
+| Ballerina Language  | Ballerina Swan Lake Beta3 |
 | Twitter API         | V1.1                      |
 
 ## Report issues
