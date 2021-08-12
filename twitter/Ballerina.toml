@@ -3,16 +3,15 @@ org = "ballerinax"
 name = "twitter"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-version= "1.0.0"
+version= "1.0.1-SNAPSHOT"
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
-keywords = ["ballerina", "Twitter", "connector"]
+keywords = ["twitter", "social", "communication"]
 
 [build-options]
 observability-included=true
-taintCheck = true
 
 [[platform.java11.dependency]]
-path = "../java-wrapper/build/libs/java-wrapper-1.0.0.jar"
+path = "../java-wrapper/build/libs/java-wrapper-1.0.1-SNAPSHOT.jar"
 groupId = "org.ballerinalang.twitter"
 artifactId = "java-wrapper"
-version = "1.0.0"
+version = "1.0.1-SNAPSHOT"
