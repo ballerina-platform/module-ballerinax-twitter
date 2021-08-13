@@ -4,6 +4,7 @@ name = "twitter"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
 version= "1.0.1-SNAPSHOT"
+export= ["twitter", "twitter.listener"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 keywords = ["twitter", "social", "communication"]
 
