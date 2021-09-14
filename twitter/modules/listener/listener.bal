@@ -17,7 +17,7 @@
 import ballerina/http;
 
 # Listener for Twitter connector
-@display {label: "Twitter Listener"}
+@display {label: "Twitter Listener", iconPath: "resources/twitter.svg"}
 public class Listener {
     private HttpService httpService;
     private http:Listener httpListener;

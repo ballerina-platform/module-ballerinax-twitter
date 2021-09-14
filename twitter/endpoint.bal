@@ -27,7 +27,7 @@ import ballerina/uuid;
 # + accessToken - Access token of the Twitter account
 # + accessTokenSecret - Access token secret of the Twitter account
 # + twitterClient - Connector HTTP endpoint
-@display {label: "Twitter"}
+@display {label: "Twitter", iconPath: "resources/twitter.svg"}
 public isolated client class  Client {
     
     private final string apiKey;
@@ -42,7 +42,7 @@ public isolated client class  Client {
     #
     # + twitterConfig - Configuration for the connector
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized 
-    public isolated function init(@display {label: "Connection Configuration"} TwitterConfiguration twitterConfig) 
+    public isolated function init(@display {label: "Connection Configuration"} ConnectionConfig twitterConfig) 
                                   returns error? {
         self.twitterClient = check new(TWITTER_API_URL, twitterConfig.clientConfig);
         self.apiKey = twitterConfig.apiKey;
@@ -505,7 +505,7 @@ public isolated client class  Client {
 # + accessTokenSecret - Access token secret
 # + clientConfig - Client configuration  
 @display{label: "Connection Config"} 
-public type TwitterConfiguration record {
+public type ConnectionConfig record {
     @display {label: "API Key"}
     string apiKey;
     @display {label: "API Secret"}

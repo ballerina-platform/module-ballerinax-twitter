@@ -23,7 +23,7 @@ import ballerinax/twitter;
 ```
 ### Step 2: Create a new connector instance
 ```ballerina
-twitter:TwitterConfiguration twitterConfig = {
+twitter:ConnectionConfig twitterConfig = {
     apiKey: "<apiKey>",
     apiSecret: "<apiSecret>",
     accessToken: "<accessToken>",
