@@ -9,7 +9,7 @@ configurable string accessTokenSecret = ?;
 public function main() {
 
     // Add the Twitter credentials as the Configuration
-    twitter:TwitterConfiguration configuration = {
+    twitter:ConnectionConfig configuration = {
         apiKey: apiKey,
         apiSecret: apiSecret,
         accessToken: accessToken,

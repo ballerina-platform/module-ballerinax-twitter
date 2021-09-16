@@ -29,7 +29,7 @@ int tweetID = 0;
 int replytweetID = 0;
 int userID = 0;
 
-TwitterConfiguration twitterConfig = {
+ConnectionConfig twitterConfig = {
     apiKey: apiKey,
     apiSecret: apiSecret,
     accessToken: accessToken,
