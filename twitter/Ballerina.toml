@@ -3,10 +3,10 @@ org = "ballerinax"
 name = "twitter"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-version= "1.0.1-SNAPSHOT"
+version= "2.0.0"
 export= ["twitter", "twitter.listener"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
-keywords = ["lifestyle & entertainment/news & lifestyle", "marketing/social media accounts", "cost/freemium"]
+keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
 
 [build-options]
 observability-included=true
