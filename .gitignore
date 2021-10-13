@@ -57,3 +57,6 @@ java-wrapper/build/**
 
 #Ignore docker caches
 .ballerina
+
+# Ignore gradle build output directory
+build

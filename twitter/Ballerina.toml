@@ -12,7 +12,7 @@ keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
 observability-included=true
 
 [[platform.java11.dependency]]
-path = "../java-wrapper/build/libs/java-wrapper-1.0.1-SNAPSHOT.jar"
+path = "../java-wrapper/build/libs/java-wrapper-2.0.0.jar"
 groupId = "org.ballerinalang.twitter"
 artifactId = "java-wrapper"
-version = "1.0.1-SNAPSHOT"
+version = "2.0.0"

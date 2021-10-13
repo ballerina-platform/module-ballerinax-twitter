@@ -41,10 +41,11 @@ public isolated client class  Client {
     # Create a [Twitter Developer Account](https://developer.twitter.com/en/apply-for-access) and obtain credentials following [this guide](https://developer.twitter.com/en/docs/authentication/oauth-1-0a). 
     #
     # + twitterConfig - Configuration for the connector
+    # + httpConfig - HTTP configuration
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized 
-    public isolated function init(@display {label: "Connection Configuration"} ConnectionConfig twitterConfig) 
+    public isolated function init(ConnectionConfig twitterConfig, http:ClientConfiguration httpConfig = {}) 
                                   returns error? {
-        self.twitterClient = check new(TWITTER_API_URL, twitterConfig.clientConfig);
+        self.twitterClient = check new(TWITTER_API_URL, httpConfig);
         self.apiKey = twitterConfig.apiKey;
         self.apiSecret = twitterConfig.apiSecret;
         self.accessToken = twitterConfig.accessToken;
@@ -503,7 +504,6 @@ public isolated client class  Client {
 # + apiSecret - Api Secret
 # + accessToken - Access token
 # + accessTokenSecret - Access token secret
-# + clientConfig - Client configuration  
 @display{label: "Connection Config"} 
 public type ConnectionConfig record {
     @display {label: "API Key"}
@@ -514,5 +514,4 @@ public type ConnectionConfig record {
     string accessToken;
     @display {label: "Access Token Secret"}
     string accessTokenSecret;
-    http:ClientConfiguration clientConfig = {};
 };
