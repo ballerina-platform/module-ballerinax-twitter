@@ -29,7 +29,13 @@ jobs:
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@nightly
               with:
-                  args: build -c ./twitter
+                  args: pack ./twitter
+              env:
+                  JAVA_HOME: /usr/lib/jvm/default-jvm
+            - name: Ballerina Test
+              uses: ballerina-platform/ballerina-action/@nightly
+              with:
+                  args: test ./twitter
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
                   API_KEY: ${{ secrets.API_KEY }}
@@ -38,5 +44,5 @@ jobs:
                   ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
                   DEV_ENVIRONMENT_NAME: ${{ secrets.DEV_ENVIRONMENT_NAME }}
                   CALLBACK_URL: ${{ secrets.CALLBACK_URL }}
-                  PORT: ${{ secrets.PORT }} 
+                  PORT: ${{ secrets.PORT }}
                   

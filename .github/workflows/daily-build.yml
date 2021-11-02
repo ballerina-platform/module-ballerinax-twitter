@@ -41,7 +41,17 @@ jobs:
               uses: ballerina-platform/ballerina-action/@nightly
               with:
                   args:
-                      build -c ./twitter
+                      pack ./twitter
+              env:
+                JAVA_HOME: /usr/lib/jvm/default-jvm
+                DEV_ENVIRONMENT_NAME: ${{ secrets.DEV_ENVIRONMENT_NAME }}
+            
+            # Test the ballerina project
+            - name: Ballerina Test
+              uses: ballerina-platform/ballerina-action/@nightly
+              with:
+                  args:
+                      test ./twitter
               env:
                 JAVA_HOME: /usr/lib/jvm/default-jvm
                 API_KEY: ${{ secrets.API_KEY }}
