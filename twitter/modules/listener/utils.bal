@@ -92,7 +92,10 @@ isolated function deleteWebHookURL(string apiKey, string apiSecret, string acces
         error err = error(TWITTER_ERROR, message = "Error occurred while encoding");
         return err;
     } else {
-        http:Response httpResponse = <http:Response> check httpClient->delete(resourcePath, request);
+        http:Response|error httpResponse = httpClient->delete(resourcePath, request);
+        if (httpResponse is http:Response) {
+           return null; 
+        }    
     }
 }
 
@@ -112,7 +115,10 @@ isolated function deleteSubscription(string apiKey, string apiSecret, string acc
         error err = error(TWITTER_ERROR, message = "Error occurred while encoding");
         return err;
     } else {
-        http:Response httpResponse = <http:Response> check httpClient->delete(resourcePath, request);
+        http:Response|error httpResponse = httpClient->delete(resourcePath, request);
+        if (httpResponse is http:Response) {
+           return null; 
+        }   
     }
 }
 

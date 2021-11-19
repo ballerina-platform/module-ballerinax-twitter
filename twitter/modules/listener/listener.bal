@@ -19,7 +19,7 @@ import ballerina/http;
 # Listener for Twitter connector
 @display {label: "Twitter Listener", iconPath: "resources/twitter.svg"}
 public class Listener {
-    private HttpService httpService;
+    private HttpService? httpService;
     private http:Listener httpListener;
     private string callbackUrl = "";
     private string apiKey = "";
@@ -36,23 +36,28 @@ public class Listener {
                                   @display { label: "Twitter Access Token Secret" } string accessKeySecret,
                                   @display{label: "Callback URL"} string callbackUrl,
                                   @display { label: "Environment" } string environment) returns @tainted error? {
+        self.httpListener = check new (port);
         self.apiKey = apiKey;
         self.apiSecret = apiSecret;
         self.accessKey = accessKey;
         self.accessKeySecret = accessKeySecret;
         self.callbackUrl = callbackUrl;
         self.environment = environment;
-        self.httpListener = check new (port);
+        self.httpService = ();
     }
 
-    public isolated function attach(service object {} s, string[]|string? name) returns @tainted error? {       
-        HttpToTwitterAdaptor adaptor = check new (s);
-        self.httpService = new HttpService(adaptor, self.apiKey, self.apiSecret, self.accessKey, self.accessKeySecret, self.callbackUrl, self.environment);
-        check self.httpListener.attach(self.httpService, name);
+    public isolated function attach(SimpleHttpService s, string[]|string? name) returns @tainted error? {       
+        HttpToTwitterAdaptor adaptor = check new (s);  
+        HttpService currentHttpService = new (adaptor, self.apiKey, self.apiSecret, self.accessKey, self.accessKeySecret, self.callbackUrl, self.environment);
+        self.httpService = currentHttpService;
+        check self.httpListener.attach(currentHttpService, name);
     }
 
     public isolated function detach(SimpleHttpService s) returns @tainted error? {
-        return self.httpListener.detach(s);
+        HttpService? currentHttpService = self.httpService;
+        if currentHttpService is HttpService {
+            return self.httpListener.detach(currentHttpService);
+        } 
     }
 
     public isolated function 'start() returns @tainted error? {
