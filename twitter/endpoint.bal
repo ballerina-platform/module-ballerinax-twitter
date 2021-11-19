@@ -119,13 +119,9 @@ public isolated client class  Client {
                                returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
 
-        string tweetTextWithUrl = "";
         string in_reply_to_status_id = replyID.toString();
 
         string resourcePath = TWEET_ENDPOINT;
-        if (url is string) {
-            tweetTextWithUrl = tweetText + "\n" + url;
-        }
         string encodedStatus = check url:encode(tweetText, UTF_8);
         string urlParams = STATUS + encodedStatus + AMBERSAND;
         string encodedReplyValue = check url:encode(in_reply_to_status_id, UTF_8);
@@ -159,7 +155,6 @@ public isolated client class  Client {
                             returns @tainted @display {label: "Tweet"} Tweet|error {
         http:Request request = new;
 
-        string urlParams = "";
         string oauthString = "";
         string nonce = uuid:createType1AsString();
         [int, decimal] & readonly currentTime = time:utcNow();

@@ -18,6 +18,7 @@ import ballerina/crypto;
 import ballerina/http;
 
 isolated service class HttpService {
+    *http:Service;
     private final HttpToTwitterAdaptor adaptor;
     private final EventDispatcher eventDispatcher;
     private final string apiKey;
@@ -39,7 +40,6 @@ isolated service class HttpService {
     isolated resource function post webhook/twitter(http:Caller caller, http:Request twitterRequest) returns 
                                            @tainted error? {                                        
         json payload = check twitterRequest.getJsonPayload();
-        map<json> mapPayload = <map<json>> payload;
         check caller->respond(http:STATUS_OK); 
         error? dispatchResult = self.eventDispatcher.dispatch(payload);
         if (dispatchResult is error) {
@@ -64,6 +64,7 @@ isolated service class HttpService {
             base64Result = output.toBase64();
             json response = {response_token: "sha256=" + base64Result};
             http:ListenerError? respond = caller->respond(<@untainted>(response));
+            return respond;
         } else {
             return error(TWITTER_ERROR, message = "Error in CRC token validation");
         }
@@ -83,8 +84,9 @@ isolated service class HttpService {
             base64Result = output.toBase64();
             json response = {response_token: "sha256=" + base64Result};
             http:ListenerError? respond = caller->respond(<@untainted>(response));
+            return respond;
         } else {
-                
+            return error(TWITTER_ERROR, message = "Error in CRC token validation");
         }
     }
 }
