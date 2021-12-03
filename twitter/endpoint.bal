@@ -27,7 +27,7 @@ import ballerina/uuid;
 # + accessToken - Access token of the Twitter account
 # + accessTokenSecret - Access token secret of the Twitter account
 # + twitterClient - Connector HTTP endpoint
-@display {label: "Twitter", iconPath: "resources/twitter.svg"}
+@display {label: "Twitter", iconPath: "icon.png"}
 public isolated client class  Client {
     
     private final string apiKey;
