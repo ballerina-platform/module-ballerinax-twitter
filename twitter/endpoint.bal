@@ -94,16 +94,11 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + STATUS + encodedStatusValue + AMBERSAND;
 
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
+        check createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            return requestHeaders;
-        } else {
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Reply to a Tweet.
@@ -134,16 +129,11 @@ public isolated client class  Client {
         oauthString = oauthString + REPLY_IDS + encodedReplyValue + AMBERSAND;
         oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + STATUS + encodedStatus + AMBERSAND;
 
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
+        check createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            return requestHeaders;
-        } else {
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Retweet a Tweet.
@@ -162,17 +152,10 @@ public isolated client class  Client {
         oauthString = oauthString + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
 
         string resourcePath = RETWEET_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
+        check createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Delete a Retweet.
@@ -189,17 +172,10 @@ public isolated client class  Client {
         string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
 
         string resourcePath = UN_RETWEET_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
+        check createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Search for Tweets matching a query.
@@ -228,22 +204,14 @@ public isolated client class  Client {
         }
 
         http:Request request = new;
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret, self.accessToken,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret, self.accessToken,
             self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            map<string> headerMap = requestHeaders;
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            if(count is int){
-                    resourcePath =  resourcePath + "count=" + count.toString();
-            }
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
-            var response = check handleSearchTweetResponse(httpResponse);
-            return response;
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        if count is int {
+            resourcePath =  resourcePath + "count=" + count.toString();
         }
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleSearchTweetResponse(httpResponse);
     }
 
     # Show a Tweet.
@@ -271,19 +239,11 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            map<string> headerMap = requestHeaders;
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Delete a Tweet.
@@ -300,17 +260,10 @@ public isolated client class  Client {
         string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
 
         string resourcePath = DESTROY_STATUS_ENDPOINT + id.toString() + JSON;
-        var requestHeaders = createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
+        check createRequestHeaders(request, POST, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
-            var response = check handleStatusResponse(httpResponse);
-            return response;
-        }
+        http:Response httpResponse = check self.twitterClient->post(resourcePath, request);
+        return check handleStatusResponse(httpResponse);
     }
 
     # Get a User object.
@@ -329,22 +282,14 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            map<string> headerMap = requestHeaders;
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
-            var response = check handleResponse(httpResponse);
-            json[] array = <json[]> response;
-            json user = array[0];
-            User userRsponse = check user.cloneWithType(User);
-            return userRsponse;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        json response = check handleResponse(httpResponse);
+        json[] array = <json[]> response;
+        json user = array[0];
+        return check user.cloneWithType(User);
     }
 
     # Get a user's followers.
@@ -363,19 +308,11 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            map<string> headerMap = requestHeaders;
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
-            var response = check handleUserArrayResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleUserArrayResponse(httpResponse);
     }
 
     # Get a user's following.
@@ -394,19 +331,12 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + urlParams;
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            map<string> headerMap = requestHeaders;
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
-            var response = check handleUserArrayResponse(httpResponse);
-            return response;
-        }
+        map<string> headerMap = requestHeaders;
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, headerMap);
+        return check handleUserArrayResponse(httpResponse);
     }
 
     # Get a user's tweets in timeline.
@@ -440,18 +370,11 @@ public isolated client class  Client {
             oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
         }
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
-            var response = check handleStatusArrayResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleStatusArrayResponse(httpResponse);
     }
 
     # Get a user's last ten tweets.
@@ -478,18 +401,11 @@ public isolated client class  Client {
         string timeStamp = currentTime[0].toString();
         string oauthString = urlParams + AMBERSAND + getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp);
 
-        var requestHeaders = createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
             self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
-        if (requestHeaders is error) {
-            error err = error(TWITTER_ERROR,
-                              message = "Error occurred while encoding");
-            return err;
-        } else {
-            resourcePath = resourcePath + QUESTION_MARK + urlParams;
-            http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
-            var response = check handleStatusArrayResponse(httpResponse);
-            return response;
-        }
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleStatusArrayResponse(httpResponse);
     }
 }
 
