@@ -22,7 +22,7 @@ configurable string apiSecret = ?;
 configurable string accessToken = ?;
 configurable string accessTokenSecret = ?;
 
-public function main() {
+public function main() returns error? {
 
     // Add the Twitter credentials as the Configuration
     twitter:ConnectionConfig configuration = {
@@ -32,12 +32,10 @@ public function main() {
         accessTokenSecret: accessTokenSecret
     };
 
-    twitter:Client twitterClient = new(configuration);
+    twitter:Client twitterClient = check new (configuration);
 
     string tweetContent = "Retweet";
 
-    twitter:Tweet|error response = twitterClient->retweet(<TWEET_ID>);
-    if (response is twitter:Tweet) {
-        log:printInfo("Retweeted a Tweet : " + response);
-    }
+    twitter:Tweet response = check twitterClient->retweet(<TWEET_ID>);
+    log:printInfo("Retweeted a Tweet : " + response.toString());
 }

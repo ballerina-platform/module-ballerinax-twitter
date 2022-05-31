@@ -22,7 +22,7 @@ configurable string apiSecret = ?;
 configurable string accessToken = ?;
 configurable string accessTokenSecret = ?;
 
-public function main() {
+public function main() returns error? {
 
     // Add the Twitter credentials as the Configuration
     twitter:ConnectionConfig configuration = {
@@ -32,10 +32,8 @@ public function main() {
         accessTokenSecret: accessTokenSecret
     };
 
-    twitter:Client twitterClient = new(configuration);
+    twitter:Client twitterClient = check new (configuration);
 
-    twitter:Tweet|error response = twitterClient->getFollowers(<USER_ID>);
-    if (response is User[] && response.length() > 0) {
-        log:printInfo("Follower detail: " + response);
-    }
+    twitter:User[] followers = check twitterClient->getFollowers(<USER_ID>);
+    log:printInfo("Followers: " + followers.toString());
 }

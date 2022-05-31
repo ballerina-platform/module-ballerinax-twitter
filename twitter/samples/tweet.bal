@@ -22,7 +22,7 @@ configurable string apiSecret = ?;
 configurable string accessToken = ?;
 configurable string accessTokenSecret = ?;
 
-public function main() {
+public function main() returns error? {
 
     // Add the Twitter credentials as the Configuration
     twitter:ConnectionConfig configuration = {
@@ -32,13 +32,11 @@ public function main() {
         accessTokenSecret: accessTokenSecret
     };
 
-    twitter:Client twitterClient = new(configuration);
+    twitter:Client twitterClient = check new (configuration);
 
     string tweetContent = "Learn Ballerina";
     string link = "https://ballerina.io/learn/by-example/introduction/";
 
-    twitter:Tweet|error response = twitterClient->tweet(tweetContent, link);
-    if (response is twitter:Tweet) {
-        log:printInfo("Tweet posted in timeline: " + response);
-    }
+    twitter:Tweet response = check twitterClient->tweet(tweetContent, link);
+    log:printInfo("Tweet posted in timeline: " + response.toString());
 }
