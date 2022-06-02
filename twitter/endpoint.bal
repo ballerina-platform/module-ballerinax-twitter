@@ -292,6 +292,32 @@ public isolated client class  Client {
         return check user.cloneWithType(User);
     }
 
+    # Get a User object by username or handle.
+    #
+    # + handleName - Username or handle of a specific user
+    # + return - If success, returns 'User' object, else returns error
+    @display {label: "Get User's Detail By Username Or Handle"} 
+    isolated remote function getUserByHandle(@display {label: "Username/Handle"} string handleName) 
+                            returns @tainted @display {label: "User"} User|error {
+        http:Request request = new;
+        string resourcePath = GET_USER_ENDPOINT;
+        string encodedValue = check url:encode(handleName, UTF_8);
+        string urlParams = USERNAME + encodedValue + AMBERSAND;
+        string nonce = uuid:createType1AsString();
+        [int, decimal] & readonly currentTime = time:utcNow();
+        string timeStamp = currentTime[0].toString();
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + urlParams;
+
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+            self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        json response = check handleResponse(httpResponse);
+        json[] array = <json[]> response;
+        json user = array[0];
+        return check user.cloneWithType(User);
+    }
+
     # Get a user's followers.
     #
     # + userId - Numerical ID of a specific user
