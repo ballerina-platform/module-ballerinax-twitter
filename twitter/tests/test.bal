@@ -126,10 +126,20 @@ function testGetUserTimeline() returns error? {
 @test:Config {
     dependsOn: [testGetUserTimeline], enable: true
 }
+function testGetUserTweets() returns error? {
+    log:printInfo("testGetUserTweets");
+    Tweet[] tweetResponse = check twitterClient->getUserTweets(screenName);
+    foreach Tweet tweet in tweetResponse {
+        log:printInfo(tweet.toString());
+    }
+}
+
+@test:Config {
+    dependsOn: [testGetUserTweets], enable: true
+}
 function testGetLast10Tweets() returns error? {
     log:printInfo("testGetLast10Tweets");
     Tweet[] tweetResponse = check twitterClient->getLast10Tweets(trimUser=true);
-    test:assertTrue(true, "Failed to call getLast10Tweets()");
     foreach Tweet tweet in tweetResponse {
         log:printInfo(tweet.toString());
     }

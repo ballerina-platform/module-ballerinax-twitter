@@ -403,6 +403,30 @@ public isolated client class  Client {
         return check handleStatusArrayResponse(httpResponse);
     }
 
+    # Get Tweets of a specific handle.
+    # 
+    # + handleName - Handle name of user 
+    # + return - If success, returns array of 'Tweet', else returns error
+    @display {label: "Get Tweets of specific Handle"} 
+    isolated remote function getUserTweets(@display {label: "Handle Name"} string handleName) 
+                                    returns @display {label: "Array Of Tweet"} Tweet[]|error {
+        http:Request request = new;
+
+        string resourcePath = USER_HOME_TIMELINE_ENDPOINT;
+        string encodedValue = check url:encode(handleName, UTF_8);
+        string urlParams = USERNAME + encodedValue + AMBERSAND;
+        string nonce = uuid:createType1AsString();
+        [int, decimal] & readonly currentTime = time:utcNow();
+        string timeStamp = currentTime[0].toString();
+        string oauthString = getOAuthParameters(self.apiKey, self.accessToken, nonce, timeStamp) + urlParams;
+
+        map<string> requestHeaders = check createRequestHeaderMap(request, GET, resourcePath, self.apiKey, self.apiSecret,
+            self.accessToken, self.accessTokenSecret, oauthString, nonce, timeStamp);
+        resourcePath = resourcePath + QUESTION_MARK + urlParams;
+        http:Response httpResponse = check self.twitterClient->get(resourcePath, requestHeaders);
+        return check handleStatusArrayResponse(httpResponse);
+    }
+
     # Get a user's last ten tweets.
     # 
     # + sinceId - Minimum tweet ID 
