@@ -130,7 +130,7 @@ public type User record {
     int id;
     string id_str;
     string name;
-    string screen_name?;
+    string screen_name;
     string location?;
     string description?;
     string? url?;

@@ -28,6 +28,7 @@ configurable string accessTokenSecret = os:getEnv("ACCESS_TOKEN_SECRET");
 int tweetID = 0;
 int replytweetID = 0;
 int userID = 0;
+string screenName = "";
 
 ConnectionConfig twitterConfig = {
     apiKey: apiKey,
@@ -49,6 +50,7 @@ function testTweet() returns error? {
                                              updateTweetOptions);
     tweetID = <@untainted> tweetResponse.id;
     userID = <@untainted> tweetResponse.user.id;
+    screenName = <@untainted> tweetResponse.user.screen_name;
     log:printInfo(tweetResponse.toString());
     test:assertTrue((tweetResponse.id != 0), "Failed to call tweet()");
 }
@@ -122,7 +124,7 @@ function testGetUserTimeline() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testShowStatus], enable: true
+    dependsOn: [testGetUserTimeline], enable: true
 }
 function testGetLast10Tweets() returns error? {
     log:printInfo("testGetLast10Tweets");
@@ -134,12 +136,21 @@ function testGetLast10Tweets() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testGetUserTimeline]
+    dependsOn: [testGetLast10Tweets]
 }
 function testGetUser() returns error? {
     log:printInfo("testGetUser");
     User userResponse = check twitterClient->getUser(userID);
     test:assertEquals(userResponse?.id, userID, "Failed to call getUser()");
+}
+
+@test:Config {
+   dependsOn: [testGetUser]
+}
+function testGetUserByHandle() returns error? {
+    log:printInfo("testGetUserByHandle");
+    User userResponse = check twitterClient->getUserByHandle(screenName);
+    test:assertEquals(userResponse?.screen_name, screenName, "Failed to call getUser()");
 }
 
 @test:Config {}

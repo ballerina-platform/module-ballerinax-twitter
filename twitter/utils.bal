@@ -24,7 +24,7 @@ isolated function handleResponse(http:Response httpResponse) returns @tainted js
     if (httpResponse.statusCode is http:STATUS_OK) {
         return response;
     } else {
-        return response;
+        return error(response.toString());
     }
 }
 
