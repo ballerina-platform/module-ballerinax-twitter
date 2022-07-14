@@ -29,6 +29,7 @@ const string FOLLOWINGS_ENDPOINT = "/1.1/friends/list.json";
 const string GET_USER_ENDPOINT = "/1.1/users/lookup.json";
 const string LIKE_TWEET_ENDPOINT = "/1.1/favorites/create.json";
 const string USER_TIMELINE_ENDPOINT = "/1.1/statuses/home_timeline.json";
+const string USER_HOME_TIMELINE_ENDPOINT = "/1.1/statuses/user_timeline.json";
 
 const string UTF_8 = "UTF-8";
 const string STATUS = "status=";
@@ -37,6 +38,7 @@ const string MEDIA_IDS = "media_ids=";
 const string REPLY_IDS = "in_reply_to_status_id=";
 const string ID = "id=";
 const string USER_ID = "user_id=";
+const string USERNAME = "screen_name=";
 const string LAT = "&lat=";
 const string LONG = "&long=";
 const string COUNT = "count=";

@@ -28,6 +28,7 @@ configurable string accessTokenSecret = os:getEnv("ACCESS_TOKEN_SECRET");
 int tweetID = 0;
 int replytweetID = 0;
 int userID = 0;
+string screenName = "";
 
 ConnectionConfig twitterConfig = {
     apiKey: apiKey,
@@ -39,191 +40,148 @@ ConnectionConfig twitterConfig = {
 Client twitterClient = check new(twitterConfig);
 
 @test:Config {}
-function testTweet() {
+function testTweet() returns error? {
     log:printInfo("testTweet");
     [int, decimal] & readonly currentTime = time:utcNow();
     string currentTimeStamp = currentTime[0].toString();
     string status = "Learn Ballerina " + currentTimeStamp;
     UpdateTweetOptions updateTweetOptions = {};
-    var tweetResponse = twitterClient->tweet(status, "https://ballerina.io/learn/by-example/introduction/",
+    Tweet tweetResponse = check twitterClient->tweet(status, "https://ballerina.io/learn/by-example/introduction/",
                                              updateTweetOptions);
-
-    if (tweetResponse is Tweet) {
-        tweetID = <@untainted> tweetResponse.id;
-        userID = <@untainted> tweetResponse.user.id;
-        log:printInfo(tweetResponse.toString());
-        test:assertTrue((tweetResponse.id != 0), "Failed to call tweet()");
-    } else {
-        test:assertFail(tweetResponse.message());
-    }
+    tweetID = <@untainted> tweetResponse.id;
+    userID = <@untainted> tweetResponse.user.id;
+    screenName = <@untainted> tweetResponse.user.screen_name;
+    log:printInfo(tweetResponse.toString());
+    test:assertTrue((tweetResponse.id != 0), "Failed to call tweet()");
 }
 
 @test:Config {
     dependsOn: [testTweet]
 }
-function testReplyTweet() {
+function testReplyTweet() returns error? {
     log:printInfo("testReplyTweet");
     [int, decimal] & readonly currentTime = time:utcNow();
     string currentTimeStamp = currentTime[0].toString();
     string status = "Reply Learn Ballerina " + currentTimeStamp;
-    var tweetResponse = twitterClient->replyTweet(status, tweetID);
-
-    if (tweetResponse is Tweet) {
-        replytweetID = <@untainted> tweetResponse.id;
-        log:printInfo(tweetResponse.toString());
-        test:assertTrue(regex:matches(tweetResponse.text, status), "Failed to call replyTweet()");
-    } else {
-        test:assertFail(tweetResponse.message());
-    }
+    Tweet tweetResponse = check twitterClient->replyTweet(status, tweetID);
+    replytweetID = <@untainted> tweetResponse.id;
+    log:printInfo(tweetResponse.toString());
+    test:assertTrue(regex:matches(tweetResponse.text, status), "Failed to call replyTweet()");
 }
 
 @test:Config {
     dependsOn: [testReplyTweet]
 }
-function testReTweet() {
+function testReTweet() returns error? {
     log:printInfo("testReTweet");
-    var tweetResponse = twitterClient->retweet(tweetID);
-
-    if (tweetResponse is Tweet) {
-        var retweetStatus = tweetResponse?.retweeted;
-        if (retweetStatus is boolean) {
-            log:printInfo(tweetResponse.toString());
-            test:assertTrue(retweetStatus, "Failed to call retweet()");
-        } else {
-            test:assertFail("Tweet is not retweeted");
-        }
+    Tweet tweetResponse = check twitterClient->retweet(tweetID);
+    boolean? retweetStatus = tweetResponse?.retweeted;
+    if (retweetStatus is boolean) {
+        log:printInfo(tweetResponse.toString());
+        test:assertTrue(retweetStatus, "Failed to call retweet()");
     } else {
-        test:assertFail(tweetResponse.message());
+        test:assertFail("Tweet is not retweeted");
     }
 }
 
 @test:Config {
     dependsOn: [testReTweet]
 }
-function testDeleteReTweet() {
+function testDeleteReTweet() returns error? {
     log:printInfo("testDeleteReTweet");
-    var tweetResponse = twitterClient->deleteRetweet(tweetID);
-
-    if (tweetResponse is Tweet) {
-        test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteRetweet()");
-    } else {
-        test:assertFail(tweetResponse.message());
-    }
+    Tweet tweetResponse = check twitterClient->deleteRetweet(tweetID);
+    test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteRetweet()");
 }
 
 @test:Config {}
-function testSearch() {
+function testSearch() returns error? {
     log:printInfo("testSearch");
     string queryStr = "SriLanka";
     SearchOptions request = {
         count: 10
     };
-    var tweetResponse = twitterClient->search(queryStr, request);
-
-    if (tweetResponse is error) {
-        test:assertFail(tweetResponse.message());
-    } else {
-        test:assertTrue(tweetResponse.length() > 0, "Failed to call search()");
-    }
+    Tweet[] tweetResponse = check twitterClient->search(queryStr, request);
+    test:assertTrue(tweetResponse.length() > 0, "Failed to call search()");
 }
 
 @test:Config {
     dependsOn: [testSearch]
 }
-function testShowStatus() {
+function testShowStatus() returns error? {
     log:printInfo("testShowStatus");
-    var tweetResponse = twitterClient->showStatus(tweetID);
-
-    if (tweetResponse is Tweet) {
-        log:printInfo(tweetResponse.toString());
-        test:assertEquals(tweetResponse.id, tweetID, "Failed to call showStatus()");
-    } else {
-        test:assertFail(tweetResponse.message());
-    }
+    Tweet tweetResponse = check twitterClient->showStatus(tweetID);
+    log:printInfo(tweetResponse.toString());
+    test:assertEquals(tweetResponse.id, tweetID, "Failed to call showStatus()");
 }
 
 @test:Config {
     dependsOn: [testShowStatus]
 }
-function testGetUserTimeline() {
+function testGetUserTimeline() returns error? {
     log:printInfo("testGetUserTimeline");
-    var tweetResponse = twitterClient->getUserTimeline(5);
+    Tweet[] tweetResponse = check twitterClient->getUserTimeline(5);
+    log:printInfo(tweetResponse.toString());
+}
 
-    if (tweetResponse is Tweet[]) {
-        test:assertTrue(true, "Failed to call getHomeTimeline()");
-    } else {
-        test:assertFail(tweetResponse.message());
+@test:Config {
+    dependsOn: [testGetUserTimeline], enable: true
+}
+function testGetUserTweets() returns error? {
+    log:printInfo("testGetUserTweets");
+    Tweet[] tweetResponse = check twitterClient->getUserTweets(screenName);
+    foreach Tweet tweet in tweetResponse {
+        log:printInfo(tweet.toString());
     }
 }
 
 @test:Config {
-    dependsOn: [testShowStatus], enable: true
+    dependsOn: [testGetUserTweets], enable: true
 }
-function testGetLast10Tweets() {
+function testGetLast10Tweets() returns error? {
     log:printInfo("testGetLast10Tweets");
-    var tweetResponse = twitterClient->getLast10Tweets(trimUser=true);
-
-    if (tweetResponse is Tweet[]) {
-        test:assertTrue(true, "Failed to call getLast10Tweets()");
-        foreach var tweet in tweetResponse {
-            log:printInfo(tweet.toString());
-        }
-    } else {
-        test:assertFail(tweetResponse.message());
+    Tweet[] tweetResponse = check twitterClient->getLast10Tweets(trimUser=true);
+    foreach Tweet tweet in tweetResponse {
+        log:printInfo(tweet.toString());
     }
 }
 
 @test:Config {
-    dependsOn: [testGetUserTimeline]
+    dependsOn: [testGetLast10Tweets]
 }
-function testGetUser() {
+function testGetUser() returns error? {
     log:printInfo("testGetUser");
-    var userResponse = twitterClient->getUser(userID);
+    User userResponse = check twitterClient->getUser(userID);
+    test:assertEquals(userResponse?.id, userID, "Failed to call getUser()");
+}
 
-    if (userResponse is User) {
-        test:assertEquals(userResponse?.id, userID, "Failed to call getUser()");
-    } else {
-        test:assertFail(userResponse.message());
-    }
+@test:Config {
+   dependsOn: [testGetUser]
+}
+function testGetUserByHandle() returns error? {
+    log:printInfo("testGetUserByHandle");
+    User userResponse = check twitterClient->getUserByHandle(screenName);
+    test:assertEquals(userResponse?.screen_name, screenName, "Failed to call getUser()");
 }
 
 @test:Config {}
-function testGetFollowers() {
+function testGetFollowers() returns error? {
     log:printInfo("testGetFollowers");
-    var userResponse = twitterClient->getFollowers(userID);
-
-    if (userResponse is error) {
-        test:assertFail(userResponse.message());
-    } else {
-        test:assertTrue(true, "Failed to call getFollowers()");
-    }
+    User[] followers = check twitterClient->getFollowers(userID);
+    log:printInfo(followers.toString());
 }
 
 @test:Config {}
-function testGetFollowing() {
+function testGetFollowing() returns error? {
     log:printInfo("testGetFollowing");
-    var userResponse = twitterClient->getFollowing(userID);
-
-    if (userResponse is error) {
-        test:assertFail(userResponse.message());
-    } else {
-        test:assertTrue(true, "Failed to call getFollowing()");
-    }
+    User[] following = check twitterClient->getFollowing(userID);
+    log:printInfo(following.toString());
 }
 
 @test:AfterSuite { }
-function afterSuite() {
-    var tweetResponse = twitterClient->deleteTweet(tweetID);
-    if (tweetResponse is Tweet) {
-        test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteTweet()");
-    } else {
-        test:assertFail(tweetResponse.message());
-    }
+function afterSuite() returns error? {
+    Tweet tweetResponse = check twitterClient->deleteTweet(tweetID);
+    test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteTweet()");
 
-    var retweetDeleteResponse = twitterClient->deleteTweet(replytweetID);
-    if (retweetDeleteResponse is Tweet) {
-        test:assertTrue(true, msg = "Delete Retweet Failed");
-    } else {
-        test:assertFail(msg = retweetDeleteResponse.message());
-    }
+    Tweet retweetDeleteResponse = check twitterClient->deleteTweet(replytweetID);
+    log:printInfo(retweetDeleteResponse.toString());
 }

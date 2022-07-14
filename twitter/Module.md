@@ -37,14 +37,10 @@ twitter:Client twitterClient = check new(twitterConfig);
 1. You can post a tweet as follows with `tweet` method by passing content as a parameter. 
 
     ```ballerina
-    public function main() {
+    public function main() returns error? {
         string tweetContent = "Sample tweet";
-        var result = twitterClient->tweet(tweetContent);
-        if (result is twitter:Tweet) {
-            io:println("Tweet: ", result.toString());
-        } else {
-            io:println("Error: ", result.toString());
-        }
+        twitter:Tweet result = check twitterClient->tweet(tweetContent);
+        io:println("Tweet: " + result.toString());
     }
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
