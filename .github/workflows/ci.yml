@@ -5,12 +5,14 @@ on:
     branches-ignore:
       - "automated/dependency_version_update"
       - "automated/dependency_version_update_tmp"
+  repository_dispatch:
+    types:
+      check_connector_for_breaking_changes
 
 jobs:
     build:
 
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v3
             - name: Set up JDK 11
@@ -56,10 +58,27 @@ jobs:
                 content="${content//$'\n'/'%0A'}"
                 content="${content//$'\r'/'%0D'}"
                 echo "::set-output name=testResultsJson::$content"
-
             # Print the code coverage information
             - name: Code Coverage
               run: |
+                echo "Code Coverage Percentage : ${{fromJson(steps.test_results.outputs.testResultsJson).coveragePercentage}}"
                 echo "Covered Code Lines : ${{fromJson(steps.test_results.outputs.testResultsJson).coveredLines}}"
                 echo "Total Code Lines : $(expr ${{fromJson(steps.test_results.outputs.testResultsJson).missedLines}} + ${{fromJson(steps.test_results.outputs.testResultsJson).coveredLines}})"
                 echo "Code Coverage Percentage : ${{fromJson(steps.test_results.outputs.testResultsJson).coveragePercentage}}"     
+
+            - name: Alert notifier on failure
+              if: failure() && (github.event.action == 'check_connector_for_breaking_changes')
+              run: |
+                curl -X POST \
+                'https://api.github.com/repos/ballerina-platform/ballerina-release/dispatches' \
+                --header 'Accept: application/vnd.github.v3+json' \
+                --header 'Authorization: Bearer ${{ secrets.BALLERINA_BOT_TOKEN }}' \
+                --data-raw '{
+                  "event_type": "notify-ballerinax-connector-build-failure",
+                  "client_payload": {
+                    "repoName": "module-ballerinax-twitter",
+                    "workflow": "CI"
+                  }
+                }'
+
+                
