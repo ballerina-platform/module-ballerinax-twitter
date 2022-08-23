@@ -18,12 +18,16 @@
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     # API Key for Twitter
+    @display {label: "API Key"}
     string apiKey;
     # API Secret for Twitter
+    @display {label: "API Secret"}
     string apiSecret;
     # Access token  for Twitter
+    @display {label: "Access Token"}
     string accessToken;
     # Access token secret for Twitter
+    @display {label: "Access Token Secret"}
     string accessTokenSecret;
     # The HTTP version understood by the client
     HttpVersion httpVersion = HTTP_V2_0;
