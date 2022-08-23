@@ -40,16 +40,31 @@ public isolated client class  Client {
     # Initializes the connector. During initialization you have to pass API credentials.
     # Create a [Twitter Developer Account](https://developer.twitter.com/en/apply-for-access) and obtain credentials following [this guide](https://developer.twitter.com/en/docs/authentication/oauth-1-0a). 
     #
-    # + twitterConfig - Configuration for the connector
+    # + config - Configuration for the connector
     # + httpConfig - HTTP configuration
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized 
-    public isolated function init(ConnectionConfig twitterConfig, http:ClientConfiguration httpConfig = {}) 
-                                  returns error? {
-        self.twitterClient = check new(TWITTER_API_URL, httpConfig);
-        self.apiKey = twitterConfig.apiKey;
-        self.apiSecret = twitterConfig.apiSecret;
-        self.accessToken = twitterConfig.accessToken;
-        self.accessTokenSecret = twitterConfig.accessTokenSecret;
+    public isolated function init(ConnectionConfig config)  returns error? {
+        self.apiKey = config.apiKey;
+        self.apiSecret = config.apiSecret;
+        self.accessToken = config.accessToken;
+        self.accessTokenSecret = config.accessTokenSecret;
+        http:ClientConfiguration httpClientConfig = {
+            httpVersion: config.httpVersion,
+            http1Settings: config.http1Settings,
+            http2Settings: config.http2Settings,
+            timeout: config.timeout,
+            forwarded: config.forwarded,
+            poolConfig: config.poolConfig,
+            cache: config.cache,
+            compression: config.compression,
+            circuitBreaker: config.circuitBreaker,
+            retryConfig: config.retryConfig,
+            responseLimits: config.responseLimits,
+            secureSocket: config.secureSocket,
+            proxy: config.proxy,
+            validation: config.validation
+        };
+        self.twitterClient = check new(TWITTER_API_URL, httpClientConfig);
     }
 
     # Update the user's Tweet.
@@ -458,21 +473,3 @@ public isolated client class  Client {
         return check handleStatusArrayResponse(httpResponse);
     }
 }
-
-# Twitter configuration
-#
-# + apiKey - Api Key
-# + apiSecret - Api Secret
-# + accessToken - Access token
-# + accessTokenSecret - Access token secret
-@display{label: "Connection Config"} 
-public type ConnectionConfig record {
-    @display {label: "API Key"}
-    string apiKey;
-    @display {label: "API Secret"}
-    string apiSecret;
-    @display {label: "Access Token"}
-    string accessToken;
-    @display {label: "Access Token Secret"}
-    string accessTokenSecret;
-};
