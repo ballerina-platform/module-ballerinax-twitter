@@ -50,7 +50,7 @@ public isolated client class  Client {
         self.accessTokenSecret = config.accessTokenSecret;
         http:ClientConfiguration httpClientConfig = {
             httpVersion: config.httpVersion,
-            http1Settings: config.http1Settings,
+            http1Settings: {...config.http1Settings},
             http2Settings: config.http2Settings,
             timeout: config.timeout,
             forwarded: config.forwarded,
