@@ -191,7 +191,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "log"
-version = "2.4.0"
+version = "2.4.1"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -316,8 +316,20 @@ modules = [
 
 [[package]]
 org = "ballerinax"
+name = "client.config"
+version = "1.0.1"
+dependencies = [
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "oauth2"}
+]
+modules = [
+	{org = "ballerinax", packageName = "client.config", moduleName = "client.config"}
+]
+
+[[package]]
+org = "ballerinax"
 name = "twitter"
-version = "2.3.0"
+version = "3.0.0"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "http"},
@@ -328,7 +340,8 @@ dependencies = [
 	{org = "ballerina", name = "test"},
 	{org = "ballerina", name = "time"},
 	{org = "ballerina", name = "url"},
-	{org = "ballerina", name = "uuid"}
+	{org = "ballerina", name = "uuid"},
+	{org = "ballerinax", name = "client.config"}
 ]
 modules = [
 	{org = "ballerinax", packageName = "twitter", moduleName = "twitter"},
