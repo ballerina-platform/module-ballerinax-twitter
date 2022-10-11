@@ -14,6 +14,35 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerinax/'client.config;
+
+# Client configuration details.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    *config:ConnectionConfig;
+    never auth?;
+    # API Key for Twitter
+    string apiKey;
+    # API Secret for Twitter
+    @display {
+        label: "",
+        kind: "password"
+    }
+    string apiSecret;
+    # Access token  for Twitter
+    @display {
+        label: "",
+        kind: "password"
+    }
+    string accessToken;
+    # Access token secret for Twitter
+    @display {
+        label: "",
+        kind: "password"
+    }
+    string accessTokenSecret;
+|};
+
 # Define a Tweet.
 # 
 # + created_at - Created time of the status

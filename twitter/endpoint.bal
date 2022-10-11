@@ -18,6 +18,7 @@ import ballerina/http;
 import ballerina/time;
 import ballerina/url;
 import ballerina/uuid;
+import ballerinax/'client.config;
 
 # Ballerina Twitter connector provides the capability to access Twitter API.
 # This connector lets you to perform operations related to Tweets and users.
@@ -48,22 +49,7 @@ public isolated client class  Client {
         self.apiSecret = config.apiSecret;
         self.accessToken = config.accessToken;
         self.accessTokenSecret = config.accessTokenSecret;
-        http:ClientConfiguration httpClientConfig = {
-            httpVersion: config.httpVersion,
-            http1Settings: {...config.http1Settings},
-            http2Settings: config.http2Settings,
-            timeout: config.timeout,
-            forwarded: config.forwarded,
-            poolConfig: config.poolConfig,
-            cache: config.cache,
-            compression: config.compression,
-            circuitBreaker: config.circuitBreaker,
-            retryConfig: config.retryConfig,
-            responseLimits: config.responseLimits,
-            secureSocket: config.secureSocket,
-            proxy: config.proxy,
-            validation: config.validation
-        };
+        http:ClientConfiguration httpClientConfig = check config:constructHTTPClientConfig(config);
         self.twitterClient = check new(TWITTER_API_URL, httpClientConfig);
     }
 
