@@ -66,7 +66,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "http"
-version = "2.5.0"
+version = "2.5.2"
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "cache"},
@@ -201,7 +201,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "log"
-version = "2.5.0"
+version = "2.5.1"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -215,7 +215,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "mime"
-version = "2.5.0"
+version = "2.5.1"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -237,7 +237,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.5"
+version = "1.0.6"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -257,7 +257,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "regex"
-version = "1.3.1"
+version = "1.3.2"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.string"}
@@ -339,7 +339,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "twitter"
-version = "3.0.0"
+version = "3.1.0"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "http"},
