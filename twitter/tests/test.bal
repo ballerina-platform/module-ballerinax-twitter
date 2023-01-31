@@ -85,7 +85,7 @@ function testReTweet() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testReTweet]
+    dependsOn: [testReTweet, testShowStatus]
 }
 function testDeleteReTweet() returns error? {
     log:printInfo("testDeleteReTweet");
@@ -105,7 +105,7 @@ function testSearch() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testSearch]
+    dependsOn: [testSearch, testTweet]
 }
 function testShowStatus() returns error? {
     log:printInfo("testShowStatus");
@@ -146,7 +146,7 @@ function testGetLast10Tweets() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testGetLast10Tweets]
+    dependsOn: [testGetLast10Tweets, testTweet]
 }
 function testGetUser() returns error? {
     log:printInfo("testGetUser");
@@ -163,14 +163,18 @@ function testGetUserByHandle() returns error? {
     test:assertEquals(userResponse?.screen_name, screenName, "Failed to call getUser()");
 }
 
-@test:Config {}
+@test:Config {
+   dependsOn: [testTweet]
+}
 function testGetFollowers() returns error? {
     log:printInfo("testGetFollowers");
     User[] followers = check twitterClient->getFollowers(userID);
     log:printInfo(followers.toString());
 }
 
-@test:Config {}
+@test:Config {
+   dependsOn: [testTweet]
+}
 function testGetFollowing() returns error? {
     log:printInfo("testGetFollowing");
     User[] following = check twitterClient->getFollowing(userID);
