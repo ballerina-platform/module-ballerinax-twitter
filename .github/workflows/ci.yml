@@ -30,13 +30,13 @@ jobs:
               run: |
                   ./gradlew build
             - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@nightly
+              uses: ballerina-platform/ballerina-action/@2201.4.1
               with:
                   args: pack ./twitter
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
             - name: Ballerina Test
-              uses: ballerina-platform/ballerina-action/@nightly
+              uses: ballerina-platform/ballerina-action/@2201.4.1
               with:
                   args: test --code-coverage ./twitter
               env:
