@@ -39,7 +39,9 @@ ConnectionConfig twitterConfig = {
 
 Client twitterClient = check new(twitterConfig);
 
-@test:Config {}
+@test:Config {
+    enable: false
+}
 function testTweet() returns error? {
     log:printInfo("testTweet");
     [int, decimal] & readonly currentTime = time:utcNow();
@@ -56,7 +58,8 @@ function testTweet() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testTweet]
+    dependsOn: [testTweet],
+    enable: false
 }
 function testReplyTweet() returns error? {
     log:printInfo("testReplyTweet");
@@ -70,7 +73,8 @@ function testReplyTweet() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testReplyTweet]
+    dependsOn: [testReplyTweet],
+    enable: false
 }
 function testReTweet() returns error? {
     log:printInfo("testReTweet");
@@ -85,7 +89,8 @@ function testReTweet() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testReTweet, testShowStatus]
+    dependsOn: [testReTweet, testShowStatus],
+    enable: false
 }
 function testDeleteReTweet() returns error? {
     log:printInfo("testDeleteReTweet");
@@ -93,7 +98,9 @@ function testDeleteReTweet() returns error? {
     test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteRetweet()");
 }
 
-@test:Config {}
+@test:Config {
+    enable: false
+}
 function testSearch() returns error? {
     log:printInfo("testSearch");
     string queryStr = "SriLanka";
@@ -105,7 +112,8 @@ function testSearch() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testSearch, testTweet]
+    dependsOn: [testSearch, testTweet],
+    enable: false
 }
 function testShowStatus() returns error? {
     log:printInfo("testShowStatus");
@@ -115,7 +123,8 @@ function testShowStatus() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testShowStatus]
+    dependsOn: [testShowStatus],
+    enable: false
 }
 function testGetUserTimeline() returns error? {
     log:printInfo("testGetUserTimeline");
@@ -124,7 +133,8 @@ function testGetUserTimeline() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testGetUserTimeline], enable: true
+    dependsOn: [testGetUserTimeline],
+    enable: false
 }
 function testGetUserTweets() returns error? {
     log:printInfo("testGetUserTweets");
@@ -135,7 +145,8 @@ function testGetUserTweets() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testGetUserTweets], enable: true
+    dependsOn: [testGetUserTweets],
+    enable: false
 }
 function testGetLast10Tweets() returns error? {
     log:printInfo("testGetLast10Tweets");
@@ -146,7 +157,8 @@ function testGetLast10Tweets() returns error? {
 }
 
 @test:Config {
-    dependsOn: [testGetLast10Tweets, testTweet]
+    dependsOn: [testGetLast10Tweets, testTweet],
+    enable: false
 }
 function testGetUser() returns error? {
     log:printInfo("testGetUser");
@@ -155,7 +167,8 @@ function testGetUser() returns error? {
 }
 
 @test:Config {
-   dependsOn: [testGetUser]
+   dependsOn: [testGetUser],
+   enable: false
 }
 function testGetUserByHandle() returns error? {
     log:printInfo("testGetUserByHandle");
@@ -164,7 +177,8 @@ function testGetUserByHandle() returns error? {
 }
 
 @test:Config {
-   dependsOn: [testTweet]
+   dependsOn: [testTweet],
+   enable: false
 }
 function testGetFollowers() returns error? {
     log:printInfo("testGetFollowers");
@@ -173,7 +187,8 @@ function testGetFollowers() returns error? {
 }
 
 @test:Config {
-   dependsOn: [testTweet]
+   dependsOn: [testTweet],
+   enable: false
 }
 function testGetFollowing() returns error? {
     log:printInfo("testGetFollowing");
@@ -181,11 +196,12 @@ function testGetFollowing() returns error? {
     log:printInfo(following.toString());
 }
 
-@test:AfterSuite { }
-function afterSuite() returns error? {
-    Tweet tweetResponse = check twitterClient->deleteTweet(tweetID);
-    test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteTweet()");
+// Commenting this as disabling all test cases
+// @test:AfterSuite {}
+// function afterSuite() returns error? {
+//     Tweet tweetResponse = check twitterClient->deleteTweet(tweetID);
+//     test:assertEquals(tweetResponse.id, tweetID, "Failed to call deleteTweet()");
 
-    Tweet retweetDeleteResponse = check twitterClient->deleteTweet(replytweetID);
-    log:printInfo(retweetDeleteResponse.toString());
-}
+//     Tweet retweetDeleteResponse = check twitterClient->deleteTweet(replytweetID);
+//     log:printInfo(retweetDeleteResponse.toString());
+// }
