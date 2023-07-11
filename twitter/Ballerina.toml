@@ -1,10 +1,10 @@
 [package]
-distribution = "2201.3.1"
+distribution = "2201.7.0"
 org = "ballerinax"
 name = "twitter"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-version= "3.1.0"
+version= "3.3.0"
 export= ["twitter", "twitter.listener"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
@@ -13,8 +13,11 @@ icon = "icon.png"
 [build-options]
 observability-included=true
 
+[platform.java11]
+graalvmCompatible = true
+
 [[platform.java11.dependency]]
-path = "../java-wrapper/build/libs/java-wrapper-2.3.1.jar"
+path = "../java-wrapper/build/libs/java-wrapper-3.3.0.jar"
 groupId = "org.ballerinalang.twitter"
 artifactId = "java-wrapper"
-version = "2.3.1"
+version = "3.3.0"
