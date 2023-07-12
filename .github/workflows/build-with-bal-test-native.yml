@@ -49,7 +49,7 @@ jobs:
                 version: latest
 
             - name: Run Ballerina tests using the native executable
-              run: bal test --native ./twitter
+              run: bal test --graalvm ./twitter
               env:
                 JAVA_HOME: /usr/lib/jvm/default-jvm
                 API_KEY: ${{ secrets.API_KEY }}
