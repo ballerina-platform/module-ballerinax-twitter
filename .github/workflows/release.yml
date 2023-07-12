@@ -25,14 +25,14 @@ jobs:
               run: |
                   ./gradlew build
             - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@2201.3.1
+              uses: ballerina-platform/ballerina-action/@2201.7.0
               with:
                   args: pack ./twitter
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
 
             - name: Ballerina Push
-              uses: ballerina-platform/ballerina-action/@2201.3.1
+              uses: ballerina-platform/ballerina-action/@2201.7.0
               with:
                   args: push
               env:
