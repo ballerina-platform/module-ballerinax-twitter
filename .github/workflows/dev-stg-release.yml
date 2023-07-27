@@ -31,6 +31,7 @@ jobs:
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
               run: |
                   ./gradlew build
+
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@2201.7.0
               with:
@@ -38,6 +39,15 @@ jobs:
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
 
+            - name: Run Trivy vulnerability scanner
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'rootfs'
+                scan-ref: '.'
+                format: 'table'
+                timeout: '10m0s'
+                exit-code: '1'
+              
             - name: Push to Staging
               if: github.event.inputs.bal_central_environment == 'STAGE'
               uses: ballerina-platform/ballerina-action/@2201.7.0
