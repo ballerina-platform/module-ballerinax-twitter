@@ -24,12 +24,22 @@ jobs:
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
               run: |
                   ./gradlew build
+
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@2201.7.0
               with:
                   args: pack ./twitter
               env:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
+
+            - name: Run Trivy vulnerability scanner
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'rootfs'
+                scan-ref: '.'
+                format: 'table'
+                timeout: '10m0s'
+                exit-code: '1'
 
             - name: Ballerina Push
               uses: ballerina-platform/ballerina-action/@2201.7.0
