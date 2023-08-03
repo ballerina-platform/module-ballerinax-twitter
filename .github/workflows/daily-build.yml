@@ -52,7 +52,7 @@ jobs:
               uses: ballerina-platform/ballerina-action/@nightly
               with:
                   args:
-                      test --test-report --code-coverage --coverage-format=xml --code-coverage ./twitter
+                      test --test-report --code-coverage --coverage-format=xml ./twitter
               env:
                 JAVA_HOME: /usr/lib/jvm/default-jvm
                 API_KEY: ${{ secrets.API_KEY }}
