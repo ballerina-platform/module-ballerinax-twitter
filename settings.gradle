@@ -7,6 +7,26 @@
  * in the user manual at https://docs.gradle.org/6.5.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'module-ballerinax-twitter'
-include ':twitter', ':java-wrapper'
+plugins {
+    id "com.gradle.enterprise" version "3.2"
+}
 
+def projectName = 'twitter'
+rootProject.name = "ballerinax-${projectName}"
+
+include ":checkstyle"
+include ":${projectName}-native"
+include ":${projectName}-ballerina"
+include ":${projectName}-examples"
+
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
+project(":${projectName}-native").projectDir = file('native')
+project(":${projectName}-ballerina").projectDir = file('ballerina')
+project(":${projectName}-examples").projectDir = file('examples')
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
