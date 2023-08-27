@@ -4,7 +4,7 @@ org = "ballerinax"
 name = "twitter"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-version= "3.3.0"
+version = "@toml.version@"
 export= ["twitter", "twitter.listener"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
@@ -17,7 +17,7 @@ observability-included=true
 graalvmCompatible = true
 
 [[platform.java11.dependency]]
-path = "../java-wrapper/build/libs/java-wrapper-3.3.0.jar"
+path = "../native/build/libs/twitter-native-@project.version@.jar"
 groupId = "org.ballerinalang.twitter"
 artifactId = "java-wrapper"
-version = "3.3.0"
+version = "@project.version@"

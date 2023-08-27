@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+    // Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,11 @@ public function main() returns error? {
 
     twitter:Client twitterClient = check new (configuration);
 
-    twitter:User[] followers = check twitterClient->getFollowers(<USER_ID>);
-    log:printInfo("Followers: " + followers.toString());
+    string tweetContent = "Retweet";
+
+    // Set the Tweet ID
+    int TWEET_ID = 0;
+
+    twitter:Tweet response = check twitterClient->retweet(TWEET_ID);
+    log:printInfo("Retweeted a Tweet : " + response.toString());
 }

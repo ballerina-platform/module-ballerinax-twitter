@@ -34,8 +34,9 @@ public function main() returns error? {
 
     twitter:Client twitterClient = check new (configuration);
 
-    string tweetContent = "Retweet";
+    // Set the User ID
+    int USER_ID = 0;
 
-    twitter:Tweet response = check twitterClient->retweet(<TWEET_ID>);
-    log:printInfo("Retweeted a Tweet : " + response.toString());
+    twitter:User[] followers = check twitterClient->getFollowers(USER_ID);
+    log:printInfo("Followers: " + followers.toString());
 }

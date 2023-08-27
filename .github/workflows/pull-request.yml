@@ -1,49 +1,57 @@
-name: Pull_Request
+name: Pull Request
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
-            - name: Set up JDK 11
-              uses: actions/setup-java@v3
-              with:
-                  distribution: 'zulu'
-                  java-version: 11
-            - name: Grant execute permission for gradlew
-              run: chmod +x gradlew
-            - name: Build with Gradle
-              env:
-                  packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
-                  packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
-                  JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-              run: |
-                  ./gradlew build
-            - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@nightly
-              with:
-                  args: pack ./twitter
-              env:
-                  JAVA_HOME: /usr/lib/jvm/default-jvm
+    steps:
+      - uses: actions/checkout@v2
 
-            - name: Ballerina Tests
-              # tests will be skipped if the PR is from a forked repository (as the secrets are not available)
-              if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-              uses: ballerina-platform/ballerina-action/@nightly
-              with:
-                  args: test --test-report --code-coverage --coverage-format=xml ./twitter
-              env:
-                  JAVA_HOME: /usr/lib/jvm/default-jvm
-                  API_KEY: ${{ secrets.API_KEY }}
-                  API_SECRET: ${{ secrets.API_SECRET }}
-                  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-                  ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-                  DEV_ENVIRONMENT_NAME: ${{ secrets.DEV_ENVIRONMENT_NAME }}
-                  CALLBACK_URL: ${{ secrets.CALLBACK_URL }}
-                  PORT: ${{ secrets.PORT }}
+      # Set up Java Environment
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
-            - name: Upload coverage reports to Codecov
-              uses: codecov/codecov-action@v3
+      # Setup Ballerina Environment
+      - name: Set Up Ballerina
+        uses: ballerina-platform/setup-ballerina@v1.1.0
+        with:
+          version: latest
+
+      # Grant execute permission to the gradlew script
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Build the project with Gradle
+      - name: Build with Gradle
+        env:
+          packageUser: ${{ github.actor }}
+          packagePAT: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+        run: |
+          ./gradlew build -x test
+
+      # Build Ballerina Project
+      - name: Ballerina Build
+        run: bal pack ./ballerina
+        env:
+          JAVA_HOME: /usr/lib/jvm/default-jvm
+
+      # Test Ballerina Project
+      - name: Ballerina Test
+        run: bal test --test-report --code-coverage --coverage-format=xml ./ballerina
+        env:
+          JAVA_HOME: /usr/lib/jvm/default-jvm
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          DEV_ENVIRONMENT_NAME: ${{ secrets.DEV_ENVIRONMENT_NAME }}
+          CALLBACK_URL: ${{ secrets.CALLBACK_URL }}
+          PORT: ${{ secrets.PORT }}
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3

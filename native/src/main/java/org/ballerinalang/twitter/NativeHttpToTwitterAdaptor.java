@@ -32,10 +32,12 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
+/**
+ * This class provides utility methods for interacting with Twitter services.
+ */
 public class NativeHttpToTwitterAdaptor {
     public static final String SERVICE_OBJECT = "TWITTER_SERVICE_OBJECT";
 
