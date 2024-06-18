@@ -1,8 +1,13 @@
 [package]
+distribution = "2201.8.6"
 org = "ballerinax"
 name = "twitter"
 version = "0.1.0"
-distribution = "2201.8.6"
+license = ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["test-keywords"]
+icon = "icon.png"
+repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 
 [build-options]
 observabilityIncluded = true
