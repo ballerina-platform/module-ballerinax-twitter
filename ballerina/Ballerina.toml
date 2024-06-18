@@ -5,7 +5,7 @@ name = "twitter"
 version = "0.1.0"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["test-keywords"]
+keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 
