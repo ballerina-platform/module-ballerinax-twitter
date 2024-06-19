@@ -22,7 +22,7 @@ plugins{
     id 'io.ballerina.plugin'
 }
 
-description = 'twitter - Ballerina'
+description = 'Twitter - Ballerina'
 
 def packageName = "twitter"
 def packageOrg = "ballerinax"
