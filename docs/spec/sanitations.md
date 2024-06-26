@@ -7,14 +7,10 @@ _Edition_: Swan Lake
 
 This document records the sanitation done on top of the official OpenAPI specification from Twitter (X). The OpenAPI specification is obtained from the [Twitter OpenAPI Documentation](https://api.twitter.com/2/openapi.json/). These changes are implemented to enhance the overall usability and readability of the generated client.
 
-## Base URL Changes
-
 1. **Change the `url` property of the `servers` object**:
    - **Original**: `https://api.twitter.com`
    - **Updated**: `https://api.twitter.com/2`
    - **Reason**: This change is made to ensure that all API paths are relative to the versioned base URL (`/2`), which improves the consistency and usability of the APIs.
-
-## Function Name Changes
 
 2. **Update API Paths**:
    - **Original**: Paths included the version prefix in each endpoint (e.g., `/2/compliance/jobs`).
