@@ -139,13 +139,13 @@ public type TweetUnviewableSchema record {
     TweetUnviewable public_tweet_unviewable;
 };
 
-# HTTP Status Code.
-@constraint:Int {minValue: 100, maxValue: 599}
-public type HttpStatusCode int;
-
 public type ListUpdateResponse_data record {
     boolean updated?;
 };
+
+# HTTP Status Code.
+@constraint:Int {minValue: 100, maxValue: 599}
+public type HttpStatusCode int;
 
 # Specifies the type of attachments (if any) present in this Tweet.
 public type Tweet_attachments record {
@@ -159,6 +159,9 @@ public type Tweet_attachments record {
     @constraint:Array {minLength: 1}
     PollId[] poll_ids?;
 };
+
+# Tweet label data.
+public type TweetLabelData TweetNoticeSchema|TweetUnviewableSchema;
 
 # Represents the Queries record for the operation: usersIdLikedTweets
 public type UsersIdLikedTweetsQueries record {
@@ -181,9 +184,6 @@ public type UsersIdLikedTweetsQueries record {
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
-
-# Tweet label data.
-public type TweetLabelData TweetNoticeSchema|TweetUnviewableSchema;
 
 public type UserScrubGeoObjectSchema record {
     # Event time.
@@ -485,17 +485,17 @@ public type ListBatchComplianceJobsQueries record {
     "created"|"in_progress"|"failed"|"complete" status?;
 };
 
+public type ListCreateResponse record {
+    ListCreateResponse_data data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
 public type Get2UsersByUsernameUsernameResponse record {
     User data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
     Expansions includes?;
-};
-
-public type ListCreateResponse record {
-    ListCreateResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
 };
 
 public type CreateDmEventResponse record {
@@ -738,21 +738,6 @@ public type Get2TweetsCountsAllResponse record {
     Get2TweetsCountsAllResponse_meta meta?;
 };
 
-# Nonpublic engagement metrics for the Tweet at the time of the request.
-public type Tweet_non_public_metrics record {
-    # Number of times this Tweet has been viewed.
-    int:Signed32 impression_count?;
-};
-
-public type Tweet_referenced_tweets record {
-    TweetId id;
-    "retweeted"|"quoted"|"replied_to" 'type;
-};
-
-# User-provided name for a compliance job.
-@constraint:String {maxLength: 64}
-public type ComplianceJobName string;
-
 # Represents the Queries record for the operation: listIdGet
 public type ListIdGetQueries record {
     # A comma separated list of User fields to display.
@@ -764,8 +749,15 @@ public type ListIdGetQueries record {
     ("owner_id")[] expansions?;
 };
 
-public type TweetDropComplianceSchema record {
-    TweetComplianceSchema drop;
+# Nonpublic engagement metrics for the Tweet at the time of the request.
+public type Tweet_non_public_metrics record {
+    # Number of times this Tweet has been viewed.
+    int:Signed32 impression_count?;
+};
+
+public type Tweet_referenced_tweets record {
+    TweetId id;
+    "retweeted"|"quoted"|"replied_to" 'type;
 };
 
 # The sum of results returned in this response.
@@ -778,6 +770,14 @@ public type Get2DmConversationsWithParticipantIdDmEventsResponse record {
     Problem[] errors?;
     Expansions includes?;
     Get2DmConversationsIdDmEventsResponse_meta meta?;
+};
+
+# User-provided name for a compliance job.
+@constraint:String {maxLength: 64}
+public type ComplianceJobName string;
+
+public type TweetDropComplianceSchema record {
+    TweetComplianceSchema drop;
 };
 
 public type ListUpdateRequest record {
@@ -905,13 +905,13 @@ public type DeleteDmResponse record {
     Problem[] errors?;
 };
 
-# Participants for the DM Conversation.
-@constraint:Array {maxLength: 49, minLength: 2}
-public type DmParticipants UserId[];
-
 # The ID of the client application
 @constraint:String {maxLength: 19, minLength: 1}
 public type ClientAppId string;
+
+# Participants for the DM Conversation.
+@constraint:Array {maxLength: 49, minLength: 2}
+public type DmParticipants UserId[];
 
 # The unique identifier of this Like.
 @constraint:String {pattern: re `^[A-Za-z0-9_]{1,40}$`}
@@ -947,14 +947,14 @@ public type TweetWithheldComplianceSchema record {
 # URL from which the user will retrieve their compliance results.
 public type DownloadUrl string;
 
-@constraint:String {maxLength: 25, minLength: 1}
-public type TweetCreateRequest_pollOptionsItemsString string;
-
 # A user-provided stream filtering rule.
 public type RuleNoId record {
     RuleTag tag?;
     RuleValue value;
 };
+
+@constraint:String {maxLength: 25, minLength: 1}
+public type TweetCreateRequest_pollOptionsItemsString string;
 
 public type UserProfileModificationObjectSchema record {
     # Event time.
@@ -1030,6 +1030,14 @@ public type UnlikeComplianceSchema_favorite record {
     UserId user_id;
 };
 
+# The end time of the bucket.
+public type End string;
+
+public type FilteredStreamingTweetResponse_matching_rules record {
+    RuleId id;
+    RuleTag tag?;
+};
+
 # A count of user-provided stream filtering rules at the application and project levels.
 public type RulesCount record {
     AllProjectClientApps all_project_client_apps?;
@@ -1049,14 +1057,6 @@ public type Get2TweetsIdRetweetsResponse record {
     Problem[] errors?;
     Expansions includes?;
     Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# The end time of the bucket.
-public type End string;
-
-public type FilteredStreamingTweetResponse_matching_rules record {
-    RuleId id;
-    RuleTag tag?;
 };
 
 public type MuteUserRequest record {
@@ -1155,6 +1155,11 @@ public type TweetHideRequest record {
 
 public type AddOrDeleteRulesRequest AddRulesRequest|DeleteRulesRequest;
 
+public type RulesLookupResponse record {
+    Rule[] data?;
+    RulesResponseMetadata meta;
+};
+
 # Represents the Queries record for the operation: spaceBuyers
 public type SpaceBuyersQueries record {
     # A comma separated list of User fields to display.
@@ -1171,13 +1176,14 @@ public type SpaceBuyersQueries record {
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-public type RulesLookupResponse record {
-    Rule[] data?;
-    RulesResponseMetadata meta;
-};
-
 public type ListUnpinResponse record {
     ListPinnedResponse_data data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type UsersLikesCreateResponse record {
+    UsersLikesCreateResponse_data data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
@@ -1185,12 +1191,6 @@ public type ListUnpinResponse record {
 public type CreateDmEventResponse_data record {
     DmConversationId dm_conversation_id;
     DmEventId dm_event_id;
-};
-
-public type UsersLikesCreateResponse record {
-    UsersLikesCreateResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
 };
 
 public type Get2SpacesResponse record {
@@ -1221,6 +1221,15 @@ public type OAuth2RefreshTokenGrantConfig record {|
     string refreshUrl = "https://api.twitter.com/2/oauth2/token";
 |};
 
+# Describes a choice in a Poll object.
+public type PollOption record {
+    PollOptionLabel label;
+    # Position of this choice in the poll.
+    int position;
+    # Number of users who voted for this choice.
+    int votes;
+};
+
 # Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is exclusive.
 public type EntityIndicesInclusiveExclusive record {
     # Index (zero-based) at which position this entity ends.  The index is exclusive.
@@ -1229,15 +1238,6 @@ public type EntityIndicesInclusiveExclusive record {
     # Index (zero-based) at which position this entity starts.  The index is inclusive.
     @constraint:Int {minValue: 0}
     int 'start;
-};
-
-# Describes a choice in a Poll object.
-public type PollOption record {
-    PollOptionLabel label;
-    # Position of this choice in the poll.
-    int position;
-    # Number of users who voted for this choice.
-    int votes;
 };
 
 # Represents the Queries record for the operation: getDmConversationsIdDmEvents
@@ -1292,15 +1292,6 @@ public type ListFollowedResponse_data record {
 @constraint:String {pattern: re `^[A-Za-z0-9_]{1,15}$`}
 public type UserName string;
 
-# Represents the Queries record for the operation: getUsageTweets
-public type GetUsageTweetsQueries record {
-    # A comma separated list of Usage fields to display.
-    ("cap_reset_day"|"daily_client_app_usage"|"daily_project_usage"|"project_cap"|"project_id"|"project_usage")[] usage\.fields?;
-    # The number of days for which you need usage for.
-    @constraint:Int {minValue: 1, maxValue: 90}
-    int:Signed32 days = 7;
-};
-
 # Represents the Queries record for the operation: getTweetsFirehoseStreamLangKo
 public type GetTweetsFirehoseStreamLangKoQueries record {
     # A comma separated list of Poll fields to display.
@@ -1326,6 +1317,15 @@ public type GetTweetsFirehoseStreamLangKoQueries record {
     # A comma separated list of fields to expand.
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: getUsageTweets
+public type GetUsageTweetsQueries record {
+    # A comma separated list of Usage fields to display.
+    ("cap_reset_day"|"daily_client_app_usage"|"daily_project_usage"|"project_cap"|"project_id"|"project_usage")[] usage\.fields?;
+    # The number of days for which you need usage for.
+    @constraint:Int {minValue: 1, maxValue: 90}
+    int:Signed32 days = 7;
 };
 
 @constraint:String {pattern: re `^[a-zA-Z0-9]{1,13}$`}
@@ -1355,10 +1355,6 @@ public type Get2ComplianceJobsResponse record {
     Get2ComplianceJobsResponse_meta meta?;
 };
 
-public type UsersFollowingCreateRequest record {
-    UserId target_user_id;
-};
-
 # Usage per client app
 public type ClientAppUsage record {
     # The unique identifier for this project
@@ -1370,19 +1366,16 @@ public type ClientAppUsage record {
     int:Signed32 usage_result_count?;
 };
 
+public type UsersFollowingCreateRequest record {
+    UserId target_user_id;
+};
+
 # Tweet information of the Tweet being replied to.
 public type TweetCreateRequest_reply record {|
     # A list of User Ids to be excluded from the reply Tweet.
     UserId[] exclude_reply_user_ids?;
     TweetId in_reply_to_tweet_id;
 |};
-
-public type Get2TrendsByWoeidWoeidResponse record {
-    @constraint:Array {minLength: 1}
-    Trend[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
 
 # Represents the Queries record for the operation: findSpaceById
 public type FindSpaceByIdQueries record {
@@ -1395,6 +1388,13 @@ public type FindSpaceByIdQueries record {
     # A comma separated list of fields to expand.
     @constraint:Array {minLength: 1}
     ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
+};
+
+public type Get2TrendsByWoeidWoeidResponse record {
+    @constraint:Array {minLength: 1}
+    Trend[] data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
 };
 
 public type CreateAttachmentsMessageRequest record {
@@ -1438,14 +1438,14 @@ public type Get2TweetsIdResponse record {
     Expansions includes?;
 };
 
+public type TweetHideResponse_data record {
+    boolean hidden?;
+};
+
 # Represents the Queries record for the operation: getTrends
 public type GetTrendsQueries record {
     # A comma separated list of Trend fields to display.
     ("trend_name"|"tweet_count")[] trend\.fields?;
-};
-
-public type TweetHideResponse_data record {
-    boolean hidden?;
 };
 
 # Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
@@ -1459,16 +1459,16 @@ public type TweetWithheld record {
     "tweet"|"user" scope?;
 };
 
-public type UsersRetweetsDeleteResponse_data record {
-    boolean retweeted?;
-};
-
 # IDs and values of all deleted user-specified stream filtering rules.
 public type DeleteRulesRequest_delete record {
     # IDs of all deleted user-specified stream filtering rules.
     RuleId[] ids?;
     # Values of all deleted user-specified stream filtering rules.
     RuleValue[] values?;
+};
+
+public type UsersRetweetsDeleteResponse_data record {
+    boolean retweeted?;
 };
 
 # A count of user-provided stream filtering rules at the client application level.
@@ -1785,6 +1785,13 @@ public type Get2UsersIdTweetsResponse record {
     Get2UsersIdMentionsResponse_meta meta?;
 };
 
+public type Get2UsersMeResponse record {
+    User data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+    Expansions includes?;
+};
+
 # Represents the Queries record for the operation: usersIdMentions
 public type UsersIdMentionsQueries record {
     # A comma separated list of Poll fields to display.
@@ -1824,13 +1831,6 @@ public type TweetEditComplianceObjectSchema record {
     DmEvent_referenced_tweets tweet;
 };
 
-public type Get2UsersMeResponse record {
-    User data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-};
-
 # Tweet compliance data.
 public type TweetComplianceData TweetDeleteComplianceSchema|TweetWithheldComplianceSchema|TweetDropComplianceSchema|TweetUndropComplianceSchema|TweetEditComplianceSchema;
 
@@ -1850,6 +1850,8 @@ public type Rule record {
 public type ListFollowedRequest record {
     ListId list_id;
 };
+
+public type RulesRequestSummary record {int:Signed32 created; int:Signed32 invalid; int:Signed32 not_created; int:Signed32 valid;}|record {int:Signed32 deleted; int:Signed32 not_deleted;};
 
 # Represents the Queries record for the operation: findTweetsThatRetweetATweet
 public type FindTweetsThatRetweetATweetQueries record {
@@ -1872,8 +1874,6 @@ public type FindTweetsThatRetweetATweetQueries record {
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
-
-public type RulesRequestSummary record {int:Signed32 created; int:Signed32 invalid; int:Signed32 not_created; int:Signed32 valid;}|record {int:Signed32 deleted; int:Signed32 not_deleted;};
 
 # Represents the Queries record for the operation: findTweetsById
 public type FindTweetsByIdQueries record {
@@ -1978,6 +1978,22 @@ public type Get2SpacesIdTweetsResponse record {
     Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
+# Represents the Queries record for the operation: usersIdFollowers
+public type UsersIdFollowersQueries record {
+    # A comma separated list of User fields to display.
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
+    # This parameter is used to get a specified 'page' of results.
+    PaginationToken32 pagination_token?;
+    # A comma separated list of Tweet fields to display.
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
+    # The maximum number of results.
+    @constraint:Int {minValue: 1, maxValue: 1000}
+    int:Signed32 max_results?;
+    # A comma separated list of fields to expand.
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
 # Represents the Queries record for the operation: likesSample10Stream
 public type LikesSample10StreamQueries record {
     # A comma separated list of Like fields to display.
@@ -1999,21 +2015,8 @@ public type LikesSample10StreamQueries record {
     ("liked_tweet_id")[] expansions?;
 };
 
-# Represents the Queries record for the operation: usersIdFollowers
-public type UsersIdFollowersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
+# The count for the bucket.
+public type TweetCount int;
 
 # Represents the Queries record for the operation: getTweetsComplianceStream
 public type GetTweetsComplianceStreamQueries record {
@@ -2028,9 +2031,6 @@ public type GetTweetsComplianceStreamQueries record {
     # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided.
     string end_time?;
 };
-
-# The count for the bucket.
-public type TweetCount int;
 
 # Represents the Queries record for the operation: addOrDeleteRules
 public type AddOrDeleteRulesQueries record {
@@ -2148,10 +2148,6 @@ public type TweetCreateRequest record {|
     TweetText text?;
 |};
 
-public type TweetDeleteComplianceSchema record {
-    TweetComplianceSchema delete;
-};
-
 public type MuteUserMutationResponse_data record {
     boolean muting?;
 };
@@ -2163,6 +2159,10 @@ public type Get2SpacesSearchResponse record {
     Problem[] errors?;
     Expansions includes?;
     Get2ComplianceJobsResponse_meta meta?;
+};
+
+public type TweetDeleteComplianceSchema record {
+    TweetComplianceSchema delete;
 };
 
 # Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following.
@@ -2385,6 +2385,17 @@ public type UserScrubGeoSchema record {
     UserScrubGeoObjectSchema scrub_geo;
 };
 
+# A Like event, with the liking user and the tweet being liked
+public type Like record {
+    # Creation time of the Tweet.
+    string created_at?;
+    LikeId id?;
+    TweetId liked_tweet_id?;
+    UserId liking_user_id?;
+    # Timestamp in milliseconds of creation.
+    int:Signed32 timestamp_ms?;
+};
+
 # Represents the Queries record for the operation: findSpacesByCreatorIds
 public type FindSpacesByCreatorIdsQueries record {
     # A comma separated list of Space fields to display.
@@ -2413,17 +2424,6 @@ public type Get2DmEventsResponse record {
     Problem[] errors?;
     Expansions includes?;
     Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# A Like event, with the liking user and the tweet being liked
-public type Like record {
-    # Creation time of the Tweet.
-    string created_at?;
-    LikeId id?;
-    TweetId liked_tweet_id?;
-    UserId liking_user_id?;
-    # Timestamp in milliseconds of creation.
-    int:Signed32 timestamp_ms?;
 };
 
 public type TweetHideResponse record {
@@ -2457,6 +2457,10 @@ public type Get2UsageTweetsResponse record {
 @constraint:Int {minValue: 0}
 public type MediaWidth int;
 
+public type BookmarkMutationResponse_data record {
+    boolean bookmarked?;
+};
+
 # Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI.
 public type TweetCreateRequest_media record {|
     # A list of Media Ids to be attached to a created Tweet.
@@ -2467,9 +2471,17 @@ public type TweetCreateRequest_media record {|
     UserId[] tagged_user_ids?;
 |};
 
-public type BookmarkMutationResponse_data record {
-    boolean bookmarked?;
+public type Get2UsersIdOwnedListsResponse record {
+    @constraint:Array {minLength: 1}
+    List[] data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+    Expansions includes?;
+    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
+
+# The oldest id in this response.
+public type OldestId string;
 
 public type Get2SpacesByCreatorIdsResponse record {
     @constraint:Array {minLength: 1}
@@ -2478,18 +2490,6 @@ public type Get2SpacesByCreatorIdsResponse record {
     Problem[] errors?;
     Expansions includes?;
     Get2ComplianceJobsResponse_meta meta?;
-};
-
-# The oldest id in this response.
-public type OldestId string;
-
-public type Get2UsersIdOwnedListsResponse record {
-    @constraint:Array {minLength: 1}
-    List[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
 public type CreateComplianceJobResponse record {
@@ -2505,6 +2505,9 @@ public type SearchCount record {
     TweetCount tweet_count;
 };
 
+# The identifier for this place.
+public type PlaceId string;
+
 # Represents the data for the context annotation domain.
 public type ContextAnnotationDomainFields record {
     # Description of the context annotation domain.
@@ -2515,9 +2518,6 @@ public type ContextAnnotationDomainFields record {
     # Name of the context annotation domain.
     string name?;
 };
-
-# The identifier for this place.
-public type PlaceId string;
 
 # The scopes for this tweet
 public type Tweet_scopes record {
@@ -2647,12 +2647,6 @@ public type FindSpacesByIdsQueries record {
     ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
 };
 
-public type Get2ComplianceJobsIdResponse record {
-    ComplianceJob data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
 # Represents the Queries record for the operation: tweetCountsRecentSearch
 public type TweetCountsRecentSearchQueries record {
     # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
@@ -2674,6 +2668,12 @@ public type TweetCountsRecentSearchQueries record {
     PaginationToken36 next_token?;
     # Returns results with a Post ID less than (that is, older than) the specified ID.
     TweetId until_id?;
+};
+
+public type Get2ComplianceJobsIdResponse record {
+    ComplianceJob data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
 };
 
 # The location tagged on the Tweet, if the user provided one.
@@ -2768,6 +2768,16 @@ public type User record {
 # Tweet label stream events.
 public type TweetLabelStreamResponse record {TweetLabelData data;}|record {Problem[] errors;};
 
+# A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched.
+public type FilteredStreamingTweetResponse record {
+    Tweet data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+    Expansions includes?;
+    # The list of rules which matched the Tweet
+    FilteredStreamingTweetResponse_matching_rules[] matching_rules?;
+};
+
 # Represents the Queries record for the operation: tweetsFullarchiveSearch
 public type TweetsFullarchiveSearchQueries record {
     # A comma separated list of Poll fields to display.
@@ -2803,16 +2813,6 @@ public type TweetsFullarchiveSearchQueries record {
     "recency"|"relevancy" sort_order?;
     # Returns results with a Post ID less than (that is, older than) the specified ID.
     TweetId until_id?;
-};
-
-# A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched.
-public type FilteredStreamingTweetResponse record {
-    Tweet data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    # The list of rules which matched the Tweet
-    FilteredStreamingTweetResponse_matching_rules[] matching_rules?;
 };
 
 # The next token.
@@ -2951,10 +2951,6 @@ public type Topic record {
     string name;
 };
 
-# Compliance Job ID.
-@constraint:String {pattern: re `^[0-9]{1,19}$`}
-public type JobId string;
-
 public type TweetUnviewable record {
     # If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’.
     string application;
@@ -2962,6 +2958,10 @@ public type TweetUnviewable record {
     string event_at;
     TweetComplianceSchema_tweet tweet;
 };
+
+# Compliance Job ID.
+@constraint:String {pattern: re `^[0-9]{1,19}$`}
+public type JobId string;
 
 public type UserProfileModificationComplianceSchema record {
     UserProfileModificationObjectSchema user_profile_modification;
