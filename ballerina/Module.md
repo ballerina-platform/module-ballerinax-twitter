@@ -31,6 +31,8 @@ To use the Twitter connector, you must have access to the Twitter API through a 
 
 **Note**: You will use the keys and tokens generated from the Twitter Developer Portal to authenticate API requests.
 
+**Note**: We are now using OAuth 2.0 App Only, but there is another way using OAuth 2.0 Authorization Code with PKCE. If you want, you can go through this link: [OAuth 2.0 Authorization Code with PKCE](https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token).
+
 
 ## Quickstart
 
@@ -75,5 +77,3 @@ var postTweet = check twitterClient->/'2/tweets.post( payload = {
 ```bash
 bal run
 ```
-
-**Note**: We are now using OAuth 2.0 App Only, but there is another way using OAuth 2.0 Authorization Code with PKCE. If you want, you can go through this link: [OAuth 2.0 Authorization Code with PKCE](https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token).
