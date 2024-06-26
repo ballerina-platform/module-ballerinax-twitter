@@ -29,9 +29,9 @@ To use the Twitter connector, you must have access to the Twitter API through a 
 
 3. You will be provided with your keys and tokens. Make sure to save the provided API key, API secret key, Access token, Bearer Token, and Access token secret.
 
-**Note**: You will use the keys and tokens generated from the Twitter Developer Portal to authenticate API requests.
-
-**Note**: We are now using OAuth 2.0 App Only, but there is another way using OAuth 2.0 Authorization Code with PKCE. If you want, you can go through this link: [OAuth 2.0 Authorization Code with PKCE](https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token).
+**Note**
+    - You will use the keys and tokens generated from the Twitter Developer Portal to authenticate API requests.
+    - We are now using OAuth 2.0 App Only, but there is another way using OAuth 2.0 Authorization Code with PKCE. If you want, you can go through this link: [OAuth     2.0 Authorization Code with PKCE](https://developer.twitter.com/en/docs/authentication/oauth-2-0/user-access-token).
 
 
 ## Quickstart
