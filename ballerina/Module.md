@@ -7,7 +7,7 @@ The `ballerinax/twitter` package offers APIs to connect and interact with [Twitt
 
 ## Setup guide
 
-To use the Twitter connector, you must have access to the Twitter API through a [Twitter Developer](https://developer.twitter.com/en) account and a project under it. If you do not have a Twitter Developer account, you can sign up for one [here](https://developer.twitter.com/en/apply-for-access).
+To use the Twitter connector, you must have access to the Twitter API through a [Twitter developer account](https://developer.twitter.com/en) and a project under it. If you do not have a Twitter Developer account, you can sign up for one [here](https://developer.twitter.com/en/apply-for-access).
 
 ### Step 1: Create a Twitter Developer Project
 
