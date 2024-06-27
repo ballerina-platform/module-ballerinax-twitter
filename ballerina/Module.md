@@ -1,6 +1,6 @@
 ## Overview
 
-[Twitter](https://about.twitter.com/) is a widely-used social networking service provided by Twitter, Inc., enabling users to post and interact with messages known as "tweets."
+[Twitter](https://about.twitter.com/) is a widely-used social networking service provided by Twitter, Inc., enabling users to post and interact with messages known as "tweets".
 
 The `ballerinax/twitter` package offers APIs to connect and interact with [Twitter API](https://developer.twitter.com/en/docs/twitter-api) endpoints, specifically based on [Twitter API v2](https://developer.x.com/en/docs/twitter-api/migrate/whats-new).
 
