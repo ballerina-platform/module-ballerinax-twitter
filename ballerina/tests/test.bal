@@ -178,3 +178,14 @@ isolated function unmuteSpecificUser() returns error? {
     io:println("13");
     io:println(response);
 }
+
+//Test FInd User Via ID 
+@test:Config {
+}
+isolated function findSpecificUser() returns error? {
+    Get2UsersResponse response = check baseClient->/users(ids = ["1803011651249278976"]);
+    test:assertTrue(response?.data !is ());
+    test:assertTrue(response?.errors is  ());
+    io:println("14");
+    io:println(response);
+}
