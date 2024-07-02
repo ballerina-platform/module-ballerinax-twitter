@@ -1,5 +1,0 @@
-[package]
-org = "wso2"
-name = "DM_mentions"
-version = "0.1.0"
-distribution = "2201.9.0"
