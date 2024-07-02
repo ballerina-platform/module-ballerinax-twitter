@@ -78,7 +78,7 @@ If you are using Windows you can use following method:
 ```bash
    setx IS_LIVE_SERVER true
    setx TWITTER_TOKEN <your-twitter-access-token>
-   setx TWITTER_USER_ID = <your-twitter-user-id>
+   setx TWITTER_USER_ID  <your-twitter-user-id>
 ```
 Then, run the following command to run the tests:
 
