@@ -8,8 +8,6 @@ To do this, refer to [Ballerina Twitter Connector](https://github.com/ballerina-
 And You need Find Your User ID For run some of the tests.
 Via This Website you can find it [Twitter ID Finder](https://twiteridfinder.com/).
 
-                                   
-
 # Running Tests
 
 There are two test environments for running the Twitter(X) connector tests. The default test environment is the mock server for Twitter API. The other test environment is the actual Twitter (X) API. 

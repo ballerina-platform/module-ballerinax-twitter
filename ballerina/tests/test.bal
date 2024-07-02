@@ -23,10 +23,11 @@ configurable string userId = isLiveServer ? os:getEnv("TWITTER_USER_ID") : "test
 configurable string token = isLiveServer ? os:getEnv("TWITTER_TOKEN") : "test";
 configurable string serviceUrl = isLiveServer ? "https://api.twitter.com/2" : "http://localhost:9090";
 
-ConnectionConfig config = {auth: {token: token}};
+ConnectionConfig config = {auth: {token}};
 final Client twitter = check new Client(config, serviceUrl);
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testPostTweet() returns error? {
     time:Utc utc = time:utcNow();
@@ -39,6 +40,7 @@ isolated function testPostTweet() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testgetUserIdByUseName() returns error? {
     Get2UsersByUsernameUsernameResponse response = check twitter->/users/'by/username/["KumarSanga2"];
@@ -47,6 +49,7 @@ isolated function testgetUserIdByUseName() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testUserLikeAPost() returns error? {
     UsersLikesCreateResponse response = check twitter->/users/[userId]/likes.post(
@@ -59,6 +62,7 @@ isolated function testUserLikeAPost() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testUserUnlikeAPost() returns error? {
     UsersLikesDeleteResponse response = check twitter->/users/[userId]/likes/["1806286701704462623"].delete();
@@ -67,6 +71,7 @@ isolated function testUserUnlikeAPost() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testPostLookup() returns error? {
     Get2TweetsIdResponse response = check twitter->/tweets/["1806286701704462623"]();
@@ -75,6 +80,7 @@ isolated function testPostLookup() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testBookmarkPost() returns error? {
     BookmarkMutationResponse response = check twitter->/users/[userId]/bookmarks.post(
@@ -85,6 +91,7 @@ isolated function testBookmarkPost() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testBookmarkDelete() returns error? {
     BookmarkMutationResponse response = check twitter->/users/[userId]/bookmarks/["1806286701704462623"].delete();
@@ -93,6 +100,7 @@ isolated function testBookmarkDelete() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testRetweet() returns error? {
     UsersRetweetsCreateResponse response = check twitter->/users/[userId]/retweets.post(
@@ -103,6 +111,7 @@ isolated function testRetweet() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testDeleteRetweet() returns error? {
     UsersRetweetsDeleteResponse response = check twitter->/users/[userId]/retweets/["1806286701704462623"].delete();
@@ -111,6 +120,7 @@ isolated function testDeleteRetweet() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testFollowSpecificUser() returns error? {
     UsersFollowingCreateResponse response = check twitter->/users/[userId]/following.post(
@@ -123,6 +133,7 @@ isolated function testFollowSpecificUser() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function testUnfollowSpecificUser() returns error? {
     UsersFollowingDeleteResponse response = check twitter->/users/[userId]/following/["1803011651249278976"].delete();
@@ -131,6 +142,7 @@ isolated function testUnfollowSpecificUser() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function muteSpecificUser() returns error? {
     MuteUserMutationResponse response = check twitter->/users/[userId]/muting.post(
@@ -143,7 +155,9 @@ isolated function muteSpecificUser() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
+
 isolated function unmuteSpecificUser() returns error? {
     MuteUserMutationResponse response = check twitter->/users/[userId]/muting/["1803011651249278976"].delete();
     test:assertTrue(response?.data !is ());
@@ -151,6 +165,7 @@ isolated function unmuteSpecificUser() returns error? {
 }
 
 @test:Config {
+    groups: ["live_tests", "mock_tests"]
 }
 isolated function findSpecificUser() returns error? {
     Get2UsersResponse response = check twitter->/users(ids = ["1803011651249278976"]);

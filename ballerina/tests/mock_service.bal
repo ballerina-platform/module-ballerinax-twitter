@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-
 import ballerina/http;
 import ballerina/log;
 
@@ -22,7 +21,6 @@ listener http:Listener httpListener = new (9090);
 
 http:Service mockService = service object {
     
-
     # Remove a bookmarked Post
     #
     # + id - The ID of the authenticated source User whose bookmark is to be removed.
@@ -31,10 +29,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function delete users/[UserIdMatchesAuthenticatedUser id]/bookmarks/[TweetId tweet_id]() returns BookmarkMutationResponse|http:Response {
-        BookmarkMutationResponse response = {
+        return {
             "data":{"bookmarked":false}
         };
-        return response;
     }
 
     # Causes the User (in the path) to unlike the specified Post
@@ -45,10 +42,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function delete users/[UserIdMatchesAuthenticatedUser id]/likes/[TweetId tweet_id]() returns UsersLikesDeleteResponse|http:Response {
-        UsersLikesDeleteResponse response = {
+        return {
             "data":{"liked":false}
         };
-        return response;
     }
 
     # Causes the User (in the path) to unretweet the specified Post
@@ -59,10 +55,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function delete users/[UserIdMatchesAuthenticatedUser id]/retweets/[TweetId source_tweet_id]() returns UsersRetweetsDeleteResponse|http:Response {
-        UsersRetweetsDeleteResponse response = {
+        return {
             "data":{"retweeted":false}
         };
-        return response;
     }
 
     # Unfollow User
@@ -73,10 +68,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function delete users/[UserIdMatchesAuthenticatedUser source_user_id]/following/[UserId target_user_id]() returns UsersFollowingDeleteResponse|http:Response {
-        UsersFollowingDeleteResponse response = {
+        return {
             "data":{"following":false}
         };
-        return response;
     }
 
     # Unmute User by User ID
@@ -87,10 +81,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function delete users/[UserIdMatchesAuthenticatedUser source_user_id]/muting/[UserId target_user_id]() returns MuteUserMutationResponse|http:Response {
-        MuteUserMutationResponse response = {
+        return {
             "data":{"muting":false}
         };
-        return response;
     }
 
     # Post lookup by Post ID
@@ -106,17 +99,15 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function get tweets/[TweetId id](("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[]? tweet\.fields, ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[]? expansions, ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[]? media\.fields, ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[]? poll\.fields, ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[]? user\.fields, ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[]? place\.fields) returns Get2TweetsIdResponse|http:Response {
-        Get2TweetsIdResponse response = {
+        return {
             "data":{"edit_history_tweet_ids":["1806286701704462623"],"id":"1806286701704462623","text":"aasbcascbasjbc"}
         };
-        return response;
     }
 
     resource function get users/'by/username/[string username](("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[]? user\.fields, ("most_recent_tweet_id"|"pinned_tweet_id")[]? expansions, ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[]? tweet\.fields) returns Get2UsersByUsernameUsernameResponse|http:Response {
-        Get2UsersByUsernameUsernameResponse response = {
+        return {
             "data":{"id":"350224247","name":"Kumar Sangakkara","username":"KumarSanga2"}
         };
-        return response;
     }
 
     # Creation of a Post
@@ -125,10 +116,9 @@ http:Service mockService = service object {
     # http:Created (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post tweets(@http:Payload TweetCreateRequest payload) returns TweetCreateResponse|http:Response {
-        TweetCreateResponse response = {
+        return {
             "data":{"id":"1807808193139204482","text":"Twitter Test at[1719850035,0.227505100]","edit_history_tweet_ids":["1807808193139204482"]}
         };
-        return response;
     }
 
     # Add Post to Bookmarks
@@ -138,10 +128,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post users/[UserIdMatchesAuthenticatedUser id]/bookmarks(@http:Payload BookmarkAddRequest payload) returns BookmarkMutationResponse|http:Response {
-        BookmarkMutationResponse response ={
+        return {
             "data":{"bookmarked":true}
         };
-        return response;
     }
 
     # Follow User
@@ -151,10 +140,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post users/[UserIdMatchesAuthenticatedUser id]/following(@http:Payload UsersFollowingCreateRequest payload) returns UsersFollowingCreateResponse|http:Response {
-        UsersFollowingCreateResponse response = {
+        return {
             "data":{"following":true,"pending_follow":false}
         };
-        return response;
     }
 
     # Causes the User (in the path) to like the specified Post
@@ -164,10 +152,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post users/[UserIdMatchesAuthenticatedUser id]/likes(@http:Payload UsersLikesCreateRequest payload) returns UsersLikesCreateResponse|http:Response {
-        UsersLikesCreateResponse response = {
+        return {
             "data":{"liked":true}
         };
-        return response;
     }
 
     # Mute User by User ID.
@@ -177,10 +164,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post users/[UserIdMatchesAuthenticatedUser id]/muting(@http:Payload MuteUserRequest payload) returns MuteUserMutationResponse|http:Response {
-        MuteUserMutationResponse response = {
+        return {
             "data":{"muting":true}
         };
-        return response;
     }
 
     # Causes the User (in the path) to repost the specified Post.
@@ -190,10 +176,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function post users/[UserIdMatchesAuthenticatedUser id]/retweets(@http:Payload UsersRetweetsCreateRequest payload) returns UsersRetweetsCreateResponse|http:Response {
-        UsersRetweetsCreateResponse response ={
+        return {
             "data":{"retweeted":true,"rest_id":"1807808194787590411"}
         };
-        return response;
     }
 
         # User lookup by IDs
@@ -206,10 +191,9 @@ http:Service mockService = service object {
     # http:Ok (The request has succeeded.)
     # http:Response (The request has failed.)
     resource function get users(UserId[] ids, ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[]? user\.fields, ("most_recent_tweet_id"|"pinned_tweet_id")[]? expansions, ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[]? tweet\.fields) returns Get2UsersResponse|http:Response {
-        Get2UsersResponse response = {
+        return {
             "data":[{"id":"350224247","name":"Kumar Sangakkara","username":"KumarSanga2"}]
         };
-        return response;
     }
 };
 
