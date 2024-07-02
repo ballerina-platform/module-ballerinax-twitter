@@ -20,66 +20,49 @@ import ballerinax/twitter;
 configurable string accessToken = ?;
 
 public function main() returns error? {
-    
-    // Initialize the client
     twitter:Client twitter = check new ({
         auth: {
             token: accessToken
         }
     });
 
-    // a search query to search for tweets
-    string searchQuery = "#ballerinaSupport";
-
-    // search for recent tweets
-    twitter:Get2TweetsSearchRecentResponse tweetList = check twitter->/tweets/search/recent(
-        query = searchQuery,
+    twitter:Get2TweetsSearchRecentResponse supportTweets = check twitter->/tweets/search/recent(
+        query = "#ballerinaSupport",
         max_results = 10
     );
 
-    // Initialize tweetIdList and userIdList
-    twitter:TweetId[] tweetIdList = [];
-    twitter:UserId[] userIdList = [];
+    twitter:TweetId[] tweetIds = [];
+    twitter:UserId[] userIds = [];
+    twitter:Tweet[] tweets = supportTweets.data ?: [];
 
-    // Extract tweets from the response
-    twitter:Tweet[] tweets = tweetList.data ?: [];
-
-    // Iterate through the tweets and extract the tweet IDs
     foreach twitter:Tweet tweet in tweets {
-        tweetIdList.push(tweet.id ?: "");
+        if tweet.id !is () {
+            tweetIds.push(check tweet.id.ensureType(string));
+        }
     }
 
-    // Iterate through the tweet IDs and extract the user IDs
-    foreach twitter:TweetId tweetId in tweetIdList {
-        if (tweetId == "") {
-            continue;
-        }
-
-        // Find the author ID of the tweet
-        twitter:FindTweetByIdQueries queries = {
+    foreach twitter:TweetId tweetId in tweetIds {
+        twitter:FindTweetByIdQueries searchQuery = {
                     tweet\.fields: ["author_id"]
                 };
-        twitter:Get2TweetsIdResponse tweetResponse = check twitter->/tweets/[tweetId](queries = queries);
-
-        userIdList.push(tweetResponse.data?.author_id ?: "");
+        twitter:Get2TweetsIdResponse tweetResponse = check twitter->/tweets/[tweetId](queries = searchQuery);
+        if tweetResponse.data?.author_id !is () {
+            userIds.push(check tweetResponse.data?.author_id.ensureType(string));
+        }
     }
 
-    // Iterate through the user IDs and send a DM to each user
-    foreach twitter:UserId userId in userIdList {
-        if (userId == "") {
+    foreach twitter:UserId userId in userIds {
+        if userId == "" {
             continue;
         }
-
-        io:println("User ID: ", userId);
-
-        // Send a DM to the user
         twitter:CreateDmEventResponse DMResponse = check twitter->/dm_conversations/with/[userId]/messages.post(
             payload = {
                             text: "Thank you for reaching us! We will reach you soon"
                         }
         );
 
-        if (DMResponse.data != null) {
+        if DMResponse.data !is () {
+            io:println("User ID: ", userId);
             io:println("DM sent successfully");
         } else {
             io:println("Failed to send DM", DMResponse);
