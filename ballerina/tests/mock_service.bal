@@ -37,8 +37,6 @@ http:Service mockService = service object {
         return response;
     }
 
-
-
     # Causes the User (in the path) to unlike the specified Post
     #
     # + id - The ID of the authenticated source User that is requesting to unlike the Post.
@@ -121,7 +119,6 @@ http:Service mockService = service object {
         return response;
     }
 
-
     # Creation of a Post
     #
     # + return - returns can be any of following types 
@@ -134,7 +131,6 @@ http:Service mockService = service object {
         return response;
     }
 
-   
     # Add Post to Bookmarks
     #
     # + id - The ID of the authenticated source User for whom to add bookmarks.
@@ -148,7 +144,6 @@ http:Service mockService = service object {
         return response;
     }
 
-   
     # Follow User
     #
     # + id - The ID of the authenticated source User that is requesting to follow the target User.
@@ -188,7 +183,6 @@ http:Service mockService = service object {
         return response;
     }
 
-    
     # Causes the User (in the path) to repost the specified Post.
     #
     # + id - The ID of the authenticated source User that is requesting to repost the Post.
@@ -228,4 +222,3 @@ function init() returns error? {
     check httpListener.attach(mockService, "/");
     check httpListener.'start();
 }
-    

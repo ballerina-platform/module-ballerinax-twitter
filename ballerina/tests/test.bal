@@ -21,12 +21,11 @@ import ballerina/os;
 configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
 configurable string userId = isLiveServer ? os:getEnv("TWITTER_USER_ID") : "test";
 configurable string token = isLiveServer ? os:getEnv("TWITTER_TOKEN") : "test";
-configurable string serviceUrl = isLiveServer ? "https://api.twitter.com/2" : "http://localhost:9090/";
+configurable string serviceUrl = isLiveServer ? "https://api.twitter.com/2" : "http://localhost:9090";
 
 ConnectionConfig config = {auth: {token: token}};
 final Client twitter = check new Client(config, serviceUrl);
 
-//Test Posting a Tweet
 @test:Config {
 }
 isolated function testPostTweet() returns error? {
@@ -39,7 +38,6 @@ isolated function testPostTweet() returns error? {
     test:assertTrue(response?.errors is ());
 }
 
-//Test Get Twitter User Id of a user By Username
 @test:Config {
 }
 isolated function testgetUserIdByUseName() returns error? {
@@ -48,7 +46,6 @@ isolated function testgetUserIdByUseName() returns error? {
     test:assertTrue(response?.errors is ());
 }
 
-//Test Like a Post via Post  ID
 @test:Config {
 }
 isolated function testUserLikeAPost() returns error? {
@@ -61,7 +58,6 @@ isolated function testUserLikeAPost() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Unlike a Post via Post  ID
 @test:Config {
 }
 isolated function testUserUnlikeAPost() returns error? {
@@ -70,7 +66,6 @@ isolated function testUserUnlikeAPost() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test grab information of a specific post via Id
 @test:Config {
 }
 isolated function testPostLookup() returns error? {
@@ -79,7 +74,6 @@ isolated function testPostLookup() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Bookmark a Post
 @test:Config {
 }
 isolated function testBookmarkPost() returns error? {
@@ -90,7 +84,6 @@ isolated function testBookmarkPost() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Unbookmark a Post
 @test:Config {
 }
 isolated function testBookmarkDelete() returns error? {
@@ -99,8 +92,6 @@ isolated function testBookmarkDelete() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-
-//Test Retweet a Post via Post  ID
 @test:Config {
 }
 isolated function testRetweet() returns error? {
@@ -111,7 +102,6 @@ isolated function testRetweet() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Unretweet a Post via Post  ID
 @test:Config {
 }
 isolated function testDeleteRetweet() returns error? {
@@ -120,7 +110,6 @@ isolated function testDeleteRetweet() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Follow a Specific User
 @test:Config {
 }
 isolated function testFollowSpecificUser() returns error? {
@@ -133,7 +122,6 @@ isolated function testFollowSpecificUser() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Unfollow a Specific User
 @test:Config {
 }
 isolated function testUnfollowSpecificUser() returns error? {
@@ -142,7 +130,6 @@ isolated function testUnfollowSpecificUser() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Mute a Specific User
 @test:Config {
 }
 isolated function muteSpecificUser() returns error? {
@@ -155,7 +142,6 @@ isolated function muteSpecificUser() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test Unmute a Specific User
 @test:Config {
 }
 isolated function unmuteSpecificUser() returns error? {
@@ -164,7 +150,6 @@ isolated function unmuteSpecificUser() returns error? {
     test:assertTrue(response?.errors is  ());
 }
 
-//Test FInd User Via ID 
 @test:Config {
 }
 isolated function findSpecificUser() returns error? {
