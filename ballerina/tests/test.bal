@@ -1,8 +1,6 @@
 import ballerina/test;
 import ballerina/time;
-import ballerina/io;
 import ballerina/os;
-
 
 configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
 configurable string userId = isLiveServer ? os:getEnv("TWITTER_USER_ID") : "test";
@@ -16,18 +14,13 @@ final Client baseClient = check new Client(config, serviceUrl);
 @test:Config {
 }
 isolated function testPostTweet() returns error? {
-    io:println(isLiveServer);
-    io:println(token);
     time:Utc utc = time:utcNow();
-    string tweetText = "Twitter Test at" + utc.toString();
+    string tweetText = "Twitter Test at " + utc.toString();
     TweetCreateResponse response = check baseClient->/tweets.post(payload = {
         text: tweetText
     });
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is ());
-    io:println("1");
-    
-    io:println(response);
 }
 
 //Test Get Twitter User Id of a user By Username
@@ -37,8 +30,6 @@ isolated function testgetUserIdByUseName() returns error? {
     Get2UsersByUsernameUsernameResponse response = check baseClient->/users/'by/username/["KumarSanga2"];
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is ());
-    io:println("2");
-    io:println(response);
 }
 
 //Test Like a Post via Post  ID
@@ -52,8 +43,6 @@ isolated function testUserLikeAPost() returns error? {
     );
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("3");
-    io:println(response);
 }
 
 //Test Unlike a Post via Post  ID
@@ -63,8 +52,6 @@ isolated function testUserUnlikeAPost() returns error? {
     UsersLikesDeleteResponse response = check baseClient->/users/[userId]/likes/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("4");
-    io:println(response);
 }
 
 //Test grab information of a specific post via Id
@@ -74,8 +61,6 @@ isolated function testPostLookup() returns error? {
     Get2TweetsIdResponse response = check baseClient->/tweets/["1806286701704462623"]();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("5");
-    io:println(response);
 }
 
 //Test Bookmark a Post
@@ -87,8 +72,6 @@ isolated function testBookmarkPost() returns error? {
     );
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("6");
-    io:println(response);
 }
 
 //Test Unbookmark a Post
@@ -98,8 +81,6 @@ isolated function testBookmarkDelete() returns error? {
     BookmarkMutationResponse response = check baseClient->/users/[userId]/bookmarks/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("7");
-    io:println(response);
 }
 
 
@@ -112,8 +93,6 @@ isolated function testRetweet() returns error? {
     );
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("8");
-    io:println(response);
 }
 
 //Test Unretweet a Post via Post  ID
@@ -123,8 +102,6 @@ isolated function testDeleteRetweet() returns error? {
     UsersRetweetsDeleteResponse response = check baseClient->/users/[userId]/retweets/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("9");
-    io:println(response);
 }
 
 //Test Follow a Specific User
@@ -138,8 +115,6 @@ isolated function testFollowSpecificUser() returns error? {
     );
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("10");
-    io:println(response);
 }
 
 //Test Unfollow a Specific User
@@ -149,8 +124,6 @@ isolated function testUnfollowSpecificUser() returns error? {
     UsersFollowingDeleteResponse response = check baseClient->/users/[userId]/following/["1803011651249278976"].delete();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("11");
-    io:println(response);
 }
 
 //Test Mute a Specific User
@@ -164,8 +137,6 @@ isolated function muteSpecificUser() returns error? {
     );
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("12");
-    io:println(response);
 }
 
 //Test Unmute a Specific User
@@ -175,8 +146,6 @@ isolated function unmuteSpecificUser() returns error? {
     MuteUserMutationResponse response = check baseClient->/users/[userId]/muting/["1803011651249278976"].delete();
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("13");
-    io:println(response);
 }
 
 //Test FInd User Via ID 
@@ -186,6 +155,4 @@ isolated function findSpecificUser() returns error? {
     Get2UsersResponse response = check baseClient->/users(ids = ["1803011651249278976"]);
     test:assertTrue(response?.data !is ());
     test:assertTrue(response?.errors is  ());
-    io:println("14");
-    io:println(response);
 }
