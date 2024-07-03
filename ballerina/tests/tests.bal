@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/os;
 import ballerina/test;
 import ballerina/time;
-import ballerina/os;
 
 configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
 configurable string userId = isLiveServer ? os:getEnv("TWITTER_USER_ID") : "test";
@@ -54,11 +54,11 @@ isolated function testgetUserIdByUseName() returns error? {
 isolated function testUserLikeAPost() returns error? {
     UsersLikesCreateResponse response = check twitter->/users/[userId]/likes.post(
         payload = {
-            tweet_id:"1806286701704462623"
+            tweet_id: "1806286701704462623"
         }
     );
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -67,7 +67,7 @@ isolated function testUserLikeAPost() returns error? {
 isolated function testUserUnlikeAPost() returns error? {
     UsersLikesDeleteResponse response = check twitter->/users/[userId]/likes/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -76,7 +76,7 @@ isolated function testUserUnlikeAPost() returns error? {
 isolated function testPostLookup() returns error? {
     Get2TweetsIdResponse response = check twitter->/tweets/["1806286701704462623"]();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -87,7 +87,7 @@ isolated function testBookmarkPost() returns error? {
         payload = {tweet_id: "1806286701704462623"}
     );
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -96,7 +96,7 @@ isolated function testBookmarkPost() returns error? {
 isolated function testBookmarkDelete() returns error? {
     BookmarkMutationResponse response = check twitter->/users/[userId]/bookmarks/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -107,7 +107,7 @@ isolated function testRetweet() returns error? {
         payload = {tweet_id: "1806286701704462623"}
     );
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -116,7 +116,7 @@ isolated function testRetweet() returns error? {
 isolated function testDeleteRetweet() returns error? {
     UsersRetweetsDeleteResponse response = check twitter->/users/[userId]/retweets/["1806286701704462623"].delete();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -124,12 +124,12 @@ isolated function testDeleteRetweet() returns error? {
 }
 isolated function testFollowSpecificUser() returns error? {
     UsersFollowingCreateResponse response = check twitter->/users/[userId]/following.post(
-        payload={
-            target_user_id:"1803011651249278976"
+        payload = {
+            target_user_id: "1803011651249278976"
         }
     );
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -138,7 +138,7 @@ isolated function testFollowSpecificUser() returns error? {
 isolated function testUnfollowSpecificUser() returns error? {
     UsersFollowingDeleteResponse response = check twitter->/users/[userId]/following/["1803011651249278976"].delete();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -146,12 +146,12 @@ isolated function testUnfollowSpecificUser() returns error? {
 }
 isolated function muteSpecificUser() returns error? {
     MuteUserMutationResponse response = check twitter->/users/[userId]/muting.post(
-        payload={
-            target_user_id:"1803011651249278976"
+        payload = {
+            target_user_id: "1803011651249278976"
         }
     );
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -161,7 +161,7 @@ isolated function muteSpecificUser() returns error? {
 isolated function unmuteSpecificUser() returns error? {
     MuteUserMutationResponse response = check twitter->/users/[userId]/muting/["1803011651249278976"].delete();
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
 
 @test:Config {
@@ -170,5 +170,5 @@ isolated function unmuteSpecificUser() returns error? {
 isolated function findSpecificUser() returns error? {
     Get2UsersResponse response = check twitter->/users(ids = ["1803011651249278976"]);
     test:assertTrue(response?.data !is ());
-    test:assertTrue(response?.errors is  ());
+    test:assertTrue(response?.errors is ());
 }
