@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/io;
+import ballerina/lang.array;
 import ballerinax/twitter;
 
 configurable string accessToken = ?;
@@ -27,8 +28,6 @@ public function main() returns error? {
     });
 
     string username = "ballerinalang";
-    twitter:Tweet[] performingTweets = [];
-
     twitter:Get2UsersByUsernameUsernameResponse userResponse = check twitter->/users/'by/username/[username]();
     twitter:User? user = userResponse.data;
     if user is () {
@@ -47,53 +46,29 @@ public function main() returns error? {
         return;
     }
 
+    twitter:FindTweetByIdQueries queries = {
+        tweet\.fields: ["public_metrics"]
+    };
+    twitter:Tweet[] performingTweets = [];
     foreach twitter:Tweet tweet in tweets {
         twitter:TweetId? tweetId = tweet.id;
         if tweetId is () {
             continue;
         }
 
-        twitter:FindTweetByIdQueries queries = {
-            tweet\.fields: ["public_metrics"]
-        };
         twitter:Get2TweetsIdResponse tweetResponse = check twitter->/tweets/[tweetId](queries = queries);
         twitter:Tweet? tweetData = tweetResponse.data;
-        if tweetData is () {
-            continue;
-        }
-        tweet.public_metrics = tweetData?.public_metrics;
-        performingTweets.push(tweet);
-    }
-
-    // performingTweets.sort(key = sortTweet);
-    boolean swapped = false;
-    foreach int i in 0 ... performingTweets.length() - 2 {
-        swapped = false;
-        foreach int j in 1 ... performingTweets.length() - 1 - i {
-            if performingTweets[j - 1].public_metrics?.like_count < performingTweets[j].public_metrics?.like_count {
-                twitter:Tweet temp = performingTweets[j - 1];
-                performingTweets[j - 1] = performingTweets[j];
-                performingTweets[j] = temp;
-                swapped = true;
-            }
-        }
-        if !swapped {
-            break;
+        if tweetData !is () {
+            tweet.public_metrics = tweetData?.public_metrics;
+            performingTweets.push(tweet);
         }
     }
 
+    twitter:Tweet[] sortedPerformingTweets = performingTweets.sort(array:DESCENDING, isolated function(twitter:Tweet t) returns int? => t.public_metrics?.like_count);
     io:println("Top Tweets by ", username, " in the last month: ");
-    foreach var tweet in performingTweets {
+    foreach var tweet in sortedPerformingTweets {
         io:println("Tweet: ", tweet.text);
         io:println("Likes: ", tweet.public_metrics?.like_count);
         io:println("Retweet Count: ", tweet.public_metrics?.retweet_count);
     }
-}
-
-isolated function sortTweet(twitter:Tweet a, twitter:Tweet b) returns int {
-    twitter:Tweet_public_metrics? publicMetricsA = a.public_metrics;
-    int likesForA = publicMetricsA !is () ? publicMetricsA.like_count : 0;
-    twitter:Tweet_public_metrics? publicMetricsB = b.public_metrics;
-    int likesForB = publicMetricsB !is () ? publicMetricsB.like_count : 0;
-    return likesForA - likesForB;
 }

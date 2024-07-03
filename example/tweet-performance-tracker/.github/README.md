@@ -1,4 +1,4 @@
-## Analyzing One-Month Tweet Performance
+## Tweet performance analyzer
 
 This use case demonstrates how the Twitter API v2 can be utilized to analyze the performance of tweets posted by a user over the past month. The example involves a sequence of actions that leverage the Twitter API v2 to automate the retrieval of tweets and their performance metrics (likes, retweets, replies), and then create a performance report.
 
