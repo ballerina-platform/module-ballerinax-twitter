@@ -1,1 +1,1 @@
-../Direct Message Company Mentions.md
+../Direct message company mentions.md
