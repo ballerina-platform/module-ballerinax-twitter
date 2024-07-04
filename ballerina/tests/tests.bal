@@ -26,8 +26,8 @@ configurable string serviceUrl = isLiveServer ? "https://api.twitter.com/2" : "h
 ConnectionConfig config = {auth: {token}};
 final Client twitter = check new Client(config, serviceUrl);
 
-final string test_user_id = "15594932";
-final string test_post_id = "1808153657558311048";
+final string testUserId = "15594932";
+final string testPostId = "1808153657558311048";
 
 @test:Config {
     groups: ["live_tests", "mock_tests"]
