@@ -57,7 +57,7 @@ isolated function testgetUserIdByUseName() returns error? {
 isolated function testUserLikeAPost() returns error? {
     UsersLikesCreateResponse response = check twitter->/users/[userId]/likes.post(
         payload = {
-            tweet_id:test_post_id
+            tweet_id: test_post_id
         }
     );
     test:assertTrue(response?.data !is ());
@@ -127,8 +127,8 @@ isolated function testDeleteRetweet() returns error? {
 }
 isolated function testFollowSpecificUser() returns error? {
     UsersFollowingCreateResponse response = check twitter->/users/[userId]/following.post(
-        payload={
-            target_user_id:test_user_id
+        payload = {
+            target_user_id: test_user_id
         }
     );
     test:assertTrue(response?.data !is ());
@@ -149,8 +149,8 @@ isolated function testUnfollowSpecificUser() returns error? {
 }
 isolated function muteSpecificUser() returns error? {
     MuteUserMutationResponse response = check twitter->/users/[userId]/muting.post(
-        payload={
-            target_user_id:test_user_id
+        payload = {
+            target_user_id: test_user_id
         }
     );
     test:assertTrue(response?.data !is ());
