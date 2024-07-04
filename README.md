@@ -24,13 +24,13 @@ To use the Twitter connector, you must have access to the Twitter API through a 
 
 2. Click on the "Projects & Apps" tab and select an existing project or create a new one for which you want API Keys and Authentication Tokens.
 
-    ![Twitter Developer Portal](https://github.com/ballerina-platform/module-ballerinax-twitter/blob/main/docs/setup/resources/twitter-developer-portal.png)
+    <img src=https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-twitter/main/docs/setup/resources/twitter-developer-portal.png alt="Twitter Developer Portal" style="width: 70%;">
 
 ### Step 2: Set up user authentication settings
 
 1. Scroll down and Click on the **Set up** button to set up user authentication.
 
-    ![Set up](https://github.com/ballerina-platform/module-ballerinax-twitter/blob/main/docs/setup/resources/set-up.png)
+    <img src=https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-twitter/main/docs/setup/resources/set-up.png alt="Set up" style="width: 70%;">
 
 2. Complete the user authentication setup.
 
@@ -38,7 +38,7 @@ To use the Twitter connector, you must have access to the Twitter API through a 
 
 1. After completing the setup, you will be provided with your client Id and client secret. Make sure to save the provided client Id and client secret.
 
-    ![Get Keys](https://github.com/ballerina-platform/module-ballerinax-twitter/blob/main/docs/setup/resources/get-keys.png)
+    <img src=https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-twitter/main/docs/setup/resources/get-keys.png alt="Get Keys" style="width: 70%;">
 
 ### Step 4: Setup OAuth 2.0 Flow
 
@@ -62,7 +62,7 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
 
 2. Copy and paste the generated URL into your browser. This will redirect you to the Twitter authorization page.
 
-    ![Authorize Page](https://github.com/ballerina-platform/module-ballerinax-twitter/blob/main/docs/setup/resources/authorize.png)
+    <img src=https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-twitter/main/docs/setup/resources/authorize.png alt="Authorize Page" style="width: 70%;">
 
 3. Once you authorize, you will be redirected to your specified redirect URI with an authorization code in the URL.
 
