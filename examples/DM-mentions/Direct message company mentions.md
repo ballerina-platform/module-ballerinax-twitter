@@ -6,7 +6,7 @@ This use case demonstrates how the Twitter API v2 can be utilized to enhance cus
 
 ### 1. Setup Twitter developer account
 
-Refer to the [Setup guide](https://central.ballerina.io/ballerinax/twitter/latest#setup-guide) to obtain necessary credentials (client ID, secret, tokens).
+Refer to the [Setup guide](https://central.ballerina.io/ballerinax/twitter/latest#setup-guide) to obtain necessary credentials (client Id, client secret, tokens).
 
 ### 2. Configuration
 
