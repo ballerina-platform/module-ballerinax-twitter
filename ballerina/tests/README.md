@@ -42,7 +42,7 @@ If you are using linux or mac, you can use following method:
 ```
 If you are using Windows you can use following method:
 ```bash
-   set IS_LIVE_SERVER=false
+   setx IS_LIVE_SERVER false
 ```
 Then, run the following command to run the tests:
 
