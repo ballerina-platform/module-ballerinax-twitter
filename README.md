@@ -143,7 +143,7 @@ import ballerinax/twitter;
 accessToken = "<Access Token>"
 ```
 
-2. Create a `twitter:ConnectionConfig` with the obtained **Access Token** and initialize the connector with it.
+2. Create a `twitter:ConnectionConfig` with the obtained access token and initialize the connector with it.
 
 ```ballerina
 configurable string accessToken = ?;

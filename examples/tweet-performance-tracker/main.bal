@@ -19,15 +19,14 @@ import ballerina/lang.array;
 import ballerinax/twitter;
 
 configurable string accessToken = ?;
+final string username = "<your username>";
+final twitter:Client twitter = check new ({
+    auth: {
+        token: accessToken
+    }
+});
 
 public function main() returns error? {
-    twitter:Client twitter = check new ({
-        auth: {
-            token: accessToken
-        }
-    });
-
-    string username = "ballerinalang";
     twitter:Get2UsersByUsernameUsernameResponse userResponse = check twitter->/users/'by/username/[username]();
     twitter:User? user = userResponse.data;
     if user is () {
@@ -64,9 +63,12 @@ public function main() returns error? {
         }
     }
 
-    twitter:Tweet[] sortedPerformingTweets = performingTweets.sort(array:DESCENDING, isolated function(twitter:Tweet t) returns int? => t.public_metrics?.like_count);
+    twitter:Tweet[] sortedPerformingTweets = performingTweets.sort(
+        array:DESCENDING,
+        isolated function(twitter:Tweet t) returns int? => t.public_metrics?.like_count
+    );
     io:println("Top Tweets by ", username, " in the last month: ");
-    foreach var tweet in sortedPerformingTweets {
+    foreach twitter:Tweet tweet in sortedPerformingTweets {
         io:println("Tweet: ", tweet.text);
         io:println("Likes: ", tweet.public_metrics?.like_count);
         io:println("Retweet Count: ", tweet.public_metrics?.retweet_count);
