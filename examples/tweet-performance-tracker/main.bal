@@ -18,11 +18,11 @@ import ballerina/io;
 import ballerina/lang.array;
 import ballerinax/twitter;
 
-configurable string accessToken = ?;
+configurable string token = ?;
 final string username = "<your username>";
 final twitter:Client twitter = check new ({
     auth: {
-        token: accessToken
+        token
     }
 });
 

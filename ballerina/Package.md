@@ -73,7 +73,7 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
 
 4. Use the obtained authorization code to run the following curl command, replacing `<your_client_id>`, `<your_redirect_url>`, `<your_code_verifier>`, and `<your_authorization_code>` with your specific values:
 
-    If you are using `linux` or `mac`, you can use curl command:
+    For `linux` or `mac`:
     
     ```bash
     curl --location "https://api.twitter.com/2/oauth2/token" \
@@ -85,7 +85,7 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
     --data-urlencode "code_verifier=<your_code_verifier>"
     ```
 
-    If you are using `windows`, you can use curl command:
+    For `windows`:
 
     ```bash
     curl --location "https://api.twitter.com/2/oauth2/token" ^
@@ -130,17 +130,17 @@ import ballerinax/twitter;
 1. Create a `Config.toml` file and Configure Twitter API v2 credentials in the `Config.toml` file.
 
 ```bash
-accessToken = "<Access Token>"
+token = "<Access Token>"
 ```
 
 2. Create a `twitter:ConnectionConfig` with the obtained **Access Token** and initialize the connector with it.
 
 ```ballerina
-configurable string accessToken = ?;
+configurable string token = ?;
 
 final twitter:Client twitter = check new({
     auth: {
-        accessToken
+        token
     }
 });
 ```

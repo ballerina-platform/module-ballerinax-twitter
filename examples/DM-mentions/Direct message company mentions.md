@@ -13,7 +13,7 @@ Refer to the [Setup guide](https://central.ballerina.io/ballerinax/twitter/lates
 Configure Twitter API v2 credentials in the `Config.toml` file in the example directory.
 
 ```bash
-accessToken = "<Access Token>"
+token = "<Access Token>"
 ```
 
 ## Run the example

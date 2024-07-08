@@ -17,10 +17,10 @@
 import ballerina/io;
 import ballerinax/twitter;
 
-configurable string accessToken = ?;
+configurable string token = ?;
 final twitter:Client twitter = check new ({
     auth: {
-        token: accessToken
+        token
     }
 });
 
