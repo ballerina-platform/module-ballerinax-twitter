@@ -10,9 +10,9 @@
 
 ## Overview
 
-[Twitter](https://about.twitter.com/) is a widely-used social networking service provided by Twitter, Inc., enabling users to post and interact with messages known as "tweets".
+[Twitter(X)](https://about.twitter.com/) is a widely-used social networking service provided by X Corp., enabling users to post and interact with messages known as "tweets".
 
-The `ballerinax/twitter` package offers APIs to connect and interact with [Twitter API](https://developer.twitter.com/en/docs/twitter-api) endpoints, specifically based on [Twitter API v2](https://developer.x.com/en/docs/twitter-api/migrate/whats-new).
+The `ballerinax/twitter` package offers APIs to connect and interact with [Twitter(X) API](https://developer.twitter.com/en/docs/twitter-api) endpoints, specifically based on [Twitter(X) API v2](https://developer.x.com/en/docs/twitter-api/migrate/whats-new).
 
 ## Setup guide
 
@@ -52,7 +52,14 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
 
     Replace `<your_client_id>`, `<your_redirect_uri>`, and `<your_code_challenge>` with your specific values. Make sure to include the necessary scopes depending on your use case.
 
-    Example:
+    **Note:** The "code verifier" is a randomly generated string used to verify the authorization code, and the "code challenge" is derived from the code verifier. These methods enhance security during the authorization process.
+    In OAuth 2.0 PKCE, there are two methods for creating a "code challenge":
+
+    1. **S256**: The code challenge is a base64 URL-encoded SHA256 hash of a randomly generated string called the "code verifier".
+    
+    2. **plain**: The code challenge is the plain code verifier string itself.
+
+    Example authorization URL:
 
     ```
     https://twitter.com/i/oauth2/authorize?response_type=code&client_id=asdasASDas21Y0OGR4bnUxSzA4c0k6MTpjaQ&redirect_uri=http://example&scope=tweet.read%20tweet.write%20users.read%20follows.read&state=state&code_challenge=D601XXCSK57UineGq62gUnsoasdas1GfKUY8QWhOF9hiN_k&code_challenge_method=plain
@@ -75,6 +82,20 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
     **Note:** Store the authorization code and use it promptly as it expires quickly.
 
 4. Use the obtained authorization code to run the following curl command, replacing `<your_client_id>`, `<your_redirect_url>`, `<your_code_verifier>`, and `<your_authorization_code>` with your specific values:
+
+    - Linux/MacOS:
+    
+    ```bash
+    curl --location "https://api.twitter.com/2/oauth2/token" \
+    --header "Content-Type: application/x-www-form-urlencoded" \
+    --data-urlencode "code=<your_authorization_code>" \
+    --data-urlencode "grant_type=authorization_code" \
+    --data-urlencode "client_id=<your_client_id>" \
+    --data-urlencode "redirect_uri=<your_redirect_url>" \
+    --data-urlencode "code_verifier=<your_code_verifier>"
+    ```
+
+    - Windows:
 
     ```bash
     curl --location "https://api.twitter.com/2/oauth2/token" ^
@@ -99,7 +120,7 @@ Before proceeding with the Quickstart, ensure you have obtained the Access Token
 
 5. Store the access token securely for use in your application.
 
-**Note**: We recommend using the OAuth 2.0 Authorization Code with PKCE method as used here, but there is another way using OAuth 2.0 App Only. If you want, you can go through this link: [OAuth 2.0 App Only](https://developer.twitter.com/en/docs/authentication/oauth-2-0/application-only). Refer to this document to check which operations in Twitter API v2 are done using which method: [API reference](https://developer.twitter.com/en/docs/authentication/guides/v2-authentication-mapping).
+**Note**: We recommend using the OAuth 2.0 Authorization Code with PKCE method as used here, but there is another way using OAuth 2.0 App Only [OAuth 2.0 App Only](https://developer.twitter.com/en/docs/authentication/oauth-2-0/application-only). Refer to this document to check which operations in Twitter API v2 are done using which method: [API reference](https://developer.twitter.com/en/docs/authentication/guides/v2-authentication-mapping).
 
 
 ## Quickstart
@@ -116,15 +137,21 @@ import ballerinax/twitter;
 
 ### Step 2: Instantiate a new connector
 
-Create a `twitter:ConnectionConfig` with the obtained **Access Token** and initialize the connector with it.
+1. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
+
+```bash
+token = "<Access Token>"
+```
+
+2. Create a `twitter:ConnectionConfig` with the obtained access token and initialize the connector with it.
 
 ```ballerina
 configurable string token = ?;
 
-twitter:Client twitter = check new({
-        auth: {
-            token
-        }
+final twitter:Client twitter = check new({
+    auth: {
+        token
+    }
 });
 ```
 
@@ -135,9 +162,13 @@ Now, utilize the available connector operations.
 #### Post a tweet
 
 ```ballerina
-twitter:TweetCreateResponse postTweet = check twitter->/tweets.post( payload = {
-    text: "This is a sample tweet"
-});
+public function main() returns error? {
+    twitter:TweetCreateResponse postTweet = check twitter->/tweets.post( 
+        payload = {
+            text: "This is a sample tweet"
+        }
+    );
+}
 ```
 
 ### Step 4: Run the Ballerina application

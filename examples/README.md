@@ -14,7 +14,7 @@ The `twitter` connector provides practical examples illustrating usage in variou
 2. For each example, create a `Config.toml` file the related configuration. Here's an example of how your `Config.toml` file should look:
 
     ```toml
-    accessToken="<Access Token>"
+    token = "<Access Token>"
     ```
 
 ## Running an Example
