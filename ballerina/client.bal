@@ -28,156 +28,15 @@ public isolated client class Client {
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ConnectionConfig config, string serviceUrl = "https://api.twitter.com/2") returns error? {
-        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
-        do {
-            if config.http1Settings is ClientHttp1Settings {
-                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
-                httpClientConfig.http1Settings = {...settings};
-            }
-            if config.http2Settings is http:ClientHttp2Settings {
-                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
-            }
-            if config.cache is http:CacheConfig {
-                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
-            }
-            if config.responseLimits is http:ResponseLimitConfigs {
-                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
-            }
-            if config.secureSocket is http:ClientSecureSocket {
-                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
-            }
-            if config.proxy is http:ProxyConfig {
-                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
-            }
-        }
-        http:Client httpEp = check new (serviceUrl, httpClientConfig);
-        self.clientEp = httpEp;
-        return;
-    }
-
-    # Delete Dm
-    #
-    # + event_id - The ID of the direct-message event to delete.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete dm_events/[DmEventId event_id](map<string|string[]> headers = {}) returns DeleteDmResponse|error {
-        string resourcePath = string `/dm_events/${getEncodedUri(event_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Delete List
-    #
-    # + id - The ID of the List to delete.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete lists/[ListId id](map<string|string[]> headers = {}) returns ListDeleteResponse|error {
-        string resourcePath = string `/lists/${getEncodedUri(id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Remove a List member
-    #
-    # + id - The ID of the List to remove a member.
-    # + user_id - The ID of User that will be removed from the List.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete lists/[ListId id]/members/[UserId user_id](map<string|string[]> headers = {}) returns ListMutateResponse|error {
-        string resourcePath = string `/lists/${getEncodedUri(id)}/members/${getEncodedUri(user_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Post delete by Post ID
-    #
-    # + id - The ID of the Post to be deleted.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete tweets/[TweetId id](map<string|string[]> headers = {}) returns TweetDeleteResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Remove a bookmarked Post
-    #
-    # + id - The ID of the authenticated source User whose bookmark is to be removed.
-    # + tweet_id - The ID of the Post that the source User is removing from bookmarks.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/bookmarks/[TweetId tweet_id](map<string|string[]> headers = {}) returns BookmarkMutationResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks/${getEncodedUri(tweet_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Unfollow a List
-    #
-    # + id - The ID of the authenticated source User that will unfollow the List.
-    # + list_id - The ID of the List to unfollow.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/followed_lists/[ListId list_id](map<string|string[]> headers = {}) returns ListFollowedResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists/${getEncodedUri(list_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Causes the User (in the path) to unlike the specified Post
-    #
-    # + id - The ID of the authenticated source User that is requesting to unlike the Post.
-    # + tweet_id - The ID of the Post that the User is requesting to unlike.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/likes/[TweetId tweet_id](map<string|string[]> headers = {}) returns UsersLikesDeleteResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/likes/${getEncodedUri(tweet_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Unpin a List
-    #
-    # + id - The ID of the authenticated source User for whom to return results.
-    # + list_id - The ID of the List to unpin.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/pinned_lists/[ListId list_id](map<string|string[]> headers = {}) returns ListUnpinResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists/${getEncodedUri(list_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Causes the User (in the path) to unretweet the specified Post
-    #
-    # + id - The ID of the authenticated source User that is requesting to repost the Post.
-    # + source_tweet_id - The ID of the Post that the User is requesting to unretweet.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/retweets/[TweetId source_tweet_id](map<string|string[]> headers = {}) returns UsersRetweetsDeleteResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/retweets/${getEncodedUri(source_tweet_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Unfollow User
-    #
-    # + source_user_id - The ID of the authenticated source User that is requesting to unfollow the target User.
-    # + target_user_id - The ID of the User that the source User is requesting to unfollow.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser source_user_id]/following/[UserId target_user_id](map<string|string[]> headers = {}) returns UsersFollowingDeleteResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(source_user_id)}/following/${getEncodedUri(target_user_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
-    }
-
-    # Unmute User by User ID
-    #
-    # + source_user_id - The ID of the authenticated source User that is requesting to unmute the target User.
-    # + target_user_id - The ID of the User that the source User is requesting to unmute.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function delete users/[UserIdMatchesAuthenticatedUser source_user_id]/muting/[UserId target_user_id](map<string|string[]> headers = {}) returns MuteUserMutationResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(source_user_id)}/muting/${getEncodedUri(target_user_id)}`;
-        return self.clientEp->delete(resourcePath, headers = headers);
+        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, http1Settings: config.http1Settings, http2Settings: config.http2Settings, timeout: config.timeout, forwarded: config.forwarded, followRedirects: config.followRedirects, poolConfig: config.poolConfig, cache: config.cache, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, cookieConfig: config.cookieConfig, responseLimits: config.responseLimits, secureSocket: config.secureSocket, proxy: config.proxy, socketConfig: config.socketConfig, validation: config.validation, laxDataBinding: config.laxDataBinding};
+        self.clientEp = check new (serviceUrl, httpClientConfig);
     }
 
     # List Compliance Jobs
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get compliance/jobs(map<string|string[]> headers = {}, *ListBatchComplianceJobsQueries queries) returns Get2ComplianceJobsResponse|error {
         string resourcePath = string `/compliance/jobs`;
         map<Encoding> queryParamEncoding = {"compliance_job.fields": {style: FORM, explode: false}};
@@ -185,12 +44,24 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Create compliance job
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post compliance/jobs(CreateComplianceJobRequest payload, map<string|string[]> headers = {}) returns CreateComplianceJobResponse|error {
+        string resourcePath = string `/compliance/jobs`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
     # Get Compliance Job
     #
-    # + id - The ID of the Compliance Job to retrieve.
+    # + id - The ID of the Compliance Job to retrieve
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get compliance/jobs/[JobId id](map<string|string[]> headers = {}, *GetBatchComplianceJobQueries queries) returns Get2ComplianceJobsIdResponse|error {
         string resourcePath = string `/compliance/jobs/${getEncodedUri(id)}`;
         map<Encoding> queryParamEncoding = {"compliance_job.fields": {style: FORM, explode: false}};
@@ -198,27 +69,65 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Create a new DM Conversation
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post dm_conversations(CreateDmConversationRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
+        string resourcePath = string `/dm_conversations`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
     # Get DM Events for a DM Conversation
     #
-    # + id - The DM Conversation ID.
+    # + participantId - The ID of the participant user for the One to One DM conversation
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get dm_conversations/[DmConversationId id]/dm_events(map<string|string[]> headers = {}, *GetDmConversationsIdDmEventsQueries queries) returns Get2DmConversationsIdDmEventsResponse|error {
-        string resourcePath = string `/dm_conversations/${getEncodedUri(id)}/dm_events`;
+    # + return - The request has succeeded 
+    resource isolated function get dm_conversations/with/[UserId participantId]/dm_events(map<string|string[]> headers = {}, *GetDmConversationsWithParticipantIdDmEventsQueries queries) returns Get2DmConversationsWithParticipantIdDmEventsResponse|error {
+        string resourcePath = string `/dm_conversations/with/${getEncodedUri(participantId)}/dm_events`;
         map<Encoding> queryParamEncoding = {"event_types": {style: FORM, explode: false}, "dm_event.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Send a new message to a user
+    #
+    # + participantId - The ID of the recipient user that will receive the DM
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post dm_conversations/with/[UserId participantId]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
+        string resourcePath = string `/dm_conversations/with/${getEncodedUri(participantId)}/messages`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Send a new message to a DM Conversation
+    #
+    # + dmConversationId - The DM Conversation ID
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post dm_conversations/[string dmConversationId]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
+        string resourcePath = string `/dm_conversations/${getEncodedUri(dmConversationId)}/messages`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
     # Get DM Events for a DM Conversation
     #
-    # + participant_id - The ID of the participant user for the One to One DM conversation.
+    # + id - The DM Conversation ID
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get dm_conversations/with/[UserId participant_id]/dm_events(map<string|string[]> headers = {}, *GetDmConversationsWithParticipantIdDmEventsQueries queries) returns Get2DmConversationsWithParticipantIdDmEventsResponse|error {
-        string resourcePath = string `/dm_conversations/with/${getEncodedUri(participant_id)}/dm_events`;
+    # + return - The request has succeeded 
+    resource isolated function get dm_conversations/[DmConversationId id]/dm_events(map<string|string[]> headers = {}, *GetDmConversationsIdDmEventsQueries queries) returns Get2DmConversationsIdDmEventsResponse|error {
+        string resourcePath = string `/dm_conversations/${getEncodedUri(id)}/dm_events`;
         map<Encoding> queryParamEncoding = {"event_types": {style: FORM, explode: false}, "dm_event.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
@@ -228,7 +137,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get dm_events(map<string|string[]> headers = {}, *GetDmEventsQueries queries) returns Get2DmEventsResponse|error {
         string resourcePath = string `/dm_events`;
         map<Encoding> queryParamEncoding = {"event_types": {style: FORM, explode: false}, "dm_event.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -238,15 +147,25 @@ public isolated client class Client {
 
     # Get DM Events by id
     #
-    # + event_id - dm event id.
+    # + eventId - dm event id
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get dm_events/[DmEventId event_id](map<string|string[]> headers = {}, *GetDmEventsByIdQueries queries) returns Get2DmEventsEventIdResponse|error {
-        string resourcePath = string `/dm_events/${getEncodedUri(event_id)}`;
+    # + return - The request has succeeded 
+    resource isolated function get dm_events/[DmEventId eventId](map<string|string[]> headers = {}, *GetDmEventsByIdQueries queries) returns Get2DmEventsEventIdResponse|error {
+        string resourcePath = string `/dm_events/${getEncodedUri(eventId)}`;
         map<Encoding> queryParamEncoding = {"dm_event.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Delete Dm
+    #
+    # + eventId - The ID of the direct-message event to delete
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete dm_events/[DmEventId eventId](map<string|string[]> headers = {}) returns DeleteDmResponse|error {
+        string resourcePath = string `/dm_events/${getEncodedUri(eventId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
     }
 
     resource isolated function get likes/compliance/'stream(map<string|string[]> headers = {}, *GetLikesComplianceStreamQueries queries) returns LikesComplianceStreamResponse|error {
@@ -269,12 +188,24 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Create List
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post lists(ListCreateRequest payload, map<string|string[]> headers = {}) returns ListCreateResponse|error {
+        string resourcePath = string `/lists`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
     # List lookup by List ID.
     #
-    # + id - The ID of the List.
+    # + id - The ID of the List
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get lists/[ListId id](map<string|string[]> headers = {}, *ListIdGetQueries queries) returns Get2ListsIdResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}`;
         map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
@@ -282,12 +213,35 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Update List.
+    #
+    # + id - The ID of the List to modify
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function put lists/[ListId id](ListUpdateRequest payload, map<string|string[]> headers = {}) returns ListUpdateResponse|error {
+        string resourcePath = string `/lists/${getEncodedUri(id)}`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->put(resourcePath, request, headers);
+    }
+
+    # Delete List
+    #
+    # + id - The ID of the List to delete
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete lists/[ListId id](map<string|string[]> headers = {}) returns ListDeleteResponse|error {
+        string resourcePath = string `/lists/${getEncodedUri(id)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
     # Returns User objects that follow a List by the provided List ID
     #
-    # + id - The ID of the List.
+    # + id - The ID of the List
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get lists/[ListId id]/followers(map<string|string[]> headers = {}, *ListGetFollowersQueries queries) returns Get2ListsIdFollowersResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}/followers`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -297,10 +251,10 @@ public isolated client class Client {
 
     # Returns User objects that are members of a List by the provided List ID.
     #
-    # + id - The ID of the List.
+    # + id - The ID of the List
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get lists/[ListId id]/members(map<string|string[]> headers = {}, *ListGetMembersQueries queries) returns Get2ListsIdMembersResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}/members`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -308,12 +262,36 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Add a List member
+    #
+    # + id - The ID of the List for which to add a member
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function post lists/[ListId id]/members(ListAddUserRequest payload, map<string|string[]> headers = {}) returns ListMutateResponse|error {
+        string resourcePath = string `/lists/${getEncodedUri(id)}/members`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Remove a List member
+    #
+    # + id - The ID of the List to remove a member
+    # + userId - The ID of User that will be removed from the List
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete lists/[ListId id]/members/[UserId userId](map<string|string[]> headers = {}) returns ListMutateResponse|error {
+        string resourcePath = string `/lists/${getEncodedUri(id)}/members/${getEncodedUri(userId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
     # List Posts timeline by List ID.
     #
-    # + id - The ID of the List.
+    # + id - The ID of the List
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get lists/[ListId id]/tweets(map<string|string[]> headers = {}, *ListsIdTweetsQueries queries) returns Get2ListsIdTweetsResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}/tweets`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -330,7 +308,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get spaces(map<string|string[]> headers = {}, *FindSpacesByIdsQueries queries) returns Get2SpacesResponse|error {
         string resourcePath = string `/spaces`;
         map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: true}, "space.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "topic.fields": {style: FORM, explode: false}};
@@ -345,12 +323,24 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Space lookup by Space ID
+    # Search for Spaces
     #
-    # + id - The ID of the Space to be retrieved.
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
+    resource isolated function get spaces/search(map<string|string[]> headers = {}, *SearchSpacesQueries queries) returns Get2SpacesSearchResponse|error {
+        string resourcePath = string `/spaces/search`;
+        map<Encoding> queryParamEncoding = {"space.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "topic.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Space lookup by Space ID
+    #
+    # + id - The ID of the Space to be retrieved
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get spaces/[string id](map<string|string[]> headers = {}, *FindSpaceByIdQueries queries) returns Get2SpacesIdResponse|error {
         string resourcePath = string `/spaces/${getEncodedUri(id)}`;
         map<Encoding> queryParamEncoding = {"space.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "topic.fields": {style: FORM, explode: false}};
@@ -360,10 +350,10 @@ public isolated client class Client {
 
     # Retrieve the list of Users who purchased a ticket to the given space
     #
-    # + id - The ID of the Space to be retrieved.
+    # + id - The ID of the Space to be retrieved
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get spaces/[string id]/buyers(map<string|string[]> headers = {}, *SpaceBuyersQueries queries) returns Get2SpacesIdBuyersResponse|error {
         string resourcePath = string `/spaces/${getEncodedUri(id)}/buyers`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -373,25 +363,13 @@ public isolated client class Client {
 
     # Retrieve Posts from a Space.
     #
-    # + id - The ID of the Space to be retrieved.
+    # + id - The ID of the Space to be retrieved
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get spaces/[string id]/tweets(map<string|string[]> headers = {}, *SpaceTweetsQueries queries) returns Get2SpacesIdTweetsResponse|error {
         string resourcePath = string `/spaces/${getEncodedUri(id)}/tweets`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Search for Spaces
-    #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get spaces/search(map<string|string[]> headers = {}, *SearchSpacesQueries queries) returns Get2SpacesSearchResponse|error {
-        string resourcePath = string `/spaces/search`;
-        map<Encoding> queryParamEncoding = {"space.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "topic.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
     }
@@ -407,7 +385,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get tweets(map<string|string[]> headers = {}, *FindTweetsByIdQueries queries) returns Get2TweetsResponse|error {
         string resourcePath = string `/tweets`;
         map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -415,69 +393,16 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Post lookup by Post ID
+    # Creation of a Post
     #
-    # + id - A single Post ID.
     # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/[TweetId id](map<string|string[]> headers = {}, *FindTweetByIdQueries queries) returns Get2TweetsIdResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}`;
-        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Returns User objects that have liked the provided Post ID
-    #
-    # + id - A single Post ID.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/[TweetId id]/liking_users(map<string|string[]> headers = {}, *TweetsIdLikingUsersQueries queries) returns Get2TweetsIdLikingUsersResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}/liking_users`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Retrieve Posts that quote a Post.
-    #
-    # + id - A single Post ID.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/[TweetId id]/quote_tweets(map<string|string[]> headers = {}, *FindTweetsThatQuoteATweetQueries queries) returns Get2TweetsIdQuoteTweetsResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}/quote_tweets`;
-        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Returns User objects that have retweeted the provided Post ID
-    #
-    # + id - A single Post ID.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/[TweetId id]/retweeted_by(map<string|string[]> headers = {}, *TweetsIdRetweetingUsersQueries queries) returns Get2TweetsIdRetweetedByResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}/retweeted_by`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Retrieve Posts that repost a Post.
-    #
-    # + id - A single Post ID.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/[TweetId id]/retweets(map<string|string[]> headers = {}, *FindTweetsThatRetweetATweetQueries queries) returns Get2TweetsIdRetweetsResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(id)}/retweets`;
-        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
+    # + return - The request has succeeded 
+    resource isolated function post tweets(TweetCreateRequest payload, map<string|string[]> headers = {}) returns TweetCreateResponse|error {
+        string resourcePath = string `/tweets`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
     }
 
     resource isolated function get tweets/compliance/'stream(map<string|string[]> headers = {}, *GetTweetsComplianceStreamQueries queries) returns TweetComplianceStreamResponse|error {
@@ -490,7 +415,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get tweets/counts/all(map<string|string[]> headers = {}, *TweetCountsFullArchiveSearchQueries queries) returns Get2TweetsCountsAllResponse|error {
         string resourcePath = string `/tweets/counts/all`;
         map<Encoding> queryParamEncoding = {"search_count.fields": {style: FORM, explode: false}};
@@ -502,7 +427,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get tweets/counts/recent(map<string|string[]> headers = {}, *TweetCountsRecentSearchQueries queries) returns Get2TweetsCountsRecentResponse|error {
         string resourcePath = string `/tweets/counts/recent`;
         map<Encoding> queryParamEncoding = {"search_count.fields": {style: FORM, explode: false}};
@@ -565,6 +490,30 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Full-archive search
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get tweets/search/all(map<string|string[]> headers = {}, *TweetsFullarchiveSearchQueries queries) returns Get2TweetsSearchAllResponse|error {
+        string resourcePath = string `/tweets/search/all`;
+        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Recent search
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get tweets/search/recent(map<string|string[]> headers = {}, *TweetsRecentSearchQueries queries) returns Get2TweetsSearchRecentResponse|error {
+        string resourcePath = string `/tweets/search/recent`;
+        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     resource isolated function get tweets/search/'stream(map<string|string[]> headers = {}, *SearchStreamQueries queries) returns FilteredStreamingTweetResponse|error {
         string resourcePath = string `/tweets/search/stream`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -579,6 +528,15 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    resource isolated function post tweets/search/'stream/rules(AddOrDeleteRulesRequest payload, map<string|string[]> headers = {}, *AddOrDeleteRulesQueries queries) returns AddOrDeleteRulesResponse|error {
+        string resourcePath = string `/tweets/search/stream/rules`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
     resource isolated function get tweets/search/'stream/rules/counts(map<string|string[]> headers = {}, *GetRuleCountQueries queries) returns Get2TweetsSearchStreamRulesCountsResponse|error {
         string resourcePath = string `/tweets/search/stream/rules/counts`;
         map<Encoding> queryParamEncoding = {"rules_count.fields": {style: FORM, explode: false}};
@@ -586,35 +544,99 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Full-archive search
+    # Post lookup by Post ID
     #
+    # + id - A single Post ID
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/search/all(map<string|string[]> headers = {}, *TweetsFullarchiveSearchQueries queries) returns Get2TweetsSearchAllResponse|error {
-        string resourcePath = string `/tweets/search/all`;
+    # + return - The request has succeeded 
+    resource isolated function get tweets/[TweetId id](map<string|string[]> headers = {}, *FindTweetByIdQueries queries) returns Get2TweetsIdResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Recent search
+    # Post delete by Post ID
     #
+    # + id - The ID of the Post to be deleted
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete tweets/[TweetId id](map<string|string[]> headers = {}) returns TweetDeleteResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Returns User objects that have liked the provided Post ID
+    #
+    # + id - A single Post ID
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get tweets/search/recent(map<string|string[]> headers = {}, *TweetsRecentSearchQueries queries) returns Get2TweetsSearchRecentResponse|error {
-        string resourcePath = string `/tweets/search/recent`;
+    # + return - The request has succeeded 
+    resource isolated function get tweets/[TweetId id]/liking_users(map<string|string[]> headers = {}, *TweetsIdLikingUsersQueries queries) returns Get2TweetsIdLikingUsersResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}/liking_users`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Retrieve Posts that quote a Post.
+    #
+    # + id - A single Post ID
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get tweets/[TweetId id]/quote_tweets(map<string|string[]> headers = {}, *FindTweetsThatQuoteATweetQueries queries) returns Get2TweetsIdQuoteTweetsResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}/quote_tweets`;
+        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Returns User objects that have retweeted the provided Post ID
+    #
+    # + id - A single Post ID
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get tweets/[TweetId id]/retweeted_by(map<string|string[]> headers = {}, *TweetsIdRetweetingUsersQueries queries) returns Get2TweetsIdRetweetedByResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}/retweeted_by`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Retrieve Posts that repost a Post.
+    #
+    # + id - A single Post ID
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get tweets/[TweetId id]/retweets(map<string|string[]> headers = {}, *FindTweetsThatRetweetATweetQueries queries) returns Get2TweetsIdRetweetsResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(id)}/retweets`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
         return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Hide replies
+    #
+    # + tweetId - The ID of the reply that you want to hide or unhide
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function put tweets/[TweetId tweetId]/hidden(TweetHideRequest payload, map<string|string[]> headers = {}) returns TweetHideResponse|error {
+        string resourcePath = string `/tweets/${getEncodedUri(tweetId)}/hidden`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->put(resourcePath, request, headers);
     }
 
     # Post Usage
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get usage/tweets(map<string|string[]> headers = {}, *GetUsageTweetsQueries queries) returns Get2UsageTweetsResponse|error {
         string resourcePath = string `/usage/tweets`;
         map<Encoding> queryParamEncoding = {"usage.fields": {style: FORM, explode: false}};
@@ -626,7 +648,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get users(map<string|string[]> headers = {}, *FindUsersByIdQueries queries) returns Get2UsersResponse|error {
         string resourcePath = string `/users`;
         map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -648,188 +670,6 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Returns User objects that are blocked by provided User ID
-    #
-    # + id - The ID of the authenticated source User for whom to return results.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/blocking(map<string|string[]> headers = {}, *UsersIdBlockingQueries queries) returns Get2UsersIdBlockingResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/blocking`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Bookmarks by User
-    #
-    # + id - The ID of the authenticated source User for whom to return results.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/bookmarks(map<string|string[]> headers = {}, *GetUsersIdBookmarksQueries queries) returns Get2UsersIdBookmarksResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks`;
-        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Returns User objects that are muted by the provided User ID
-    #
-    # + id - The ID of the authenticated source User for whom to return results.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/muting(map<string|string[]> headers = {}, *UsersIdMutingQueries queries) returns Get2UsersIdMutingResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/muting`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Get a User's Pinned Lists
-    #
-    # + id - The ID of the authenticated source User for whom to return results.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/pinned_lists(map<string|string[]> headers = {}, *ListUserPinnedListsQueries queries) returns Get2UsersIdPinnedListsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists`;
-        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # User home timeline by User ID
-    #
-    # + id - The ID of the authenticated source User to list Reverse Chronological Timeline Posts of.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/timelines/reverse_chronological(map<string|string[]> headers = {}, *UsersIdTimelineQueries queries) returns Get2UsersIdTimelinesReverseChronologicalResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/timelines/reverse_chronological`;
-        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # User lookup by ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id](map<string|string[]> headers = {}, *FindUserByIdQueries queries) returns Get2UsersIdResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Get User's Followed Lists
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/followed_lists(map<string|string[]> headers = {}, *UserFollowedListsQueries queries) returns Get2UsersIdFollowedListsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists`;
-        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Followers by User ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/followers(map<string|string[]> headers = {}, *UsersIdFollowersQueries queries) returns Get2UsersIdFollowersResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/followers`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Following by User ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/following(map<string|string[]> headers = {}, *UsersIdFollowingQueries queries) returns Get2UsersIdFollowingResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/following`;
-        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Returns Post objects liked by the provided User ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/liked_tweets(map<string|string[]> headers = {}, *UsersIdLikedTweetsQueries queries) returns Get2UsersIdLikedTweetsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/liked_tweets`;
-        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Get a User's List Memberships
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/list_memberships(map<string|string[]> headers = {}, *GetUserListMembershipsQueries queries) returns Get2UsersIdListMembershipsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/list_memberships`;
-        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # User mention timeline by User ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/mentions(map<string|string[]> headers = {}, *UsersIdMentionsQueries queries) returns Get2UsersIdMentionsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/mentions`;
-        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # Get a User's Owned Lists.
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/owned_lists(map<string|string[]> headers = {}, *ListUserOwnedListsQueries queries) returns Get2UsersIdOwnedListsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/owned_lists`;
-        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
-    # User Posts timeline by User ID
-    #
-    # + id - The ID of the User to lookup.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function get users/[UserId id]/tweets(map<string|string[]> headers = {}, *UsersIdTweetsQueries queries) returns Get2UsersIdTweetsResponse|error {
-        string resourcePath = string `/users/${getEncodedUri(id)}/tweets`;
-        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
-        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
-        return self.clientEp->get(resourcePath, headers);
-    }
-
     resource isolated function get users/compliance/'stream(map<string|string[]> headers = {}, *GetUsersComplianceStreamQueries queries) returns UserComplianceStreamResponse|error {
         string resourcePath = string `/users/compliance/stream`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
@@ -840,7 +680,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get users/me(map<string|string[]> headers = {}, *FindMyUserQueries queries) returns Get2UsersMeResponse|error {
         string resourcePath = string `/users/me`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -852,7 +692,7 @@ public isolated client class Client {
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function get users/search(map<string|string[]> headers = {}, *SearchUserByQueryQueries queries) returns Get2UsersSearchResponse|error {
         string resourcePath = string `/users/search`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -860,107 +700,50 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
-    # Create compliance job
+    # User lookup by ID
     #
+    # + id - The ID of the User to lookup
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post compliance/jobs(CreateComplianceJobRequest payload, map<string|string[]> headers = {}) returns CreateComplianceJobResponse|error {
-        string resourcePath = string `/compliance/jobs`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id](map<string|string[]> headers = {}, *FindUserByIdQueries queries) returns Get2UsersIdResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
     }
 
-    # Create a new DM Conversation
+    # Returns User objects that are blocked by provided User ID
     #
+    # + id - The ID of the authenticated source User for whom to return results
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post dm_conversations(CreateDmConversationRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
-        string resourcePath = string `/dm_conversations`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/blocking(map<string|string[]> headers = {}, *UsersIdBlockingQueries queries) returns Get2UsersIdBlockingResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/blocking`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
     }
 
-    # Send a new message to a DM Conversation
+    # Bookmarks by User
     #
-    # + dm_conversation_id - The DM Conversation ID.
+    # + id - The ID of the authenticated source User for whom to return results
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post dm_conversations/[string dm_conversation_id]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
-        string resourcePath = string `/dm_conversations/${getEncodedUri(dm_conversation_id)}/messages`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
-    }
-
-    # Send a new message to a user
-    #
-    # + participant_id - The ID of the recipient user that will receive the DM.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post dm_conversations/with/[UserId participant_id]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
-        string resourcePath = string `/dm_conversations/with/${getEncodedUri(participant_id)}/messages`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
-    }
-
-    # Create List
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post lists(ListCreateRequest payload, map<string|string[]> headers = {}) returns ListCreateResponse|error {
-        string resourcePath = string `/lists`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
-    }
-
-    # Add a List member
-    #
-    # + id - The ID of the List for which to add a member.
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post lists/[ListId id]/members(ListAddUserRequest payload, map<string|string[]> headers = {}) returns ListMutateResponse|error {
-        string resourcePath = string `/lists/${getEncodedUri(id)}/members`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
-    }
-
-    # Creation of a Post
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function post tweets(TweetCreateRequest payload, map<string|string[]> headers = {}) returns TweetCreateResponse|error {
-        string resourcePath = string `/tweets`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
-    }
-
-    resource isolated function post tweets/search/'stream/rules(AddOrDeleteRulesRequest payload, map<string|string[]> headers = {}, *AddOrDeleteRulesQueries queries) returns AddOrDeleteRulesResponse|error {
-        string resourcePath = string `/tweets/search/stream/rules`;
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, headers);
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/bookmarks(map<string|string[]> headers = {}, *GetUsersIdBookmarksQueries queries) returns Get2UsersIdBookmarksResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks`;
+        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
     }
 
     # Add Post to Bookmarks
     #
-    # + id - The ID of the authenticated source User for whom to add bookmarks.
+    # + id - The ID of the authenticated source User for whom to add bookmarks
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/bookmarks(BookmarkAddRequest payload, map<string|string[]> headers = {}) returns BookmarkMutationResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks`;
         http:Request request = new;
@@ -969,11 +752,35 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Remove a bookmarked Post
+    #
+    # + id - The ID of the authenticated source User whose bookmark is to be removed
+    # + tweetId - The ID of the Post that the source User is removing from bookmarks
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/bookmarks/[TweetId tweetId](map<string|string[]> headers = {}) returns BookmarkMutationResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks/${getEncodedUri(tweetId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Get User's Followed Lists
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/followed_lists(map<string|string[]> headers = {}, *UserFollowedListsQueries queries) returns Get2UsersIdFollowedListsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists`;
+        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     # Follow a List
     #
-    # + id - The ID of the authenticated source User that will follow the List.
+    # + id - The ID of the authenticated source User that will follow the List
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/followed_lists(ListFollowedRequest payload, map<string|string[]> headers = {}) returns ListFollowedResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists`;
         http:Request request = new;
@@ -982,11 +789,48 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Unfollow a List
+    #
+    # + id - The ID of the authenticated source User that will unfollow the List
+    # + listId - The ID of the List to unfollow
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/followed_lists/[ListId listId](map<string|string[]> headers = {}) returns ListFollowedResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists/${getEncodedUri(listId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Followers by User ID
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/followers(map<string|string[]> headers = {}, *UsersIdFollowersQueries queries) returns Get2UsersIdFollowersResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/followers`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Following by User ID
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/following(map<string|string[]> headers = {}, *UsersIdFollowingQueries queries) returns Get2UsersIdFollowingResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/following`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     # Follow User
     #
-    # + id - The ID of the authenticated source User that is requesting to follow the target User.
+    # + id - The ID of the authenticated source User that is requesting to follow the target User
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/following(UsersFollowingCreateRequest payload, map<string|string[]> headers = {}) returns UsersFollowingCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/following`;
         http:Request request = new;
@@ -995,11 +839,24 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Returns Post objects liked by the provided User ID
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/liked_tweets(map<string|string[]> headers = {}, *UsersIdLikedTweetsQueries queries) returns Get2UsersIdLikedTweetsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/liked_tweets`;
+        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     # Causes the User (in the path) to like the specified Post
     #
-    # + id - The ID of the authenticated source User that is requesting to like the Post.
+    # + id - The ID of the authenticated source User that is requesting to like the Post
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/likes(UsersLikesCreateRequest payload, map<string|string[]> headers = {}) returns UsersLikesCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/likes`;
         http:Request request = new;
@@ -1008,11 +865,61 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Causes the User (in the path) to unlike the specified Post
+    #
+    # + id - The ID of the authenticated source User that is requesting to unlike the Post
+    # + tweetId - The ID of the Post that the User is requesting to unlike
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/likes/[TweetId tweetId](map<string|string[]> headers = {}) returns UsersLikesDeleteResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/likes/${getEncodedUri(tweetId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Get a User's List Memberships
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/list_memberships(map<string|string[]> headers = {}, *GetUserListMembershipsQueries queries) returns Get2UsersIdListMembershipsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/list_memberships`;
+        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # User mention timeline by User ID
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/mentions(map<string|string[]> headers = {}, *UsersIdMentionsQueries queries) returns Get2UsersIdMentionsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/mentions`;
+        map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Returns User objects that are muted by the provided User ID
+    #
+    # + id - The ID of the authenticated source User for whom to return results
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/muting(map<string|string[]> headers = {}, *UsersIdMutingQueries queries) returns Get2UsersIdMutingResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/muting`;
+        map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     # Mute User by User ID.
     #
-    # + id - The ID of the authenticated source User that is requesting to mute the target User.
+    # + id - The ID of the authenticated source User that is requesting to mute the target User
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/muting(MuteUserRequest payload, map<string|string[]> headers = {}) returns MuteUserMutationResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/muting`;
         http:Request request = new;
@@ -1021,11 +928,37 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Get a User's Owned Lists.
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/owned_lists(map<string|string[]> headers = {}, *ListUserOwnedListsQueries queries) returns Get2UsersIdOwnedListsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/owned_lists`;
+        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Get a User's Pinned Lists
+    #
+    # + id - The ID of the authenticated source User for whom to return results
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/pinned_lists(map<string|string[]> headers = {}, *ListUserPinnedListsQueries queries) returns Get2UsersIdPinnedListsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists`;
+        map<Encoding> queryParamEncoding = {"list.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
     # Pin a List
     #
-    # + id - The ID of the authenticated source User that will pin the List.
+    # + id - The ID of the authenticated source User that will pin the List
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/pinned_lists(ListPinnedRequest payload, map<string|string[]> headers = {}) returns ListPinnedResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists`;
         http:Request request = new;
@@ -1034,11 +967,22 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Unpin a List
+    #
+    # + id - The ID of the authenticated source User for whom to return results
+    # + listId - The ID of the List to unpin
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/pinned_lists/[ListId listId](map<string|string[]> headers = {}) returns ListUnpinResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists/${getEncodedUri(listId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
     # Causes the User (in the path) to repost the specified Post.
     #
-    # + id - The ID of the authenticated source User that is requesting to repost the Post.
+    # + id - The ID of the authenticated source User that is requesting to repost the Post
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
+    # + return - The request has succeeded 
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/retweets(UsersRetweetsCreateRequest payload, map<string|string[]> headers = {}) returns UsersRetweetsCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/retweets`;
         http:Request request = new;
@@ -1047,29 +991,62 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
-    # Update List.
+    # Causes the User (in the path) to unretweet the specified Post
     #
-    # + id - The ID of the List to modify.
+    # + id - The ID of the authenticated source User that is requesting to repost the Post
+    # + sourceTweetId - The ID of the Post that the User is requesting to unretweet
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function put lists/[ListId id](ListUpdateRequest payload, map<string|string[]> headers = {}) returns ListUpdateResponse|error {
-        string resourcePath = string `/lists/${getEncodedUri(id)}`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->put(resourcePath, request, headers);
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser id]/retweets/[TweetId sourceTweetId](map<string|string[]> headers = {}) returns UsersRetweetsDeleteResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/retweets/${getEncodedUri(sourceTweetId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
     }
 
-    # Hide replies
+    # User home timeline by User ID
     #
-    # + tweet_id - The ID of the reply that you want to hide or unhide.
+    # + id - The ID of the authenticated source User to list Reverse Chronological Timeline Posts of
     # + headers - Headers to be sent with the request 
-    # + return - The request has succeeded. 
-    resource isolated function put tweets/[TweetId tweet_id]/hidden(TweetHideRequest payload, map<string|string[]> headers = {}) returns TweetHideResponse|error {
-        string resourcePath = string `/tweets/${getEncodedUri(tweet_id)}/hidden`;
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->put(resourcePath, request, headers);
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserIdMatchesAuthenticatedUser id]/timelines/reverse_chronological(map<string|string[]> headers = {}, *UsersIdTimelineQueries queries) returns Get2UsersIdTimelinesReverseChronologicalResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/timelines/reverse_chronological`;
+        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # User Posts timeline by User ID
+    #
+    # + id - The ID of the User to lookup
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function get users/[UserId id]/tweets(map<string|string[]> headers = {}, *UsersIdTweetsQueries queries) returns Get2UsersIdTweetsResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(id)}/tweets`;
+        map<Encoding> queryParamEncoding = {"exclude": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queries, queryParamEncoding);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Unfollow User
+    #
+    # + sourceUserId - The ID of the authenticated source User that is requesting to unfollow the target User
+    # + targetUserId - The ID of the User that the source User is requesting to unfollow
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser sourceUserId]/following/[UserId targetUserId](map<string|string[]> headers = {}) returns UsersFollowingDeleteResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(sourceUserId)}/following/${getEncodedUri(targetUserId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Unmute User by User ID
+    #
+    # + sourceUserId - The ID of the authenticated source User that is requesting to unmute the target User
+    # + targetUserId - The ID of the User that the source User is requesting to unmute
+    # + headers - Headers to be sent with the request 
+    # + return - The request has succeeded 
+    resource isolated function delete users/[UserIdMatchesAuthenticatedUser sourceUserId]/muting/[UserId targetUserId](map<string|string[]> headers = {}) returns MuteUserMutationResponse|error {
+        string resourcePath = string `/users/${getEncodedUri(sourceUserId)}/muting/${getEncodedUri(targetUserId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
     }
 }
