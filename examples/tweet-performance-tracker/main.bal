@@ -46,7 +46,7 @@ public function main() returns error? {
     }
 
     twitter:FindTweetByIdQueries queries = {
-        tweet\.fields: ["public_metrics"]
+        tweetFields: ["public_metrics"]
     };
     twitter:Tweet[] performingTweets = [];
     foreach twitter:Tweet tweet in tweets {
@@ -58,19 +58,19 @@ public function main() returns error? {
         twitter:Get2TweetsIdResponse tweetResponse = check twitter->/tweets/[tweetId](queries = queries);
         twitter:Tweet? tweetData = tweetResponse.data;
         if tweetData !is () {
-            tweet.public_metrics = tweetData?.public_metrics;
+            tweet.publicMetrics = tweetData?.publicMetrics;
             performingTweets.push(tweet);
         }
     }
 
     twitter:Tweet[] sortedPerformingTweets = performingTweets.sort(
         array:DESCENDING,
-        isolated function(twitter:Tweet t) returns int? => t.public_metrics?.like_count
+        isolated function(twitter:Tweet t) returns int? => t.publicMetrics?.likeCount
     );
     io:println("Top Tweets by ", username, " in the last month: ");
     foreach twitter:Tweet tweet in sortedPerformingTweets {
         io:println("Tweet: ", tweet.text);
-        io:println("Likes: ", tweet.public_metrics?.like_count);
-        io:println("Retweet Count: ", tweet.public_metrics?.retweet_count);
+        io:println("Likes: ", tweet.publicMetrics?.likeCount);
+        io:println("Retweet Count: ", tweet.publicMetrics?.retweetCount);
     }
 }

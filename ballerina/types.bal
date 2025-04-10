@@ -18,318 +18,191 @@
 // under the License.
 
 import ballerina/constraint;
+import ballerina/data.jsondata;
 import ballerina/http;
 
-public type Get2DmConversationsIdDmEventsResponse_meta record {
-    NextToken next_token?;
-    PreviousToken previous_token?;
-    ResultCount result_count?;
-};
-
-# The previous token.
-@constraint:String {minLength: 1}
-public type PreviousToken string;
-
-# Creation time of the compliance job.
-public type CreatedAt string;
-
-public type UsersFollowingCreateResponse_data record {
-    boolean following?;
-    boolean pending_follow?;
+public type Get2TweetsCountsAllResponseMeta record {
+    @jsondata:Name {value: "total_tweet_count"}
+    Aggregate totalTweetCount?;
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
 };
 
 public type ListPinnedRequest record {
-    ListId list_id;
-};
-
-# Represents the Queries record for the operation: listsIdTweets
-public type ListsIdTweetsQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-# Represents the Queries record for the operation: getTweetsSample10Stream
-public type GetTweetsSample10StreamQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 2}
-    int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+    @jsondata:Name {value: "list_id"}
+    ListId listId;
 };
 
 public type UnlikeComplianceSchema record {
-    # Event time.
-    string event_at;
-    UnlikeComplianceSchema_favorite favorite;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    UnlikeComplianceSchemaFavorite favorite;
 };
 
 # Represents the Queries record for the operation: listGetFollowers
 public type ListGetFollowersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-public type UserComplianceSchema record {
-    # Event time.
-    string event_at;
-    UserComplianceSchema_user user;
-};
-
-public type Get2SpacesIdResponse record {
-    Space data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-};
-
-public type Tweet_edit_controls record {
-    # Time when Tweet is no longer editable.
-    string editable_until;
-    # Number of times this Tweet can be edited.
-    int edits_remaining;
-    # Indicates if this Tweet is eligible to be edited.
-    boolean is_edit_eligible;
-};
-
-public type TweetUnviewableSchema record {
-    TweetUnviewable public_tweet_unviewable;
-};
-
-public type ListUpdateResponse_data record {
-    boolean updated?;
-};
-
-# HTTP Status Code.
+# HTTP Status Code
 @constraint:Int {minValue: 100, maxValue: 599}
 public type HttpStatusCode int;
 
-# Specifies the type of attachments (if any) present in this Tweet.
-public type Tweet_attachments record {
-    # A list of Media Keys for each one of the media attachments (if media are attached).
-    @constraint:Array {minLength: 1}
-    MediaKey[] media_keys?;
-    # A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet..
-    @constraint:Array {minLength: 1}
-    TweetId[] media_source_tweet_id?;
-    # A list of poll IDs (if polls are attached).
-    @constraint:Array {minLength: 1}
-    PollId[] poll_ids?;
-};
-
-# Tweet label data.
-public type TweetLabelData TweetNoticeSchema|TweetUnviewableSchema;
-
-# Represents the Queries record for the operation: usersIdLikedTweets
-public type UsersIdLikedTweetsQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 5, maxValue: 100}
-    int:Signed32 max_results?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
 public type UserScrubGeoObjectSchema record {
-    # Event time.
-    string event_at;
-    TweetId up_to_tweet_id;
-    UserComplianceSchema_user user;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    UserScrubGeoObjectSchemaUser user;
+    @jsondata:Name {value: "up_to_tweet_id"}
+    TweetId upToTweetId;
+};
+
+public type Get2UsersIdLikedTweetsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
 
 # Represents the Queries record for the operation: findUserByUsername
 public type FindUserByUsernameQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-# A request to create a new batch compliance job.
+# A request to create a new batch compliance job
 public type CreateComplianceJobRequest record {
-    ComplianceJobName name?;
-    # If true, this endpoint will return a pre-signed URL with resumable uploads enabled.
+    # If true, this endpoint will return a pre-signed URL with resumable uploads enabled
     boolean resumable?;
-    # Type of compliance job to list.
+    ComplianceJobName name?;
+    # Type of compliance job to list
     "tweets"|"users" 'type;
 };
 
-# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
-@display {label: "Connection Config"}
-public type ConnectionConfig record {|
-    # Configurations related to client authentication
-    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
-    # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_2_0;
-    # Configurations related to HTTP/1.x protocol
-    ClientHttp1Settings http1Settings?;
-    # Configurations related to HTTP/2 protocol
-    http:ClientHttp2Settings http2Settings?;
-    # The maximum time to wait (in seconds) for a response before closing the connection
-    decimal timeout = 60;
-    # The choice of setting `forwarded`/`x-forwarded` header
-    string forwarded = "disable";
-    # Configurations associated with request pooling
-    http:PoolConfiguration poolConfig?;
-    # HTTP caching related configurations
-    http:CacheConfig cache?;
-    # Specifies the way of handling compression (`accept-encoding`) header
-    http:Compression compression = http:COMPRESSION_AUTO;
-    # Configurations associated with the behaviour of the Circuit Breaker
-    http:CircuitBreakerConfig circuitBreaker?;
-    # Configurations associated with retrying
-    http:RetryConfig retryConfig?;
-    # Configurations associated with inbound response size limits
-    http:ResponseLimitConfigs responseLimits?;
-    # SSL/TLS-related options
-    http:ClientSecureSocket secureSocket?;
-    # Proxy server related options
-    http:ProxyConfig proxy?;
-    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
-    boolean validation = true;
+# Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI
+public type TweetCreateRequestMedia record {|
+    # A list of Media Ids to be attached to a created Tweet
+    @jsondata:Name {value: "media_ids"}
+    MediaId[] mediaIds;
+    # A list of User Ids to be tagged in the media for created Tweet
+    @jsondata:Name {value: "tagged_user_ids"}
+    UserId[] taggedUserIds?;
 |};
+
+public type Get2UsersIdOwnedListsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
 
 # 
 public type Space record {
-    # Creation time of the Space.
-    string created_at?;
-    UserId creator_id?;
-    # End time of the Space.
-    string ended_at?;
-    # The user ids for the hosts of the Space.
-    UserId[] host_ids?;
-    SpaceId id;
-    # An array of user ids for people who were invited to a Space.
-    UserId[] invited_user_ids?;
-    # Denotes if the Space is a ticketed Space.
-    boolean is_ticketed?;
-    # The language of the Space.
-    string lang?;
-    # The number of participants in a Space.
-    int:Signed32 participant_count?;
-    # A date time stamp for when a Space is scheduled to begin.
-    string scheduled_start?;
-    # An array of user ids for people who were speakers in a Space.
-    UserId[] speaker_ids?;
-    # When the Space was started as a date string.
-    string started_at?;
-    # The current state of the Space.
-    "live"|"scheduled"|"ended" state;
-    # The number of people who have either purchased a ticket or set a reminder for this Space.
-    int:Signed32 subscriber_count?;
-    # The title of the Space.
+    # The topics of a Space, as selected by its creator
+    SpaceTopics[] topics?;
+    # A date time stamp for when a Space is scheduled to begin
+    @jsondata:Name {value: "scheduled_start"}
+    string scheduledStart?;
+    # Creation time of the Space
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    # Denotes if the Space is a ticketed Space
+    @jsondata:Name {value: "is_ticketed"}
+    boolean isTicketed?;
+    # The title of the Space
     string title?;
-    # The topics of a Space, as selected by its creator.
-    Space_topics[] topics?;
-    # When the Space was last updated.
-    string updated_at?;
+    # An array of user ids for people who were invited to a Space
+    @jsondata:Name {value: "invited_user_ids"}
+    UserId[] invitedUserIds?;
+    # An array of user ids for people who were speakers in a Space
+    @jsondata:Name {value: "speaker_ids"}
+    UserId[] speakerIds?;
+    # The number of participants in a Space
+    @jsondata:Name {value: "participant_count"}
+    int:Signed32 participantCount?;
+    # When the Space was last updated
+    @jsondata:Name {value: "updated_at"}
+    string updatedAt?;
+    # The number of people who have either purchased a ticket or set a reminder for this Space
+    @jsondata:Name {value: "subscriber_count"}
+    int:Signed32 subscriberCount?;
+    @jsondata:Name {value: "creator_id"}
+    UserId creatorId?;
+    # When the Space was started as a date string
+    @jsondata:Name {value: "started_at"}
+    string startedAt?;
+    # The user ids for the hosts of the Space
+    @jsondata:Name {value: "host_ids"}
+    UserId[] hostIds?;
+    SpaceId id;
+    # The current state of the Space
+    "live"|"scheduled"|"ended" state;
+    # The language of the Space
+    string lang?;
+    # End time of the Space
+    @jsondata:Name {value: "ended_at"}
+    string endedAt?;
 };
 
 # Represents the Queries record for the operation: getDmEventsById
 public type GetDmEventsByIdQueries record {
-    # A comma separated list of DmEvent fields to display.
-    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dm_event\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of DmEvent fields to display
+    @http:Query {name: "dm_event.fields"}
+    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dmEventFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
 };
 
-# Expanded details for the URL specified in the User's profile, with start and end indices.
-public type User_entities_url record {
-    @constraint:Array {minLength: 1}
-    UrlEntity[] urls?;
-};
-
 public type UsersRetweetsCreateRequest record {|
-    TweetId tweet_id;
+    @jsondata:Name {value: "tweet_id"}
+    TweetId tweetId;
 |};
 
-# A response from deleting user-specified stream filtering rules.
-public type DeleteRulesRequest record {
-    DeleteRulesRequest_delete delete;
+public type ListPinnedResponseData record {
+    boolean pinned?;
 };
 
-# A request to add a user-specified stream filtering rule.
-public type AddRulesRequest record {
-    RuleNoId[] add;
-};
-
-# Place ID being attached to the Tweet for geo location.
-public type TweetCreateRequest_geo record {|
-    string place_id?;
-|};
-
-# Represent the portion of text recognized as a URL, and its start and end position within the text.
-public type UrlEntityDm record {
-    *EntityIndicesInclusiveExclusive;
-    *UrlFields;
-};
-
-# Annotation inferred from the Tweet text.
+# Annotation inferred from the Tweet text
 public type ContextAnnotation record {
     ContextAnnotationDomainFields domain;
     ContextAnnotationEntityFields entity;
@@ -338,44 +211,46 @@ public type ContextAnnotation record {
 public type Get2ListsIdMembersResponse record {
     @constraint:Array {minLength: 1}
     User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
+    Get2ListsIdMembersResponseMeta meta?;
     Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-public type UsersFollowingCreateResponse record {
-    UsersFollowingCreateResponse_data data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
 # Represents the Queries record for the operation: searchSpaces
 public type SearchSpacesQueries record {
-    # A comma separated list of Space fields to display.
-    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] space\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The search query.
+    # A comma separated list of Space fields to display
+    @http:Query {name: "space.fields"}
+    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] spaceFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The search query
     @constraint:String {maxLength: 2048, minLength: 1}
     string query;
-    # The number of results to return.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # The state of Spaces to search for.
+    # The number of results to return
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # The state of Spaces to search for
     "live"|"scheduled"|"all" state = "all";
-    # A comma separated list of Topic fields to display.
-    ("description"|"id"|"name")[] topic\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Topic fields to display
+    @http:Query {name: "topic.fields"}
+    ("description"|"id"|"name")[] topicFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
 };
 
-public type UserComplianceSchema_user record {
-    UserId id;
+public type Get2UsersIdFollowersResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
 
-# Represent the portion of text recognized as a URL, and its start and end position within the text.
+# Represent the portion of text recognized as a URL, and its start and end position within the text
 public type UrlEntity record {
     *EntityIndicesInclusiveExclusive;
     *UrlFields;
@@ -383,775 +258,537 @@ public type UrlEntity record {
 
 # Represents the Queries record for the operation: getRuleCount
 public type GetRuleCountQueries record {
-    # A comma separated list of RulesCount fields to display.
-    ("all_project_client_apps"|"cap_per_client_app"|"cap_per_project"|"client_app_rules_count"|"project_rules_count")[] rules_count\.fields?;
+    # A comma separated list of RulesCount fields to display
+    @http:Query {name: "rules_count.fields"}
+    ("all_project_client_apps"|"cap_per_client_app"|"cap_per_project"|"client_app_rules_count"|"project_rules_count")[] rulesCountFields?;
 };
 
-# Represent the portion of text recognized as a User mention, and its start and end position within the text.
+# Represent the portion of text recognized as a User mention, and its start and end position within the text
 public type MentionFields record {
     UserId id?;
     UserName username;
 };
 
-public type CreateDmConversationRequest record {|
-    # The conversation type that is being created.
-    "Group" conversation_type;
-    CreateMessageRequest message;
-    DmParticipants participant_ids;
-|};
-
 # Represents the Queries record for the operation: findUsersById
 public type FindUsersByIdQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A list of User IDs, comma-separated. You can specify up to 100 IDs.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A list of User IDs, comma-separated. You can specify up to 100 IDs
     @constraint:Array {maxLength: 100, minLength: 1}
     UserId[] ids;
-    # A comma separated list of fields to expand.
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-public type DeleteDmResponse_data record {
-    boolean deleted?;
-};
-
 public type ListUpdateResponse record {
-    ListUpdateResponse_data data?;
+    ListUpdateResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# Represents the data for the context annotation entity.
-public type ContextAnnotationEntityFields record {
-    # Description of the context annotation entity.
-    string description?;
-    # The unique id for a context annotation entity.
-    @constraint:String {pattern: re `^[0-9]{1,19}$`}
-    string id;
-    # Name of the context annotation entity.
-    string name?;
-};
-
 # Represents the Queries record for the operation: getUserListMemberships
 public type GetUserListMembershipsQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of List fields to display.
-    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] list\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of List fields to display
+    @http:Query {name: "list.fields"}
+    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] listFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("owner_id")[] expansions?;
 };
 
-# Represents the Queries record for the operation: findUserById
-public type FindUserByIdQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+# The location tagged on the Tweet, if the user provided one
+public type TweetGeo record {
+    Point coordinates?;
+    @jsondata:Name {value: "place_id"}
+    PlaceId placeId?;
 };
 
-public type ListPinnedResponse_data record {
-    boolean pinned?;
+public type Get2TweetsIdLikingUsersResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Specifies the type of attachments (if any) present in this DM
+public type DmEventAttachments record {
+    # A list of Media Keys for each one of the media attachments (if media are attached)
+    @jsondata:Name {value: "media_keys"}
+    MediaKey[] mediaKeys?;
+    # A list of card IDs (if cards are attached)
+    @jsondata:Name {value: "card_ids"}
+    string[] cardIds?;
 };
 
 public type Get2UsersSearchResponse record {
     @constraint:Array {minLength: 1}
     User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
+    Get2UsersSearchResponseMeta meta?;
     Expansions includes?;
-    Get2UsersSearchResponse_meta meta?;
-};
-
-# Represents the Queries record for the operation: listBatchComplianceJobs
-public type ListBatchComplianceJobsQueries record {
-    # A comma separated list of ComplianceJob fields to display.
-    ("created_at"|"download_expires_at"|"download_url"|"id"|"name"|"resumable"|"status"|"type"|"upload_expires_at"|"upload_url")[] compliance_job\.fields?;
-    # Type of Compliance Job to list.
-    "tweets"|"users" 'type;
-    # Status of Compliance Job to list.
-    "created"|"in_progress"|"failed"|"complete" status?;
-};
-
-public type ListCreateResponse record {
-    ListCreateResponse_data data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-public type Get2UsersByUsernameUsernameResponse record {
-    User data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
+public type UserTakedownComplianceSchemaUser record {
+    UserId id;
 };
-
-public type CreateDmEventResponse record {
-    CreateDmEventResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
-# Represents the Queries record for the operation: tweetsRecentSearch
-public type TweetsRecentSearchQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-    @constraint:String {maxLength: 4096, minLength: 1}
-    string query;
-    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-    string end_time?;
-    # Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-    TweetId since_id?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 next_token?;
-    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of search results to be returned by a request.
-    @constraint:Int {minValue: 10, maxValue: 100}
-    int:Signed32 max_results = 10;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-    # This order in which to return results.
-    "recency"|"relevancy" sort_order?;
-    # Returns results with a Post ID less than (that is, older than) the specified ID.
-    TweetId until_id?;
-};
-
-# Unique identifier of a DM Event.
-@constraint:String {pattern: re `^[0-9]{1,19}$`}
-public type DmEventId string;
 
 public type DmEvent record {
-    DmEvent_attachments attachments?;
-    @constraint:Array {minLength: 1}
-    CashtagEntity[] cashtags?;
-    string created_at?;
-    DmConversationId dm_conversation_id?;
-    string event_type;
+    DmEventAttachments attachments?;
     @constraint:Array {minLength: 1}
     HashtagEntity[] hashtags?;
-    DmEventId id;
+    # A list of Posts this DM refers to
+    @jsondata:Name {value: "referenced_tweets"}
+    DmEventReferencedTweets[] referencedTweets?;
+    # A list of participants for a ParticipantsJoin or ParticipantsLeave event_type
+    @jsondata:Name {value: "participant_ids"}
+    UserId[] participantIds?;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    @jsondata:Name {value: "sender_id"}
+    UserId senderId?;
     @constraint:Array {minLength: 1}
-    MentionEntity[] mentions?;
-    # A list of participants for a ParticipantsJoin or ParticipantsLeave event_type.
-    @constraint:Array {minLength: 1}
-    UserId[] participant_ids?;
-    # A list of Posts this DM refers to.
-    @constraint:Array {minLength: 1}
-    DmEvent_referenced_tweets[] referenced_tweets?;
-    UserId sender_id?;
-    string text?;
+    CashtagEntity[] cashtags?;
     @constraint:Array {minLength: 1}
     UrlEntityDm[] urls?;
+    @jsondata:Name {value: "dm_conversation_id"}
+    DmConversationId dmConversationId?;
+    @jsondata:Name {value: "event_type"}
+    string eventType;
+    @constraint:Array {minLength: 1}
+    MentionEntity[] mentions?;
+    DmEventId id;
+    string text?;
 };
 
 # Represents the Queries record for the operation: getTweetsFirehoseStreamLangEn
 public type GetTweetsFirehoseStreamLangEnQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
     @constraint:Int {minValue: 1, maxValue: 8}
     int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+public type FilteredStreamingTweetResponseMatchingRules record {
+    RuleId id;
+    RuleTag tag?;
 };
 
 public type LikeComplianceSchema record {
     UnlikeComplianceSchema delete;
 };
 
-public type UsersRetweetsCreateResponse record {
-    UsersRetweetsCreateResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
 public type Get2TweetsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-};
-
-public type DmEvent_referenced_tweets record {
-    TweetId id;
-};
-
-# Represents the Queries record for the operation: getDmEvents
-public type GetDmEventsQueries record {
-    # A comma separated list of DmEvent fields to display.
-    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dm_event\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # The set of event_types to include in the results.
-    @constraint:Array {minLength: 1}
-    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] event_types = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
 };
 
 # Client App Rule Counts for all applications in the project
 public type AllProjectClientApps AppRulesCount[];
 
-# The daily usage breakdown for a project
-public type Usage_daily_project_usage record {
-    # The unique identifier for this project
-    int:Signed32 project_id?;
-    # The usage value
-    @constraint:Array {minLength: 1}
-    UsageFields[] usage?;
-};
-
-# Specifies the type of attachments (if any) present in this DM.
-public type DmEvent_attachments record {
-    # A list of card IDs (if cards are attached).
-    @constraint:Array {minLength: 1}
-    string[] card_ids?;
-    # A list of Media Keys for each one of the media attachments (if media are attached).
-    @constraint:Array {minLength: 1}
-    MediaKey[] media_keys?;
-};
-
-public type Get2TweetsSearchStreamRulesCountsResponse record {
-    RulesCount data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
-public type UsersLikesDeleteResponse record {
-    UsersLikesCreateResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
-public type Get2ListsIdFollowersResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
+# Represents the data for the annotation
+public type AnnotationsAllOf2 record {
+    # Confidence factor for annotation type
+    @constraint:Number {minValue: 0, maxValue: 1}
+    decimal probability?;
+    # Text used to determine annotation
+    @jsondata:Name {value: "normalized_text"}
+    string normalizedText?;
+    # Annotation type
+    string 'type?;
 };
 
 public type Expansions record {
     @constraint:Array {minLength: 1}
-    Media[] media?;
-    @constraint:Array {minLength: 1}
     Place[] places?;
+    @constraint:Array {minLength: 1}
+    Topic[] topics?;
     @constraint:Array {minLength: 1}
     Poll[] polls?;
     @constraint:Array {minLength: 1}
-    Topic[] topics?;
+    Media[] media?;
     @constraint:Array {minLength: 1}
     Tweet[] tweets?;
     @constraint:Array {minLength: 1}
     User[] users?;
 };
 
-public type TweetCreateResponse_data record {
-    TweetId id;
-    TweetText text;
+public type LikesComplianceStreamResponseLikesComplianceStreamResponseOneOf12 record {
+    @constraint:Array {minLength: 1}
+    Problem[] errors;
+};
+
+public type TweetDeleteResponseData record {
+    boolean deleted;
 };
 
 public type UserDeleteComplianceSchema record {
-    UserComplianceSchema user_delete;
+    @jsondata:Name {value: "user_delete"}
+    UserComplianceSchema userDelete;
 };
-
-# Provides settings related to HTTP/1.x protocol.
-public type ClientHttp1Settings record {|
-    # Specifies whether to reuse a connection for multiple requests
-    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
-    # The chunking behaviour of the request
-    http:Chunking chunking = http:CHUNKING_AUTO;
-    # Proxy server related options
-    ProxyConfig proxy?;
-|};
-
-# Unique identifier of this User. The value must be the same as the authenticated user.
-public type UserIdMatchesAuthenticatedUser string;
 
 public type Get2TweetsIdQuoteTweetsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
+    Get2TweetsIdQuoteTweetsResponseMeta meta?;
     Expansions includes?;
-    Get2TweetsIdQuoteTweetsResponse_meta meta?;
-};
-
-public type Get2TweetsCountsAllResponse record {
-    @constraint:Array {minLength: 1}
-    SearchCount[] data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Get2TweetsCountsAllResponse_meta meta?;
 };
 
-# Represents the Queries record for the operation: listIdGet
-public type ListIdGetQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of List fields to display.
-    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] list\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("owner_id")[] expansions?;
-};
-
-# Nonpublic engagement metrics for the Tweet at the time of the request.
-public type Tweet_non_public_metrics record {
-    # Number of times this Tweet has been viewed.
-    int:Signed32 impression_count?;
-};
-
-public type Tweet_referenced_tweets record {
-    TweetId id;
-    "retweeted"|"quoted"|"replied_to" 'type;
-};
-
-# The sum of results returned in this response.
-public type Aggregate int:Signed32;
+# User-provided name for a compliance job
+@constraint:String {maxLength: 64}
+public type ComplianceJobName string;
 
 public type Get2DmConversationsWithParticipantIdDmEventsResponse record {
     @constraint:Array {minLength: 1}
     DmEvent[] data?;
+    Get2DmConversationsWithParticipantIdDmEventsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
-# User-provided name for a compliance job.
-@constraint:String {maxLength: 64}
-public type ComplianceJobName string;
-
-public type TweetDropComplianceSchema record {
-    TweetComplianceSchema drop;
+# Represents the Queries record for the operation: listIdGet
+public type ListIdGetQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of List fields to display
+    @http:Query {name: "list.fields"}
+    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] listFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("owner_id")[] expansions?;
 };
+
+# The sum of results returned in this response
+public type Aggregate int:Signed32;
 
 public type ListUpdateRequest record {
-    @constraint:String {maxLength: 100}
-    string description?;
+    boolean 'private?;
     @constraint:String {maxLength: 25, minLength: 1}
     string name?;
-    boolean 'private?;
+    @constraint:String {maxLength: 100}
+    string description?;
 };
 
 public type Get2UsersIdFollowedListsResponse record {
     @constraint:Array {minLength: 1}
     List[] data?;
+    Get2UsersIdFollowedListsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
 public type Place record {
-    @constraint:Array {minLength: 1}
-    PlaceId[] contained_within?;
-    # The full name of the county in which this place exists.
-    string country?;
-    CountryCode country_code?;
-    # The full name of this place.
-    string full_name;
     Geo geo?;
-    PlaceId id;
-    # The human readable name of this place.
+    @jsondata:Name {value: "contained_within"}
+    PlaceId[] containedWithin?;
+    # The full name of the county in which this place exists
+    string country?;
+    @jsondata:Name {value: "country_code"}
+    CountryCode countryCode?;
+    # The full name of this place
+    @jsondata:Name {value: "full_name"}
+    string fullName;
+    @jsondata:Name {value: "place_type"}
+    PlaceType placeType?;
+    # The human readable name of this place
     string name?;
-    PlaceType place_type?;
+    PlaceId id;
 };
 
 # Represents the Queries record for the operation: getTweetsFirehoseStreamLangJa
 public type GetTweetsFirehoseStreamLangJaQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
     @constraint:Int {minValue: 1, maxValue: 2}
     int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
 
-public type UserUnprotectComplianceSchema record {
-    UserComplianceSchema user_unprotect;
-};
+# User compliance stream events
+public type UserComplianceStreamResponse UserComplianceStreamResponseOneOf1|UserComplianceStreamResponseUserComplianceStreamResponseOneOf12;
 
-# User compliance stream events.
-public type UserComplianceStreamResponse record {UserComplianceData data;}|record {Problem[] errors;};
-
-public type PlaceType "poi"|"neighborhood"|"city"|"admin"|"country"|"unknown";
-
-# The start time of the bucket.
+# The start time of the bucket
 public type Start string;
 
-public type Tweet record {
-    Tweet_attachments attachments?;
-    UserId author_id?;
-    @constraint:Array {minLength: 1}
-    ContextAnnotation[] context_annotations?;
-    TweetId conversation_id?;
-    # Creation time of the Tweet.
-    string created_at?;
-    Tweet_edit_controls edit_controls?;
-    # A list of Tweet Ids in this Tweet chain.
-    @constraint:Array {minLength: 1}
-    TweetId[] edit_history_tweet_ids?;
-    FullTextEntities entities?;
-    Tweet_geo geo?;
-    TweetId id?;
-    UserId in_reply_to_user_id?;
-    # Language of the Tweet, if detected by X. Returned as a BCP47 language tag.
-    string lang?;
-    Tweet_non_public_metrics non_public_metrics?;
-    Tweet_note_tweet note_tweet?;
-    Tweet_organic_metrics organic_metrics?;
-    # Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences.
-    boolean possibly_sensitive?;
-    Tweet_promoted_metrics promoted_metrics?;
-    Tweet_public_metrics public_metrics?;
-    # A list of Posts this Tweet refers to. For example, if the parent Tweet is a Retweet, a Quoted Tweet or a Reply, it will include the related Tweet referenced to by its parent.
-    @constraint:Array {minLength: 1}
-    Tweet_referenced_tweets[] referenced_tweets?;
-    ReplySettingsWithVerifiedUsers reply_settings?;
-    Tweet_scopes scopes?;
-    # This is deprecated.
-    string 'source?;
-    TweetText text?;
-    UserName username?;
-    TweetWithheld withheld?;
+public type RulesRequestSummaryRulesRequestSummaryOneOf12 record {
+    # Number of user-specified stream filtering rules that were deleted
+    int:Signed32 deleted;
+    # Number of user-specified stream filtering rules that were not deleted
+    @jsondata:Name {value: "not_deleted"}
+    int:Signed32 notDeleted;
 };
 
-# Type of compliance job to list.
+# Type of compliance job to list
 public type ComplianceJobType "tweets"|"users";
 
-# A base32 pagination token.
+public type Get2ListsIdTweetsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# A base32 pagination token
 @constraint:String {minLength: 16}
 public type PaginationToken32 string;
 
-public type TweetDeleteResponse_data record {
-    boolean deleted;
-};
-
 public type DeleteDmResponse record {
-    DeleteDmResponse_data data?;
+    DeleteDmResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# The ID of the client application
-@constraint:String {maxLength: 19, minLength: 1}
-public type ClientAppId string;
-
-# Participants for the DM Conversation.
-@constraint:Array {maxLength: 49, minLength: 2}
-public type DmParticipants UserId[];
-
-# The unique identifier of this Like.
+# The unique identifier of this Like
 @constraint:String {pattern: re `^[A-Za-z0-9_]{1,40}$`}
 public type LikeId string;
 
-# Represent the portion of text recognized as a Hashtag, and its start and end position within the text.
+# Represent the portion of text recognized as a Hashtag, and its start and end position within the text
 public type HashtagFields record {
-    # The text of the Hashtag.
+    # The text of the Hashtag
     string tag;
 };
 
-public type ListMutateResponse_data record {
-    boolean is_member?;
-};
-
-# A X List is a curated group of accounts.
+# A X List is a curated group of accounts
 public type List record {
-    string created_at?;
-    string description?;
-    int follower_count?;
-    ListId id;
-    int member_count?;
-    # The name of this List.
-    string name;
-    UserId owner_id?;
     boolean 'private?;
+    @jsondata:Name {value: "owner_id"}
+    UserId ownerId?;
+    # The name of this List
+    string name;
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    string description?;
+    ListId id;
+    @jsondata:Name {value: "member_count"}
+    int memberCount?;
+    @jsondata:Name {value: "follower_count"}
+    int followerCount?;
 };
 
 public type TweetWithheldComplianceSchema record {
     TweetTakedownComplianceSchema withheld;
 };
 
-# URL from which the user will retrieve their compliance results.
+# URL from which the user will retrieve their compliance results
 public type DownloadUrl string;
 
-# A user-provided stream filtering rule.
-public type RuleNoId record {
-    RuleTag tag?;
-    RuleValue value;
-};
-
-@constraint:String {maxLength: 25, minLength: 1}
-public type TweetCreateRequest_pollOptionsItemsString string;
-
-public type UserProfileModificationObjectSchema record {
-    # Event time.
-    string event_at;
-    string new_value;
-    string profile_field;
-    UserComplianceSchema_user user;
-};
-
 public type ListFollowedResponse record {
-    ListFollowedResponse_data data?;
+    ListFollowedResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-};
-
-public type Get2UsersByResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
 };
 
 public type Get2TweetsCountsRecentResponse record {
     @constraint:Array {minLength: 1}
     SearchCount[] data?;
+    Get2TweetsCountsRecentResponseMeta meta?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Get2TweetsCountsAllResponse_meta meta?;
 };
 
 # Represents the Queries record for the operation: searchUserByQuery
 public type SearchUserByQueryQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # TThe the query string by which to query for users.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # TThe the query string by which to query for users
     UserSearchQuery query;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results = 100;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 next_token?;
-    # A comma separated list of fields to expand.
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "next_token"}
+    PaginationToken36 nextToken?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-# The unique identifier of this Media.
+# The unique identifier of this Media
 @constraint:String {pattern: re `^[0-9]{1,19}$`}
 public type MediaId string;
 
-public type Get2UsersIdFollowingResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
+# Promoted nonpublic engagement metrics for the Tweet at the time of the request
+public type TweetPromotedMetrics record {
+    # Number of times this Tweet has been liked
+    @jsondata:Name {value: "like_count"}
+    int:Signed32 likeCount?;
+    # Number of times this Tweet has been replied to
+    @jsondata:Name {value: "reply_count"}
+    int:Signed32 replyCount?;
+    # Number of times this Tweet has been Retweeted
+    @jsondata:Name {value: "retweet_count"}
+    int:Signed32 retweetCount?;
+    # Number of times this Tweet has been viewed
+    @jsondata:Name {value: "impression_count"}
+    int:Signed32 impressionCount?;
 };
 
-# An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).
-public type Problem record {
-    string detail?;
-    int status?;
-    string title;
-    string 'type;
-};
-
-public type UnlikeComplianceSchema_favorite record {
-    TweetId id;
-    UserId user_id;
-};
-
-# The end time of the bucket.
+# The end time of the bucket
 public type End string;
-
-public type FilteredStreamingTweetResponse_matching_rules record {
-    RuleId id;
-    RuleTag tag?;
-};
-
-# A count of user-provided stream filtering rules at the application and project levels.
-public type RulesCount record {
-    AllProjectClientApps all_project_client_apps?;
-    # Cap of number of rules allowed per client application
-    int:Signed32 cap_per_client_app?;
-    # Cap of number of rules allowed per project
-    int:Signed32 cap_per_project?;
-    AppRulesCount client_app_rules_count?;
-    # Number of rules for project
-    int:Signed32 project_rules_count?;
-};
 
 public type Get2TweetsIdRetweetsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Get2TweetsIdRetweetsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
+};
+
+public type Get2UsersSearchResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
 };
 
 public type MuteUserRequest record {
-    UserId target_user_id;
+    @jsondata:Name {value: "target_user_id"}
+    UserId targetUserId;
 };
-
-# A list of metadata found in the User's profile description.
-public type User_entities record {
-    FullTextEntities description?;
-    User_entities_url url?;
-};
-
-# URL to which the user will upload their Tweet or user IDs.
-public type UploadUrl string;
 
 public type RulesResponseMetadata record {
-    NextToken next_token?;
-    # Number of Rules in result set.
-    int:Signed32 result_count?;
-    string sent;
     RulesRequestSummary summary?;
-};
-
-# Promoted nonpublic engagement metrics for the Tweet at the time of the request.
-public type Tweet_promoted_metrics record {
-    # Number of times this Tweet has been viewed.
-    int:Signed32 impression_count?;
-    # Number of times this Tweet has been liked.
-    int:Signed32 like_count?;
-    # Number of times this Tweet has been replied to.
-    int:Signed32 reply_count?;
-    # Number of times this Tweet has been Retweeted.
-    int:Signed32 retweet_count?;
-};
-
-# The content of the Tweet.
-public type TweetText string;
-
-# A list of metrics for this User.
-public type User_public_metrics record {
-    # Number of Users who are following this User.
-    int followers_count;
-    # Number of Users this User is following.
-    int following_count;
-    # The number of likes created by this User.
-    int like_count?;
-    # The number of lists that include this User.
-    int listed_count;
-    # The number of Posts (including Retweets) posted by this User.
-    int tweet_count;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    # Number of Rules in result set
+    @jsondata:Name {value: "result_count"}
+    int:Signed32 resultCount?;
+    string sent;
 };
 
 # Represents the Queries record for the operation: getTweetsFirehoseStreamLangPt
 public type GetTweetsFirehoseStreamLangPtQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
     @constraint:Int {minValue: 1, maxValue: 2}
     int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
 
-public type TweetComplianceSchema_tweet record {
-    UserId author_id;
-    TweetId id;
+public type Get2UsersIdBookmarksResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
 
 public type ListAddUserRequest record {
-    UserId user_id;
+    @jsondata:Name {value: "user_id"}
+    UserId userId;
 };
 
-# The text of a poll choice.
+# The text of a poll choice
 @constraint:String {maxLength: 25, minLength: 1}
 public type PollOptionLabel string;
-
-public type TweetHideRequest record {
-    boolean hidden;
-};
 
 public type AddOrDeleteRulesRequest AddRulesRequest|DeleteRulesRequest;
 
@@ -1160,58 +797,33 @@ public type RulesLookupResponse record {
     RulesResponseMetadata meta;
 };
 
-# Represents the Queries record for the operation: spaceBuyers
-public type SpaceBuyersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+public type BookmarkMutationResponseData record {
+    boolean bookmarked?;
 };
 
 public type ListUnpinResponse record {
-    ListPinnedResponse_data data?;
+    ListUnpinResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
 public type UsersLikesCreateResponse record {
-    UsersLikesCreateResponse_data data?;
+    UsersLikesCreateResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-};
-
-public type CreateDmEventResponse_data record {
-    DmConversationId dm_conversation_id;
-    DmEventId dm_event_id;
-};
-
-public type Get2SpacesResponse record {
-    @constraint:Array {minLength: 1}
-    Space[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
 };
 
 public type FullTextEntities record {
     @constraint:Array {minLength: 1}
-    record {*EntityIndicesInclusiveInclusive; string normalized_text?; decimal probability?; string 'type?;}[] annotations?;
-    @constraint:Array {minLength: 1}
     CashtagEntity[] cashtags?;
+    @constraint:Array {minLength: 1}
+    UrlEntity[] urls?;
     @constraint:Array {minLength: 1}
     HashtagEntity[] hashtags?;
     @constraint:Array {minLength: 1}
     MentionEntity[] mentions?;
     @constraint:Array {minLength: 1}
-    UrlEntity[] urls?;
+    FullTextEntitiesAnnotations[] annotations?;
 };
 
 # OAuth2 Refresh Token Grant Configs
@@ -1221,272 +833,127 @@ public type OAuth2RefreshTokenGrantConfig record {|
     string refreshUrl = "https://api.twitter.com/2/oauth2/token";
 |};
 
-# Describes a choice in a Poll object.
-public type PollOption record {
-    PollOptionLabel label;
-    # Position of this choice in the poll.
-    int position;
-    # Number of users who voted for this choice.
-    int votes;
-};
-
-# Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is exclusive.
+# Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is exclusive
 public type EntityIndicesInclusiveExclusive record {
-    # Index (zero-based) at which position this entity ends.  The index is exclusive.
-    @constraint:Int {minValue: 0}
-    int end;
-    # Index (zero-based) at which position this entity starts.  The index is inclusive.
+    # Index (zero-based) at which position this entity starts.  The index is inclusive
     @constraint:Int {minValue: 0}
     int 'start;
+    # Index (zero-based) at which position this entity ends.  The index is exclusive
+    @constraint:Int {minValue: 0}
+    int end;
+};
+
+# Describes a choice in a Poll object
+public type PollOption record {
+    # Number of users who voted for this choice
+    int votes;
+    PollOptionLabel label;
+    # Position of this choice in the poll
+    int position;
 };
 
 # Represents the Queries record for the operation: getDmConversationsIdDmEvents
 public type GetDmConversationsIdDmEventsQueries record {
-    # A comma separated list of DmEvent fields to display.
-    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dm_event\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # The set of event_types to include in the results.
-    @constraint:Array {minLength: 1}
-    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] event_types = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
+    # A comma separated list of DmEvent fields to display
+    @http:Query {name: "dm_event.fields"}
+    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dmEventFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # The set of event_types to include in the results
+    @http:Query {name: "event_types"}
+    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] eventTypes = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
-};
-
-# The the search string by which to query for users.
-@constraint:String {pattern: re `^[A-Za-z0-9_]{1,32}$`}
-public type UserSearchQuery string;
-
-# Represents the Queries record for the operation: findTweetById
-public type FindTweetByIdQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-public type ListFollowedResponse_data record {
-    boolean following?;
-};
-
-# The X handle (screen name) of this user.
-@constraint:String {pattern: re `^[A-Za-z0-9_]{1,15}$`}
-public type UserName string;
-
-# Represents the Queries record for the operation: getTweetsFirehoseStreamLangKo
-public type GetTweetsFirehoseStreamLangKoQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 2}
-    int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-# Represents the Queries record for the operation: getUsageTweets
-public type GetUsageTweetsQueries record {
-    # A comma separated list of Usage fields to display.
-    ("cap_reset_day"|"daily_client_app_usage"|"daily_project_usage"|"project_cap"|"project_id"|"project_usage")[] usage\.fields?;
-    # The number of days for which you need usage for.
-    @constraint:Int {minValue: 1, maxValue: 90}
-    int:Signed32 days = 7;
 };
 
 @constraint:String {pattern: re `^[a-zA-Z0-9]{1,13}$`}
 public type FindSpacesByIdsQueriesIdsItemsString string;
 
 public type UsersFollowingDeleteResponse record {
-    ListFollowedResponse_data data?;
+    UsersFollowingDeleteResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# The X Topic object.
-public type Space_topics record {
-    # The description of the given topic.
-    string description?;
-    # An ID suitable for use in the REST API.
-    string id;
-    # The name of the given topic.
-    string name;
-};
-
-public type Get2ComplianceJobsResponse record {
+public type TweetComplianceStreamResponseTweetComplianceStreamResponseOneOf12 record {
     @constraint:Array {minLength: 1}
-    ComplianceJob[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Get2ComplianceJobsResponse_meta meta?;
+    Problem[] errors;
 };
 
 # Usage per client app
 public type ClientAppUsage record {
+    # The number of results returned
+    @jsondata:Name {value: "usage_result_count"}
+    int:Signed32 usageResultCount?;
     # The unique identifier for this project
-    string client_app_id?;
+    @jsondata:Name {value: "client_app_id"}
+    string clientAppId?;
     # The usage value
     @constraint:Array {minLength: 1}
     UsageFields[] usage?;
-    # The number of results returned
-    int:Signed32 usage_result_count?;
 };
 
 public type UsersFollowingCreateRequest record {
-    UserId target_user_id;
+    @jsondata:Name {value: "target_user_id"}
+    UserId targetUserId;
 };
 
-# Tweet information of the Tweet being replied to.
-public type TweetCreateRequest_reply record {|
-    # A list of User Ids to be excluded from the reply Tweet.
-    UserId[] exclude_reply_user_ids?;
-    TweetId in_reply_to_tweet_id;
-|};
+# The daily usage breakdown for a project
+public type UsageDailyProjectUsage record {
+    # The unique identifier for this project
+    @jsondata:Name {value: "project_id"}
+    int:Signed32 projectId?;
+    # The usage value
+    @constraint:Array {minLength: 1}
+    UsageFields[] usage?;
+};
 
 # Represents the Queries record for the operation: findSpaceById
 public type FindSpaceByIdQueries record {
-    # A comma separated list of Space fields to display.
-    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] space\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Topic fields to display.
-    ("description"|"id"|"name")[] topic\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Space fields to display
+    @http:Query {name: "space.fields"}
+    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] spaceFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Topic fields to display
+    @http:Query {name: "topic.fields"}
+    ("description"|"id"|"name")[] topicFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
 };
 
-public type Get2TrendsByWoeidWoeidResponse record {
-    @constraint:Array {minLength: 1}
-    Trend[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
 public type CreateAttachmentsMessageRequest record {
     DmAttachments attachments;
-    # Text of the message.
+    # Text of the message
     @constraint:String {minLength: 1}
     string text?;
 };
 
-# Represents the Queries record for the operation: spaceTweets
-public type SpaceTweetsQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The number of Posts to fetch from the provided space. If not provided, the value will default to the maximum of 100.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-public type StreamingTweetResponse record {
-    Tweet data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-};
-
-public type Get2TweetsIdResponse record {
-    Tweet data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-};
-
-public type TweetHideResponse_data record {
-    boolean hidden?;
+public type DeleteDmResponseData record {
+    boolean deleted?;
 };
 
 # Represents the Queries record for the operation: getTrends
 public type GetTrendsQueries record {
-    # A comma separated list of Trend fields to display.
-    ("trend_name"|"tweet_count")[] trend\.fields?;
-};
-
-# Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
-public type TweetWithheld record {
-    # Indicates if the content is being withheld for on the basis of copyright infringement.
-    boolean copyright;
-    # Provides a list of countries where this content is not available.
-    @constraint:Array {minLength: 1}
-    CountryCode[] country_codes;
-    # Indicates whether the content being withheld is the `tweet` or a `user`.
-    "tweet"|"user" scope?;
-};
-
-# IDs and values of all deleted user-specified stream filtering rules.
-public type DeleteRulesRequest_delete record {
-    # IDs of all deleted user-specified stream filtering rules.
-    RuleId[] ids?;
-    # Values of all deleted user-specified stream filtering rules.
-    RuleValue[] values?;
-};
-
-public type UsersRetweetsDeleteResponse_data record {
-    boolean retweeted?;
-};
-
-# A count of user-provided stream filtering rules at the client application level.
-public type AppRulesCount record {
-    ClientAppId client_app_id?;
-    # Number of rules for client application
-    int:Signed32 rule_count?;
-};
-
-public type UserProtectComplianceSchema record {
-    UserComplianceSchema user_protect;
-};
-
-public type StreamingLikeResponse record {
-    Like data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
+    # A comma separated list of Trend fields to display
+    @http:Query {name: "trend.fields"}
+    ("trend_name"|"tweet_count")[] trendFields?;
 };
 
 @constraint:Number {minValue: -180, maxValue: 180}
@@ -1494,106 +961,46 @@ public type GeoBboxItemsNumber decimal;
 
 # Represents the Queries record for the operation: listUserOwnedLists
 public type ListUserOwnedListsQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of List fields to display.
-    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] list\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of List fields to display
+    @http:Query {name: "list.fields"}
+    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] listFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("owner_id")[] expansions?;
 };
 
-# Represents the Queries record for the operation: getDmConversationsWithParticipantIdDmEvents
-public type GetDmConversationsWithParticipantIdDmEventsQueries record {
-    # A comma separated list of DmEvent fields to display.
-    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dm_event\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # The set of event_types to include in the results.
-    @constraint:Array {minLength: 1}
-    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] event_types = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
-};
-
-# Tweet compliance stream events.
-public type TweetComplianceStreamResponse record {TweetComplianceData data;}|record {Problem[] errors;};
-
 public type Get2SpacesIdBuyersResponse record {
     @constraint:Array {minLength: 1}
     User[] data?;
+    Get2SpacesIdBuyersResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
-public type UserWithheldComplianceSchema record {
-    UserTakedownComplianceSchema user_withheld;
+public type Get2TweetsIdQuoteTweetsResponseMeta record {
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
-
-public type Tweet_note_tweet_entities record {
-    @constraint:Array {minLength: 1}
-    CashtagEntity[] cashtags?;
-    @constraint:Array {minLength: 1}
-    HashtagEntity[] hashtags?;
-    @constraint:Array {minLength: 1}
-    MentionEntity[] mentions?;
-    @constraint:Array {minLength: 1}
-    UrlEntity[] urls?;
-};
-
-public type DmMediaAttachment record {
-    MediaId media_id;
-};
-
-public type Get2UsersIdBlockingResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# The number of results returned in this response.
-public type ResultCount int:Signed32;
 
 public type Get2UsersIdFollowersResponse record {
     @constraint:Array {minLength: 1}
     User[] data?;
+    Get2UsersIdFollowersResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-public type UserSuspendComplianceSchema record {
-    UserComplianceSchema user_suspend;
-};
-
-public type Get2TweetsIdLikingUsersResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
 public type CashtagEntity record {
@@ -1601,139 +1008,70 @@ public type CashtagEntity record {
     *CashtagFields;
 };
 
-# Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.
-@constraint:String {pattern: re `^[0-9]{1,19}$`}
-public type TweetId string;
-
-public type UsersLikesCreateResponse_data record {
-    boolean liked?;
-};
-
 public type HashtagEntity record {
     *EntityIndicesInclusiveExclusive;
     *HashtagFields;
 };
 
-# Represents the Queries record for the operation: findTweetsThatQuoteATweet
-public type FindTweetsThatQuoteATweetQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results to be returned.
-    @constraint:Int {minValue: 10, maxValue: 100}
-    int:Signed32 max_results = 10;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # The set of entities to exclude (e.g. 'replies' or 'retweets').
-    @constraint:Array {minLength: 1}
-    ("replies"|"retweets")[] exclude?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-# Organic nonpublic engagement metrics for the Tweet at the time of the request.
-public type Tweet_organic_metrics record {
-    # Number of times this Tweet has been viewed.
-    int impression_count;
-    # Number of times this Tweet has been liked.
-    int like_count;
-    # Number of times this Tweet has been replied to.
-    int reply_count;
-    # Number of times this Tweet has been Retweeted.
-    int retweet_count;
-};
-
-# Represents the Queries record for the operation: listGetMembers
-public type ListGetMembersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
-
-# Expiration time of the download URL.
+# Expiration time of the download URL
 public type DownloadExpiration string;
 
-public type UserUndeleteComplianceSchema record {
-    UserComplianceSchema user_undelete;
-};
-
-# Represents the Queries record for the operation: getUsersComplianceStream
-public type GetUsersComplianceStreamQueries record {
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided.
-    string start_time?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 4}
-    int:Signed32 partition;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided.
-    string end_time?;
-};
-
-public type Get2ListsIdResponse record {
-    List data?;
+# Expanded details for the URL specified in the User's profile, with start and end indices
+public type UserEntitiesUrl record {
     @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
+    UrlEntity[] urls?;
 };
 
 public type ComplianceJob record {
-    CreatedAt created_at;
-    DownloadExpiration download_expires_at;
-    DownloadUrl download_url;
-    JobId id;
+    @jsondata:Name {value: "download_expires_at"}
+    DownloadExpiration downloadExpiresAt;
+    @jsondata:Name {value: "download_url"}
+    DownloadUrl downloadUrl;
     ComplianceJobName name?;
-    ComplianceJobStatus status;
+    @jsondata:Name {value: "upload_expires_at"}
+    UploadExpiration uploadExpiresAt;
+    @jsondata:Name {value: "created_at"}
+    CreatedAt createdAt;
+    @jsondata:Name {value: "upload_url"}
+    UploadUrl uploadUrl;
+    JobId id;
     ComplianceJobType 'type;
-    UploadExpiration upload_expires_at;
-    UploadUrl upload_url;
+    ComplianceJobStatus status;
 };
 
-# A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+public type Get2TweetsCountsRecentResponseMeta record {
+    @jsondata:Name {value: "total_tweet_count"}
+    Aggregate totalTweetCount?;
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+};
+
+# A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`
 @constraint:Array {maxLength: 2, minLength: 2}
 public type Position decimal[];
 
-# Represents the Queries record for the operation: userFollowedLists
-public type UserFollowedListsQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of List fields to display.
-    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] list\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("owner_id")[] expansions?;
-};
-
-# The note content of the Tweet.
-public type NoteTweetText string;
-
 public type BookmarkMutationResponse record {
-    BookmarkMutationResponse_data data?;
+    BookmarkMutationResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
+};
+
+public type Get2UsersIdListMembershipsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type UsersRetweetsCreateResponseData record {
+    TweetId id?;
+    boolean retweeted?;
 };
 
 # Represents the data for Usage
@@ -1744,707 +1082,402 @@ public type UsageFields record {
     int:Signed32 usage?;
 };
 
-public type Geo record {
-    @constraint:Array {maxLength: 4, minLength: 4}
-    GeoBboxItemsNumber[] bbox;
-    Point geometry?;
-    record {} properties;
-    "Feature" 'type;
-};
-
 # Represents the Queries record for the operation: searchStream
 public type SearchStreamQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
 
-public type Get2UsersIdTweetsResponse record {
-    @constraint:Array {minLength: 1}
-    Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2UsersIdMentionsResponse_meta meta?;
+public type UsersRetweetsDeleteResponseData record {
+    boolean retweeted?;
 };
 
-public type Get2UsersMeResponse record {
-    User data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
+public type TweetEditComplianceObjectSchema record {
+    @jsondata:Name {value: "initial_tweet_id"}
+    TweetId initialTweetId;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    TweetEditComplianceObjectSchemaTweet tweet;
+    @jsondata:Name {value: "edit_tweet_ids"}
+    TweetId[] editTweetIds;
 };
 
 # Represents the Queries record for the operation: usersIdMentions
 public type UsersIdMentionsQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified.
-    string end_time?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 5, maxValue: 100}
-    int:Signed32 max_results?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
-    TweetId since_id?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
-    TweetId until_id?;
+    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };
 
-public type TweetEditComplianceObjectSchema record {
-    @constraint:Array {minLength: 1}
-    TweetId[] edit_tweet_ids;
-    # Event time.
-    string event_at;
-    TweetId initial_tweet_id;
-    DmEvent_referenced_tweets tweet;
-};
-
-# Tweet compliance data.
-public type TweetComplianceData TweetDeleteComplianceSchema|TweetWithheldComplianceSchema|TweetDropComplianceSchema|TweetUndropComplianceSchema|TweetEditComplianceSchema;
-
-public type MuteUserMutationResponse record {
-    MuteUserMutationResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
-
-# A user-provided stream filtering rule.
-public type Rule record {
-    RuleId id?;
-    RuleTag tag?;
-    RuleValue value;
-};
-
-public type ListFollowedRequest record {
-    ListId list_id;
-};
-
-public type RulesRequestSummary record {int:Signed32 created; int:Signed32 invalid; int:Signed32 not_created; int:Signed32 valid;}|record {int:Signed32 deleted; int:Signed32 not_deleted;};
+# Place ID being attached to the Tweet for geo location
+public type TweetCreateRequestGeo record {|
+    @jsondata:Name {value: "place_id"}
+    string placeId?;
+|};
 
 # Represents the Queries record for the operation: findTweetsThatRetweetATweet
 public type FindTweetsThatRetweetATweetQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
 
 # Represents the Queries record for the operation: findTweetsById
 public type FindTweetsByIdQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # A comma separated list of Post IDs. Up to 100 are allowed in a single request.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # A comma separated list of Post IDs. Up to 100 are allowed in a single request
     @constraint:Array {maxLength: 100, minLength: 1}
     TweetId[] ids;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
 };
 
-# A X List is a curated group of accounts.
-public type ListCreateResponse_data record {
-    ListId id;
-    # The name of this List.
-    string name;
-};
-
-public type TweetNoticeSchema record {
-    TweetNotice public_tweet_notice;
+public type TweetNoteTweetEntities record {
+    @constraint:Array {minLength: 1}
+    CashtagEntity[] cashtags?;
+    @constraint:Array {minLength: 1}
+    UrlEntity[] urls?;
+    @constraint:Array {minLength: 1}
+    HashtagEntity[] hashtags?;
+    @constraint:Array {minLength: 1}
+    MentionEntity[] mentions?;
 };
 
 # Represents the Queries record for the operation: getRules
 public type GetRulesQueries record {
-    # This value is populated by passing the 'next_token' returned in a request to paginate through results.
-    @constraint:String {maxLength: 16, minLength: 16}
-    string pagination_token?;
-    # A comma-separated list of Rule IDs.
+    # This value is populated by passing the 'next_token' returned in a request to paginate through results
+    @http:Query {name: "pagination_token"}
+    string paginationToken?;
+    # A comma-separated list of Rule IDs
     RuleId[] ids?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results = 1000;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 1000;
 };
 
-# User compliance data.
+# User compliance data
 public type UserComplianceData UserProtectComplianceSchema|UserUnprotectComplianceSchema|UserDeleteComplianceSchema|UserUndeleteComplianceSchema|UserSuspendComplianceSchema|UserUnsuspendComplianceSchema|UserWithheldComplianceSchema|UserScrubGeoSchema|UserProfileModificationComplianceSchema;
 
 public type ListPinnedResponse record {
-    ListPinnedResponse_data data?;
+    ListPinnedResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-public type TweetNotice record {
-    # If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’.
-    string application;
-    # Information shown on the Tweet label
-    string details?;
-    # Event time.
-    string event_at;
-    # The type of label on the Tweet
-    string event_type;
-    # Link to more information about this kind of label
-    string extended_details_url?;
-    # Title/header of the Tweet label
-    string label_title?;
-    TweetComplianceSchema_tweet tweet;
-};
-
-# A validly formatted URL.
+# A validly formatted URL
 public type Url string;
 
 # Represents the Queries record for the operation: tweetsIdLikingUsers
 public type TweetsIdLikingUsersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
 public type CreateTextMessageRequest record {
     DmAttachments attachments?;
-    # Text of the message.
+    # Text of the message
     @constraint:String {minLength: 1}
     string text;
 };
 
-public type Get2SpacesIdTweetsResponse record {
-    @constraint:Array {minLength: 1}
-    Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# Represents the Queries record for the operation: usersIdFollowers
-public type UsersIdFollowersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
-
-# Represents the Queries record for the operation: likesSample10Stream
-public type LikesSample10StreamQueries record {
-    # A comma separated list of Like fields to display.
-    ("created_at"|"id"|"liked_tweet_id"|"timestamp_ms")[] like\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
-    string start_time?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 2}
-    int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("liked_tweet_id")[] expansions?;
-};
-
-# The count for the bucket.
-public type TweetCount int;
-
 # Represents the Queries record for the operation: getTweetsComplianceStream
 public type GetTweetsComplianceStreamQueries record {
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided.
-    string start_time?;
-    # The partition number.
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # The partition number
     @constraint:Int {minValue: 1, maxValue: 4}
     int:Signed32 partition;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided.
-    string end_time?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
 };
 
-# Represents the Queries record for the operation: addOrDeleteRules
-public type AddOrDeleteRulesQueries record {
-    # Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes.
-    boolean dry_run?;
-    # Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered.
-    boolean delete_all?;
-};
+# The count for the bucket
+public type TweetCount int;
 
-# A tag meant for the labeling of user provided rules.
+# A tag meant for the labeling of user provided rules
 public type RuleTag string;
-
-public type Get2TweetsIdRetweetedByResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-public type FullTextEntitiesAnnotationsItemsnull record {
-    *EntityIndicesInclusiveInclusive;
-    string normalized_text?;
-    decimal probability?;
-    string 'type?;
-};
-
-# Represents the Queries record for the operation: usersIdMuting
-public type UsersIdMutingQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationTokenLong pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
-
-# Represents the Queries record for the operation: getTweetsLabelStream
-public type GetTweetsLabelStreamQueries record {
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
-    string start_time?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
-    string end_time?;
-};
-
-# Represent the portion of text recognized as a URL.
-public type UrlFields record {
-    # Description of the URL landing page.
-    string description?;
-    # The URL as displayed in the X client.
-    string display_url?;
-    Url expanded_url?;
-    @constraint:Array {minLength: 1}
-    UrlImage[] images?;
-    MediaKey media_key?;
-    HttpStatusCode status?;
-    # Title of the page the URL points to.
-    string title?;
-    # Fully resolved url.
-    string unwound_url?;
-    Url url;
-};
 
 # Usage per client app
 public type Usage record {
     # Number of days left for the Tweet cap to reset
-    int:Signed32 cap_reset_day?;
-    # The daily usage breakdown for each Client Application a project
-    @constraint:Array {minLength: 1}
-    ClientAppUsage[] daily_client_app_usage?;
-    Usage_daily_project_usage daily_project_usage?;
-    # Total number of Posts that can be read in this project per month
-    int:Signed32 project_cap?;
-    # The unique identifier for this project
-    string project_id?;
+    @jsondata:Name {value: "cap_reset_day"}
+    int:Signed32 capResetDay?;
     # The number of Posts read in this project
-    int:Signed32 project_usage?;
+    @jsondata:Name {value: "project_usage"}
+    int:Signed32 projectUsage?;
+    # Total number of Posts that can be read in this project per month
+    @jsondata:Name {value: "project_cap"}
+    int:Signed32 projectCap?;
+    # The unique identifier for this project
+    @jsondata:Name {value: "project_id"}
+    string projectId?;
+    # The daily usage breakdown for each Client Application a project
+    @jsondata:Name {value: "daily_client_app_usage"}
+    ClientAppUsage[] dailyClientAppUsage?;
+    @jsondata:Name {value: "daily_project_usage"}
+    UsageDailyProjectUsage dailyProjectUsage?;
 };
 
-public type Get2UsersIdListMembershipsResponse record {
-    @constraint:Array {minLength: 1}
-    List[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
+public type ListFollowedResponseData record {
+    boolean following?;
 };
 
-public type TweetCreateRequest record {|
-    # Card Uri Parameter. This is mutually exclusive from Quote Tweet Id, Poll, Media, and Direct Message Deep Link.
-    string card_uri?;
-    # Link to take the conversation from the public timeline to a private Direct Message.
-    string direct_message_deep_link?;
-    # Exclusive Tweet for super followers.
-    boolean for_super_followers_only = false;
-    TweetCreateRequest_geo geo?;
-    TweetCreateRequest_media media?;
-    # Nullcasted (promoted-only) Posts do not appear in the public timeline and are not served to followers.
-    boolean nullcast = false;
-    TweetCreateRequest_poll poll?;
-    TweetId quote_tweet_id?;
-    TweetCreateRequest_reply reply?;
-    # Settings to indicate who can reply to the Tweet.
-    "following"|"mentionedUsers"|"subscribers" reply_settings?;
-    TweetText text?;
-|};
-
-public type MuteUserMutationResponse_data record {
-    boolean muting?;
-};
-
-public type Get2SpacesSearchResponse record {
-    @constraint:Array {minLength: 1}
-    Space[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2ComplianceJobsResponse_meta meta?;
-};
-
-public type TweetDeleteComplianceSchema record {
-    TweetComplianceSchema delete;
-};
-
-# Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following.
+# Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following
 public type ReplySettingsWithVerifiedUsers "everyone"|"mentionedUsers"|"following"|"other"|"subscribers"|"verified";
 
 # Represents the Queries record for the operation: findUsersByUsername
 public type FindUsersByUsernameQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A list of usernames, comma-separated.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A list of usernames, comma-separated
     @constraint:Array {maxLength: 100, minLength: 1}
     FindUsersByUsernameQueriesUsernamesItemsString[] usernames;
-    # A comma separated list of fields to expand.
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-public type TweetComplianceSchema record {
-    # Event time.
-    string event_at;
-    TweetId quote_tweet_id?;
-    TweetComplianceSchema_tweet tweet;
+# The X Topic object
+public type SpaceTopics record {
+    # The name of the given topic
+    string name;
+    # The description of the given topic
+    string description?;
+    # An ID suitable for use in the REST API
+    string id;
 };
 
-# A base36 pagination token.
+# A base36 pagination token
 @constraint:String {minLength: 1}
 public type PaginationToken36 string;
 
-# Engagement metrics for the Tweet at the time of the request.
-public type Tweet_public_metrics record {
-    # Number of times this Tweet has been bookmarked.
-    int:Signed32 bookmark_count;
-    # Number of times this Tweet has been viewed.
-    int:Signed32 impression_count;
-    # Number of times this Tweet has been liked.
-    int like_count;
-    # Number of times this Tweet has been quoted.
-    int quote_count?;
-    # Number of times this Tweet has been replied to.
-    int reply_count;
-    # Number of times this Tweet has been Retweeted.
-    int retweet_count;
-};
-
-# Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is inclusive.
-public type EntityIndicesInclusiveInclusive record {
-    # Index (zero-based) at which position this entity ends.  The index is inclusive.
-    @constraint:Int {minValue: 0}
-    int end;
-    # Index (zero-based) at which position this entity starts.  The index is inclusive.
-    @constraint:Int {minValue: 0}
-    int 'start;
-};
-
-public type Get2TweetsSearchAllResponse record {
-    @constraint:Array {minLength: 1}
-    Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2TweetsSearchAllResponse_meta meta?;
-};
-
 public type BookmarkAddRequest record {
-    TweetId tweet_id;
+    @jsondata:Name {value: "tweet_id"}
+    TweetId tweetId;
 };
 
 public type TweetTakedownComplianceSchema record {
-    # Event time.
-    string event_at;
-    TweetId quote_tweet_id?;
-    TweetComplianceSchema_tweet tweet;
-    @constraint:Array {minLength: 1}
-    CountryCode[] withheld_in_countries;
+    @jsondata:Name {value: "quote_tweet_id"}
+    TweetId quoteTweetId?;
+    @jsondata:Name {value: "withheld_in_countries"}
+    CountryCode[] withheldInCountries;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    TweetTakedownComplianceSchemaTweet tweet;
 };
 
 # Represents the Queries record for the operation: findMyUser
 public type FindMyUserQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
-# Likes compliance stream events.
-public type LikesComplianceStreamResponse record {LikeComplianceSchema data;}|record {Problem[] errors;};
+# Likes compliance stream events
+public type LikesComplianceStreamResponse LikesComplianceStreamResponseOneOf1|LikesComplianceStreamResponseLikesComplianceStreamResponseOneOf12;
 
 public type Get2TweetsSample10StreamResponse record {
     Tweet data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
     Expansions includes?;
-};
-
-# Represent the information for the URL image.
-public type UrlImage record {
-    MediaHeight height?;
-    Url url?;
-    MediaWidth width?;
-};
-
-public type ListMutateResponse record {
-    ListMutateResponse_data data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
+};
+
+# Represent the information for the URL image
+public type UrlImage record {
+    MediaWidth width?;
+    Url url?;
+    MediaHeight height?;
 };
 
 @constraint:String {pattern: re `^[A-Za-z0-9_]{1,15}$`}
 public type FindUsersByUsernameQueriesUsernamesItemsString string;
 
-# Represents the Queries record for the operation: sampleStream
-public type SampleStreamQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-# The newest id in this response.
+# The newest id in this response
 public type NewestId string;
-
-# Represents the Queries record for the operation: tweetsIdRetweetingUsers
-public type TweetsIdRetweetingUsersQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results = 100;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
 
 public type Get2UsersIdLikedTweetsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Get2UsersIdLikedTweetsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
-# Unique identifier of this poll.
-@constraint:String {pattern: re `^[0-9]{1,19}$`}
-public type PollId string;
-
-public type Get2TweetsSearchRecentResponse record {
-    @constraint:Array {minLength: 1}
-    Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2TweetsSearchAllResponse_meta meta?;
-};
-
-# Attachments to a DM Event.
-public type DmAttachments DmMediaAttachment[];
-
-# Represents the Queries record for the operation: getBatchComplianceJob
-public type GetBatchComplianceJobQueries record {
-    # A comma separated list of ComplianceJob fields to display.
-    ("created_at"|"download_expires_at"|"download_url"|"id"|"name"|"resumable"|"status"|"type"|"upload_expires_at"|"upload_url")[] compliance_job\.fields?;
-};
-
-# Represents the Queries record for the operation: likesFirehoseStream
-public type LikesFirehoseStreamQueries record {
-    # A comma separated list of Like fields to display.
-    ("created_at"|"id"|"liked_tweet_id"|"timestamp_ms")[] like\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
-    string start_time?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 20}
-    int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("liked_tweet_id")[] expansions?;
-};
-
-# The filterlang value of the rule.
+# The filterlang value of the rule
 public type RuleValue string;
 
-# Represent the portion of text recognized as a Cashtag, and its start and end position within the text.
+# Represent the portion of text recognized as a Cashtag, and its start and end position within the text
 public type CashtagFields record {
     string tag;
 };
 
-# Unique identifier of a DM conversation. This can either be a numeric string, or a pair of numeric strings separated by a '-' character in the case of one-on-one DM Conversations.
-@constraint:String {pattern: re `^([0-9]{1,19}-[0-9]{1,19}|[0-9]{15,19})$`}
-public type DmConversationId string;
+# Compliance event
+public type LikesComplianceStreamResponseOneOf1 record {
+    LikeComplianceSchema data;
+};
+
+# Organic nonpublic engagement metrics for the Tweet at the time of the request
+public type TweetOrganicMetrics record {
+    # Number of times this Tweet has been liked
+    @jsondata:Name {value: "like_count"}
+    int likeCount;
+    # Number of times this Tweet has been replied to
+    @jsondata:Name {value: "reply_count"}
+    int replyCount;
+    # Number of times this Tweet has been Retweeted
+    @jsondata:Name {value: "retweet_count"}
+    int retweetCount;
+    # Number of times this Tweet has been viewed
+    @jsondata:Name {value: "impression_count"}
+    int impressionCount;
+};
+
+public type Get2TweetsIdRetweetedByResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
 
 public type UserScrubGeoSchema record {
-    UserScrubGeoObjectSchema scrub_geo;
+    @jsondata:Name {value: "scrub_geo"}
+    UserScrubGeoObjectSchema scrubGeo;
 };
 
-# A Like event, with the liking user and the tweet being liked
-public type Like record {
-    # Creation time of the Tweet.
-    string created_at?;
-    LikeId id?;
-    TweetId liked_tweet_id?;
-    UserId liking_user_id?;
-    # Timestamp in milliseconds of creation.
-    int:Signed32 timestamp_ms?;
-};
-
-# Represents the Queries record for the operation: findSpacesByCreatorIds
-public type FindSpacesByCreatorIdsQueries record {
-    # A comma separated list of Space fields to display.
-    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] space\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The IDs of Users to search through.
-    @constraint:Array {maxLength: 100, minLength: 1}
-    UserId[] user_ids;
-    # A comma separated list of Topic fields to display.
-    ("description"|"id"|"name")[] topic\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
-};
-
-public type Get2TweetsIdQuoteTweetsResponse_meta record {
-    NextToken next_token?;
-    ResultCount result_count?;
-};
-
-public type Get2DmEventsResponse record {
-    @constraint:Array {minLength: 1}
-    DmEvent[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
+public type UsersLikesCreateResponseData record {
+    boolean liked?;
 };
 
 public type TweetHideResponse record {
-    TweetHideResponse_data data?;
-};
-
-public type Get2UsersIdBookmarksResponse record {
-    @constraint:Array {minLength: 1}
-    Tweet[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-public type Get2UsersIdMentionsResponse_meta record {
-    NewestId newest_id?;
-    NextToken next_token?;
-    OldestId oldest_id?;
-    PreviousToken previous_token?;
-    ResultCount result_count?;
+    TweetHideResponseData data?;
 };
 
 public type Get2UsageTweetsResponse record {
@@ -2453,258 +1486,222 @@ public type Get2UsageTweetsResponse record {
     Problem[] errors?;
 };
 
-# The width of the media in pixels.
+# The width of the media in pixels
 @constraint:Int {minValue: 0}
 public type MediaWidth int;
 
-public type BookmarkMutationResponse_data record {
-    boolean bookmarked?;
+public type TweetUnviewableTweet record {
+    TweetId id;
+    @jsondata:Name {value: "author_id"}
+    UserId authorId;
 };
 
-# Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI.
-public type TweetCreateRequest_media record {|
-    # A list of Media Ids to be attached to a created Tweet.
-    @constraint:Array {maxLength: 4, minLength: 1}
-    MediaId[] media_ids;
-    # A list of User Ids to be tagged in the media for created Tweet.
-    @constraint:Array {maxLength: 10}
-    UserId[] tagged_user_ids?;
-|};
+public type ListMutateResponseData record {
+    @jsondata:Name {value: "is_member"}
+    boolean isMember?;
+};
 
 public type Get2UsersIdOwnedListsResponse record {
     @constraint:Array {minLength: 1}
     List[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
+    Get2UsersIdOwnedListsResponseMeta meta?;
     Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# The oldest id in this response.
-public type OldestId string;
-
-public type Get2SpacesByCreatorIdsResponse record {
-    @constraint:Array {minLength: 1}
-    Space[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2ComplianceJobsResponse_meta meta?;
-};
-
-public type CreateComplianceJobResponse record {
-    ComplianceJob data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# Represent a Search Count Result.
+public type Get2UsersIdTweetsResponseMeta record {
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Represent a Search Count Result
 public type SearchCount record {
-    End end;
+    @jsondata:Name {value: "tweet_count"}
+    TweetCount tweetCount;
     Start 'start;
-    TweetCount tweet_count;
+    End end;
 };
 
-# The identifier for this place.
+# The identifier for this place
 public type PlaceId string;
 
-# Represents the data for the context annotation domain.
+# Represents the data for the context annotation domain
 public type ContextAnnotationDomainFields record {
-    # Description of the context annotation domain.
+    # Name of the context annotation domain
+    string name?;
+    # Description of the context annotation domain
     string description?;
-    # The unique id for a context annotation domain.
+    # The unique id for a context annotation domain
     @constraint:String {pattern: re `^[0-9]{1,19}$`}
     string id;
-    # Name of the context annotation domain.
-    string name?;
-};
-
-# The scopes for this tweet
-public type Tweet_scopes record {
-    # Indicates if this Tweet is viewable by followers without the Tweet ID
-    boolean followers?;
-};
-
-public type Get2TweetsSearchAllResponse_meta record {
-    NewestId newest_id?;
-    NextToken next_token?;
-    OldestId oldest_id?;
-    ResultCount result_count?;
 };
 
 public type Get2UsersIdTimelinesReverseChronologicalResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Get2UsersIdTimelinesReverseChronologicalResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2UsersIdMentionsResponse_meta meta?;
 };
 
 # Represents the Queries record for the operation: usersIdBlocking
 public type UsersIdBlockingQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
 };
 
 # Represents the Queries record for the operation: listUserPinnedLists
 public type ListUserPinnedListsQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # A comma separated list of List fields to display.
-    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] list\.fields?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of List fields to display
+    @http:Query {name: "list.fields"}
+    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] listFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("owner_id")[] expansions?;
 };
 
-public type Media record {
-    MediaHeight height?;
-    MediaKey media_key?;
-    string 'type;
-    MediaWidth width?;
-};
-
-# A 'long' pagination token.
+# A 'long' pagination token
 @constraint:String {maxLength: 19, minLength: 1}
 public type PaginationTokenLong string;
 
-# A trend.
+# A trend
 public type Trend record {
-    # Name of the trend.
-    string trend_name?;
-    # Number of Posts in this trend.
-    int:Signed32 tweet_count?;
-};
-
-# The full-content of the Tweet, including text beyond 280 characters.
-public type Tweet_note_tweet record {
-    Tweet_note_tweet_entities entities?;
-    NoteTweetText text?;
+    # Number of Posts in this trend
+    @jsondata:Name {value: "tweet_count"}
+    int:Signed32 tweetCount?;
+    # Name of the trend
+    @jsondata:Name {value: "trend_name"}
+    string trendName?;
 };
 
 # Represents the Queries record for the operation: tweetCountsFullArchiveSearch
 public type TweetCountsFullArchiveSearchQueries record {
-    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-    string start_time?;
-    # A comma separated list of SearchCount fields to display.
-    ("end"|"start"|"tweet_count")[] search_count\.fields?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 pagination_token?;
-    # The granularity for the search counts results.
+    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute)
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of SearchCount fields to display
+    @http:Query {name: "search_count.fields"}
+    ("end"|"start"|"tweet_count")[] searchCountFields?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # The granularity for the search counts results
     "minute"|"hour"|"day" granularity = "hour";
-    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length
     @constraint:String {maxLength: 4096, minLength: 1}
     string query;
-    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-    string end_time?;
-    # Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-    TweetId since_id?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 next_token?;
-    # Returns results with a Post ID less than (that is, older than) the specified ID.
-    TweetId until_id?;
+    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute)
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # Returns results with a Post ID greater than (that is, more recent than) the specified ID
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "next_token"}
+    PaginationToken36 nextToken?;
+    # Returns results with a Post ID less than (that is, older than) the specified ID
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };
 
-public type UsersRetweetsDeleteResponse record {
-    UsersRetweetsDeleteResponse_data data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-};
+@constraint:String {maxLength: 25, minLength: 1}
+public type TweetCreateRequestPollOptionsItemsString string;
 
-# A response from modifying user-specified stream filtering rules.
+# A response from modifying user-specified stream filtering rules
 public type AddOrDeleteRulesResponse record {
-    # All user-specified stream filtering rules that were created.
+    # All user-specified stream filtering rules that were created
     Rule[] data?;
+    RulesResponseMetadata meta;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    RulesResponseMetadata meta;
 };
 
-# Represents the Queries record for the operation: findSpacesByIds
-public type FindSpacesByIdsQueries record {
-    # A comma separated list of Space fields to display.
-    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] space\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The list of Space IDs to return.
-    @constraint:Array {maxLength: 100, minLength: 1}
-    FindSpacesByIdsQueriesIdsItemsString[] ids;
-    # A comma separated list of Topic fields to display.
-    ("description"|"id"|"name")[] topic\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
+public type Get2SpacesSearchResponseMeta record {
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
 
 # Represents the Queries record for the operation: tweetCountsRecentSearch
 public type TweetCountsRecentSearchQueries record {
-    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-    string start_time?;
-    # A comma separated list of SearchCount fields to display.
-    ("end"|"start"|"tweet_count")[] search_count\.fields?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 pagination_token?;
-    # The granularity for the search counts results.
+    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute)
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of SearchCount fields to display
+    @http:Query {name: "search_count.fields"}
+    ("end"|"start"|"tweet_count")[] searchCountFields?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # The granularity for the search counts results
     "minute"|"hour"|"day" granularity = "hour";
-    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length
     @constraint:String {maxLength: 4096, minLength: 1}
     string query;
-    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-    string end_time?;
-    # Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-    TweetId since_id?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 next_token?;
-    # Returns results with a Post ID less than (that is, older than) the specified ID.
-    TweetId until_id?;
+    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute)
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # Returns results with a Post ID greater than (that is, more recent than) the specified ID
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "next_token"}
+    PaginationToken36 nextToken?;
+    # Returns results with a Post ID less than (that is, older than) the specified ID
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };
 
-public type Get2ComplianceJobsIdResponse record {
-    ComplianceJob data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
+public type ListUnpinResponseData record {
+    boolean pinned?;
 };
 
-# The location tagged on the Tweet, if the user provided one.
-public type Tweet_geo record {
-    Point coordinates?;
-    PlaceId place_id?;
+public type Get2DmEventsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
 };
+
+# Status of a compliance job
+public type ComplianceJobStatus "created"|"in_progress"|"failed"|"complete"|"expired";
 
 public type CreateMessageRequest CreateTextMessageRequest|CreateAttachmentsMessageRequest;
 
-# Status of a compliance job.
-public type ComplianceJobStatus "created"|"in_progress"|"failed"|"complete"|"expired";
-
-# Poll options for a Tweet with a poll. This is mutually exclusive from Media, Quote Tweet Id, and Card URI.
-public type TweetCreateRequest_poll record {|
-    # Duration of the poll in minutes.
-    @constraint:Int {minValue: 5, maxValue: 10080}
-    int:Signed32 duration_minutes;
-    @constraint:Array {maxLength: 4, minLength: 2}
-    TweetCreateRequest_pollOptionsItemsString[] options;
-    # Settings to indicate who can reply to the Tweet.
-    "following"|"mentionedUsers" reply_settings?;
-|};
-
 public type TweetCreateResponse record {
-    TweetCreateResponse_data data?;
+    TweetCreateResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# The height of the media in pixels.
+# The height of the media in pixels
 @constraint:Int {minValue: 0}
 public type MediaHeight int;
 
@@ -2712,259 +1709,131 @@ public type TweetUndropComplianceSchema record {
     TweetComplianceSchema undrop;
 };
 
-public type Get2UsersIdResponse record {
-    User data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-};
-
-# Represents the Queries record for the operation: getLikesComplianceStream
-public type GetLikesComplianceStreamQueries record {
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Likes Compliance events will be provided.
-    string start_time?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Likes Compliance events will be provided.
-    string end_time?;
-};
-
-# The X User object.
-public type User record {
-    # Returns detailed information about the relationship between two users.
-    ("follow_request_received"|"follow_request_sent"|"blocking"|"followed_by"|"following"|"muting")[] connection_status?;
-    # Creation time of this User.
-    string created_at?;
-    # The text of this User's profile description (also known as bio), if the User provided one.
-    string description?;
-    User_entities entities?;
-    UserId id;
-    # The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries.
-    string location?;
-    TweetId most_recent_tweet_id?;
-    # The friendly name of this User, as shown on their profile.
-    string name;
-    TweetId pinned_tweet_id?;
-    # The URL to the profile image for this User.
-    string profile_image_url?;
-    # Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private).
-    boolean protected?;
-    User_public_metrics public_metrics?;
-    # Indicates if you can send a DM to this User
-    boolean receives_your_dm?;
-    # The X Blue subscription type of the user, eg: Basic, Premium, PremiumPlus or None.
-    "Basic"|"Premium"|"PremiumPlus"|"None" subscription_type?;
-    # The URL specified in the User's profile.
-    string url?;
-    UserName username;
-    # Indicate if this User is a verified X User.
-    boolean verified?;
-    # The X Blue verified type of the user, eg: blue, government, business or none.
-    "blue"|"government"|"business"|"none" verified_type?;
-    UserWithheld withheld?;
-};
-
-# Tweet label stream events.
-public type TweetLabelStreamResponse record {TweetLabelData data;}|record {Problem[] errors;};
-
-# A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched.
-public type FilteredStreamingTweetResponse record {
-    Tweet data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    # The list of rules which matched the Tweet
-    FilteredStreamingTweetResponse_matching_rules[] matching_rules?;
-};
-
 # Represents the Queries record for the operation: tweetsFullarchiveSearch
 public type TweetsFullarchiveSearchQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length
     @constraint:String {maxLength: 4096, minLength: 1}
     string query;
-    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-    string end_time?;
-    # Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-    TweetId since_id?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 next_token?;
-    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of search results to be returned by a request.
-    @constraint:Int {minValue: 10, maxValue: 500}
-    int:Signed32 max_results = 10;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
+    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute)
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # Returns results with a Post ID greater than (that is, more recent than) the specified ID
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "next_token"}
+    PaginationToken36 nextToken?;
+    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute)
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of search results to be returned by a request
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 10;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-    # This order in which to return results.
-    "recency"|"relevancy" sort_order?;
-    # Returns results with a Post ID less than (that is, older than) the specified ID.
-    TweetId until_id?;
+    # This order in which to return results
+    @http:Query {name: "sort_order"}
+    "recency"|"relevancy" sortOrder?;
+    # Returns results with a Post ID less than (that is, older than) the specified ID
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };
 
-# The next token.
+# The next token
 @constraint:String {minLength: 1}
 public type NextToken string;
 
-# Unique identifier of this rule.
-@constraint:String {pattern: re `^[0-9]{1,19}$`}
-public type RuleId string;
+# A summary of the results of the addition of user-specified stream filtering rules
+public type RulesRequestSummaryOneOf1 record {
+    # Number of valid user-specified stream filtering rules
+    int:Signed32 valid;
+    # Number of user-specified stream filtering rules that were not created
+    @jsondata:Name {value: "not_created"}
+    int:Signed32 notCreated;
+    # Number of user-specified stream filtering rules that were created
+    int:Signed32 created;
+    # Number of invalid user-specified stream filtering rules
+    int:Signed32 invalid;
+};
 
-public type UsersRetweetsCreateResponse_data record {
-    TweetId id?;
-    boolean retweeted?;
+public type TweetCreateResponseData record {
+    TweetId id;
+    TweetText text;
 };
 
 public type UserTakedownComplianceSchema record {
-    # Event time.
-    string event_at;
-    UserComplianceSchema_user user;
-    @constraint:Array {minLength: 1}
-    CountryCode[] withheld_in_countries;
+    @jsondata:Name {value: "withheld_in_countries"}
+    CountryCode[] withheldInCountries;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    UserTakedownComplianceSchemaUser user;
 };
 
-public type Get2UsersIdMutingResponse record {
-    @constraint:Array {minLength: 1}
-    User[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# The Media Key identifier for this attachment.
+# The Media Key identifier for this attachment
 @constraint:String {pattern: re `^([0-9]+)_([0-9]+)$`}
 public type MediaKey string;
 
-# Represents the Queries record for the operation: usersIdFollowing
-public type UsersIdFollowingQueries record {
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get a specified 'page' of results.
-    PaginationToken32 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 1000}
-    int:Signed32 max_results?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
-};
-
-# The unique identifier of this List.
+# The unique identifier of this List
 @constraint:String {pattern: re `^[0-9]{1,19}$`}
 public type ListId string;
 
-public type Get2DmConversationsIdDmEventsResponse record {
-    @constraint:Array {minLength: 1}
-    DmEvent[] data?;
-    @constraint:Array {minLength: 1}
-    Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
-};
-
-# Represents the Queries record for the operation: getTweetsFirehoseStream
-public type GetTweetsFirehoseStreamQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # The number of minutes of backfill requested.
-    @constraint:Int {minValue: 0, maxValue: 5}
-    int:Signed32 backfill_minutes?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # The partition number.
-    @constraint:Int {minValue: 1, maxValue: 20}
-    int:Signed32 partition;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-    string end_time?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-# Represents the Queries record for the operation: getUsersIdBookmarks
-public type GetUsersIdBookmarksQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-};
-
-public type UserUnsuspendComplianceSchema record {
-    UserComplianceSchema user_unsuspend;
-};
-
-# Unique identifier of this Topic.
+# Unique identifier of this Topic
 public type TopicId string;
 
-public type TweetEditComplianceSchema record {
-    TweetEditComplianceObjectSchema tweet_edit;
-};
-
-# A two-letter ISO 3166-1 alpha-2 country code.
+# A two-letter ISO 3166-1 alpha-2 country code
 @constraint:String {pattern: re `^[A-Z]{2}$`}
 public type CountryCode string;
 
-# The topic of a Space, as selected by its creator.
+# The topic of a Space, as selected by its creator
 public type Topic record {
-    # The description of the given topic.
+    # The name of the given topic
+    string name;
+    # The description of the given topic
     string description?;
     TopicId id;
-    # The name of the given topic.
-    string name;
 };
 
-public type TweetUnviewable record {
-    # If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’.
-    string application;
-    # Event time.
-    string event_at;
-    TweetComplianceSchema_tweet tweet;
-};
-
-# Compliance Job ID.
+# Compliance Job ID
 @constraint:String {pattern: re `^[0-9]{1,19}$`}
 public type JobId string;
 
+# Compliance event
+public type TweetComplianceStreamResponseOneOf1 record {
+    TweetComplianceData data;
+};
+
+public type TweetUnviewable record {
+    # If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’
+    string application;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    TweetUnviewableTweet tweet;
+};
+
 public type UserProfileModificationComplianceSchema record {
-    UserProfileModificationObjectSchema user_profile_modification;
+    @jsondata:Name {value: "user_profile_modification"}
+    UserProfileModificationObjectSchema userProfileModification;
 };
 
 public type MentionEntity record {
@@ -2975,196 +1844,2127 @@ public type MentionEntity record {
 public type Get2UsersIdPinnedListsResponse record {
     @constraint:Array {minLength: 1}
     List[] data?;
+    Get2UsersIdPinnedListsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2ComplianceJobsResponse_meta meta?;
-};
-
-public type Get2TweetsCountsAllResponse_meta record {
-    NewestId newest_id?;
-    NextToken next_token?;
-    OldestId oldest_id?;
-    Aggregate total_tweet_count?;
-};
-
-public type UsersLikesCreateRequest record {
-    TweetId tweet_id;
 };
 
 # Represents the Queries record for the operation: usersIdTweets
 public type UsersIdTweetsQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified.
-    string end_time?;
-    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
-    TweetId since_id?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 5, maxValue: 100}
-    int:Signed32 max_results?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # The set of entities to exclude (e.g. 'replies' or 'retweets').
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # The set of entities to exclude (e.g. 'replies' or 'retweets')
     @constraint:Array {minLength: 1}
     ("replies"|"retweets")[] exclude?;
-    # A comma separated list of fields to expand.
+    # A comma separated list of fields to expand
     @constraint:Array {minLength: 1}
     ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
-    TweetId until_id?;
+    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };
 
 public type ListDeleteResponse record {
-    DeleteDmResponse_data data?;
+    ListDeleteResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
-
-# The unique identifier of this Space.
-@constraint:String {pattern: re `^[a-zA-Z0-9]{1,13}$`}
-public type SpaceId string;
 
 public type TweetDeleteResponse record {
-    TweetDeleteResponse_data data?;
+    TweetDeleteResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
-# Expiration time of the upload URL.
+# Expiration time of the upload URL
 public type UploadExpiration string;
 
-# A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object.
+# A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object
 public type Point record {
     Position coordinates;
     "Point" 'type;
 };
 
-# Proxy server configurations to be used with the HTTP client endpoint.
-public type ProxyConfig record {|
-    # Host name of the proxy server
-    string host = "";
-    # Proxy server port
-    int port = 0;
-    # Proxy server username
-    string userName = "";
-    # Proxy server password
-    @display {label: "", kind: "password"}
-    string password = "";
-|};
-
 public type Get2UsersIdMentionsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Get2UsersIdMentionsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2UsersIdMentionsResponse_meta meta?;
 };
 
 public type Get2ListsIdTweetsResponse record {
     @constraint:Array {minLength: 1}
     Tweet[] data?;
+    Get2ListsIdTweetsResponseMeta meta?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
-    Get2DmConversationsIdDmEventsResponse_meta meta?;
 };
 
-public type Get2ComplianceJobsResponse_meta record {
-    ResultCount result_count?;
+# The scopes for this tweet
+public type TweetScopes record {
+    # Indicates if this Tweet is viewable by followers without the Tweet ID
+    boolean followers?;
 };
 
 public type ListCreateRequest record {
-    @constraint:String {maxLength: 100}
-    string description?;
+    boolean 'private = false;
     @constraint:String {maxLength: 25, minLength: 1}
     string name;
-    boolean 'private = false;
+    @constraint:String {maxLength: 100}
+    string description?;
 };
 
-public type Get2UsersSearchResponse_meta record {
-    NextToken next_token?;
-    PreviousToken previous_token?;
-};
-
-# Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.
+# Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
 @constraint:String {pattern: re `^[0-9]{1,19}$`}
 public type UserId string;
 
-# Represent a Poll attached to a Tweet.
-public type Poll record {
-    @constraint:Int {minValue: 5, maxValue: 10080}
-    int:Signed32 duration_minutes?;
-    string end_datetime?;
-    PollId id;
-    @constraint:Array {maxLength: 4, minLength: 2}
-    PollOption[] options;
-    "open"|"closed" voting_status?;
-};
-
-# Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
+# Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country)
 public type UserWithheld record {
-    # Provides a list of countries where this content is not available.
-    @constraint:Array {minLength: 1}
-    CountryCode[] country_codes;
-    # Indicates that the content being withheld is a `user`.
+    # Indicates that the content being withheld is a `user`
     "user" scope?;
-};
-
-# Represents the Queries record for the operation: usersIdTimeline
-public type UsersIdTimelineQueries record {
-    # A comma separated list of Poll fields to display.
-    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] poll\.fields?;
-    # A comma separated list of Tweet fields to display.
-    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweet\.fields?;
-    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified.
-    string end_time?;
-    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
-    TweetId since_id?;
-    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
-    string start_time?;
-    # A comma separated list of User fields to display.
-    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] user\.fields?;
-    # This parameter is used to get the next 'page' of results.
-    PaginationToken36 pagination_token?;
-    # A comma separated list of Media fields to display.
-    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] media\.fields?;
-    # The maximum number of results.
-    @constraint:Int {minValue: 1, maxValue: 100}
-    int:Signed32 max_results?;
-    # A comma separated list of Place fields to display.
-    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] place\.fields?;
-    # The set of entities to exclude (e.g. 'replies' or 'retweets').
-    ("replies"|"retweets")[] exclude?;
-    # A comma separated list of fields to expand.
-    @constraint:Array {minLength: 1}
-    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
-    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
-    TweetId until_id?;
+    # Provides a list of countries where this content is not available
+    @jsondata:Name {value: "country_codes"}
+    CountryCode[] countryCodes;
 };
 
 public type Get2DmEventsEventIdResponse record {
     DmEvent data?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
-    Expansions includes?;
 };
 
 public type Get2UsersResponse record {
     @constraint:Array {minLength: 1}
     User[] data?;
+    Expansions includes?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
+};
+
+public type Get2UsersIdBlockingResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# The previous token
+@constraint:String {minLength: 1}
+public type PreviousToken string;
+
+# Creation time of the compliance job
+public type CreatedAt string;
+
+# Represents the Queries record for the operation: listsIdTweets
+public type ListsIdTweetsQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: getTweetsSample10Stream
+public type GetTweetsSample10StreamQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 2}
+    int:Signed32 partition;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+public type Get2SpacesIdTweetsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type UserComplianceSchema record {
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    UserComplianceSchemaUser user;
+};
+
+public type Get2SpacesIdResponse record {
+    Space data?;
     Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type TweetUnviewableSchema record {
+    @jsondata:Name {value: "public_tweet_unviewable"}
+    TweetUnviewable publicTweetUnviewable;
+};
+
+# Tweet label data
+public type TweetLabelData TweetNoticeSchema|TweetUnviewableSchema;
+
+# Represents the Queries record for the operation: usersIdLikedTweets
+public type UsersIdLikedTweetsQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    http:ClientHttp1Settings http1Settings = {};
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings = {};
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 30;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with Redirection
+    http:FollowRedirects followRedirects?;
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache = {};
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with cookies
+    http:CookieConfig cookieConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits = {};
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Provides settings related to client socket configuration
+    http:ClientSocketConfig socketConfig = {};
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+    # Enables relaxed data binding on the client side. When enabled, `nil` values are treated as optional, 
+    # and absent fields are handled as `nilable` types. Enabled by default.
+    boolean laxDataBinding = true;
+|};
+
+# A response from deleting user-specified stream filtering rules
+public type DeleteRulesRequest record {
+    DeleteRulesRequestDelete delete;
+};
+
+public type UserComplianceSchemaUser record {
+    UserId id;
+};
+
+# A request to add a user-specified stream filtering rule
+public type AddRulesRequest record {
+    RuleNoId[] add;
+};
+
+# Represent the portion of text recognized as a URL, and its start and end position within the text
+public type UrlEntityDm record {
+    *EntityIndicesInclusiveExclusive;
+    *UrlFields;
+};
+
+public type UsersFollowingCreateResponse record {
+    UsersFollowingCreateResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type CreateDmConversationRequest record {|
+    # The conversation type that is being created
+    @jsondata:Name {value: "conversation_type"}
+    "Group" conversationType;
+    @jsondata:Name {value: "participant_ids"}
+    DmParticipants participantIds;
+    CreateMessageRequest message;
+|};
+
+# Engagement metrics for the Tweet at the time of the request
+public type TweetPublicMetrics record {
+    # Number of times this Tweet has been liked
+    @jsondata:Name {value: "like_count"}
+    int likeCount;
+    # Number of times this Tweet has been bookmarked
+    @jsondata:Name {value: "bookmark_count"}
+    int:Signed32 bookmarkCount;
+    # Number of times this Tweet has been replied to
+    @jsondata:Name {value: "reply_count"}
+    int replyCount;
+    # Number of times this Tweet has been quoted
+    @jsondata:Name {value: "quote_count"}
+    int quoteCount?;
+    # Number of times this Tweet has been Retweeted
+    @jsondata:Name {value: "retweet_count"}
+    int retweetCount;
+    # Number of times this Tweet has been viewed
+    @jsondata:Name {value: "impression_count"}
+    int:Signed32 impressionCount;
+};
+
+public type Get2SpacesIdBuyersResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Represents the data for the context annotation entity
+public type ContextAnnotationEntityFields record {
+    # Name of the context annotation entity
+    string name?;
+    # Description of the context annotation entity
+    string description?;
+    # The unique id for a context annotation entity
+    @constraint:String {pattern: re `^[0-9]{1,19}$`}
+    string id;
+};
+
+public type Get2UsersIdFollowedListsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Represents the Queries record for the operation: findUserById
+public type FindUserByIdQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+public type UsersFollowingCreateResponseData record {
+    boolean following?;
+    @jsondata:Name {value: "pending_follow"}
+    boolean pendingFollow?;
+};
+
+# Represents the Queries record for the operation: listBatchComplianceJobs
+public type ListBatchComplianceJobsQueries record {
+    # A comma separated list of ComplianceJob fields to display
+    @http:Query {name: "compliance_job.fields"}
+    ("created_at"|"download_expires_at"|"download_url"|"id"|"name"|"resumable"|"status"|"type"|"upload_expires_at"|"upload_url")[] complianceJobFields?;
+    # Type of Compliance Job to list
+    "tweets"|"users" 'type;
+    # Status of Compliance Job to list
+    "created"|"in_progress"|"failed"|"complete" status?;
+};
+
+public type ListCreateResponse record {
+    ListCreateResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2UsersByUsernameUsernameResponse record {
+    User data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type CreateDmEventResponse record {
+    CreateDmEventResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: tweetsRecentSearch
+public type TweetsRecentSearchQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length
+    @constraint:String {maxLength: 4096, minLength: 1}
+    string query;
+    # YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute)
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # Returns results with a Post ID greater than (that is, more recent than) the specified ID
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "next_token"}
+    PaginationToken36 nextToken?;
+    # YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute)
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of search results to be returned by a request
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 10;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+    # This order in which to return results
+    @http:Query {name: "sort_order"}
+    "recency"|"relevancy" sortOrder?;
+    # Returns results with a Post ID less than (that is, older than) the specified ID
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
+};
+
+# Unique identifier of a DM Event
+@constraint:String {pattern: re `^[0-9]{1,19}$`}
+public type DmEventId string;
+
+public type UsersRetweetsCreateResponse record {
+    UsersRetweetsCreateResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: getDmEvents
+public type GetDmEventsQueries record {
+    # A comma separated list of DmEvent fields to display
+    @http:Query {name: "dm_event.fields"}
+    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dmEventFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # The set of event_types to include in the results
+    @http:Query {name: "event_types"}
+    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] eventTypes = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
+};
+
+public type Get2ListsIdFollowersResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type Get2TweetsSearchStreamRulesCountsResponse record {
+    RulesCount data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type UsersLikesDeleteResponse record {
+    UsersLikesDeleteResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2ListsIdFollowersResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2ListsIdFollowersResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# A list of metadata found in the User's profile description
+public type UserEntities record {
+    FullTextEntities description?;
+    UserEntitiesUrl url?;
+};
+
+# Specifies the type of attachments (if any) present in this Tweet
+public type TweetAttachments record {
+    # A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet.
+    @jsondata:Name {value: "media_source_tweet_id"}
+    TweetId[] mediaSourceTweetId?;
+    # A list of Media Keys for each one of the media attachments (if media are attached)
+    @jsondata:Name {value: "media_keys"}
+    MediaKey[] mediaKeys?;
+    # A list of poll IDs (if polls are attached)
+    @jsondata:Name {value: "poll_ids"}
+    PollId[] pollIds?;
+};
+
+# Unique identifier of this User. The value must be the same as the authenticated user
+public type UserIdMatchesAuthenticatedUser string;
+
+public type UserComplianceStreamResponseUserComplianceStreamResponseOneOf12 record {
+    @constraint:Array {minLength: 1}
+    Problem[] errors;
+};
+
+public type Get2TweetsCountsAllResponse record {
+    @constraint:Array {minLength: 1}
+    SearchCount[] data?;
+    Get2TweetsCountsAllResponseMeta meta?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type TweetDropComplianceSchema record {
+    TweetComplianceSchema drop;
+};
+
+# Annotation for entities based on the Tweet text
+public type FullTextEntitiesAnnotations record {
+    *EntityIndicesInclusiveInclusive;
+    *AnnotationsAllOf2;
+};
+
+public type UserUnprotectComplianceSchema record {
+    @jsondata:Name {value: "user_unprotect"}
+    UserComplianceSchema userUnprotect;
+};
+
+public type PlaceType "poi"|"neighborhood"|"city"|"admin"|"country"|"unknown";
+
+public type UsersFollowingDeleteResponseData record {
+    boolean following?;
+};
+
+public type Tweet record {
+    TweetAttachments attachments?;
+    # Creation time of the Tweet
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    # This is deprecated
+    string 'source?;
+    TweetWithheld withheld?;
+    @jsondata:Name {value: "edit_controls"}
+    TweetEditControls editControls?;
+    TweetGeo geo?;
+    @jsondata:Name {value: "conversation_id"}
+    TweetId conversationId?;
+    # A list of Tweet Ids in this Tweet chain
+    @jsondata:Name {value: "edit_history_tweet_ids"}
+    TweetId[] editHistoryTweetIds?;
+    @jsondata:Name {value: "in_reply_to_user_id"}
+    UserId inReplyToUserId?;
+    TweetId id?;
+    TweetText text?;
+    # Language of the Tweet, if detected by X. Returned as a BCP47 language tag
+    string lang?;
+    @jsondata:Name {value: "reply_settings"}
+    ReplySettingsWithVerifiedUsers replySettings?;
+    # A list of Posts this Tweet refers to. For example, if the parent Tweet is a Retweet, a Quoted Tweet or a Reply, it will include the related Tweet referenced to by its parent
+    @jsondata:Name {value: "referenced_tweets"}
+    TweetReferencedTweets[] referencedTweets?;
+    # Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences
+    @jsondata:Name {value: "possibly_sensitive"}
+    boolean possiblySensitive?;
+    @jsondata:Name {value: "public_metrics"}
+    TweetPublicMetrics publicMetrics?;
+    @jsondata:Name {value: "non_public_metrics"}
+    TweetNonPublicMetrics nonPublicMetrics?;
+    @jsondata:Name {value: "note_tweet"}
+    TweetNoteTweet noteTweet?;
+    @jsondata:Name {value: "context_annotations"}
+    ContextAnnotation[] contextAnnotations?;
+    FullTextEntities entities?;
+    @jsondata:Name {value: "promoted_metrics"}
+    TweetPromotedMetrics promotedMetrics?;
+    TweetScopes scopes?;
+    @jsondata:Name {value: "author_id"}
+    UserId authorId?;
+    @jsondata:Name {value: "organic_metrics"}
+    TweetOrganicMetrics organicMetrics?;
+    UserName username?;
+};
+
+public type Get2TweetsSearchRecentResponseMeta record {
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type Get2TweetsSearchAllResponseMeta record {
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Participants for the DM Conversation
+@constraint:Array {maxLength: 49, minLength: 2}
+public type DmParticipants UserId[];
+
+# Poll options for a Tweet with a poll. This is mutually exclusive from Media, Quote Tweet Id, and Card URI
+public type TweetCreateRequestPoll record {|
+    # Duration of the poll in minutes
+    @jsondata:Name {value: "duration_minutes"}
+    int:Signed32 durationMinutes;
+    @constraint:Array {maxLength: 4, minLength: 2}
+    TweetCreateRequestPollOptionsItemsString[] options;
+    # Settings to indicate who can reply to the Tweet
+    @jsondata:Name {value: "reply_settings"}
+    "following"|"mentionedUsers" replySettings?;
+|};
+
+# The ID of the client application
+@constraint:String {maxLength: 19, minLength: 1}
+public type ClientAppId string;
+
+# User compliance event
+public type UserComplianceStreamResponseOneOf1 record {
+    UserComplianceData data;
+};
+
+public type Get2UsersIdMutingResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# A user-provided stream filtering rule
+public type RuleNoId record {
+    RuleTag tag?;
+    RuleValue value;
+};
+
+public type Get2UsersIdPinnedListsResponseMeta record {
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type UserProfileModificationObjectSchema record {
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    UserProfileModificationObjectSchemaUser user;
+    @jsondata:Name {value: "new_value"}
+    string newValue;
+    @jsondata:Name {value: "profile_field"}
+    string profileField;
+};
+
+public type ListUpdateResponseData record {
+    boolean updated?;
+};
+
+public type Get2UsersByResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# A list of metrics for this User
+public type UserPublicMetrics record {
+    # The number of Posts (including Retweets) posted by this User
+    @jsondata:Name {value: "tweet_count"}
+    int tweetCount;
+    # The number of likes created by this User
+    @jsondata:Name {value: "like_count"}
+    int likeCount?;
+    # Number of Users this User is following
+    @jsondata:Name {value: "following_count"}
+    int followingCount;
+    # The number of lists that include this User
+    @jsondata:Name {value: "listed_count"}
+    int listedCount;
+    # Number of Users who are following this User
+    @jsondata:Name {value: "followers_count"}
+    int followersCount;
+};
+
+# Tweet information of the Tweet being replied to
+public type TweetCreateRequestReply record {|
+    # A list of User Ids to be excluded from the reply Tweet
+    @jsondata:Name {value: "exclude_reply_user_ids"}
+    UserId[] excludeReplyUserIds?;
+    @jsondata:Name {value: "in_reply_to_tweet_id"}
+    TweetId inReplyToTweetId;
+|};
+
+public type Get2SpacesByCreatorIdsResponseMeta record {
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type TweetEditControls record {
+    # Indicates if this Tweet is eligible to be edited
+    @jsondata:Name {value: "is_edit_eligible"}
+    boolean isEditEligible;
+    # Number of times this Tweet can be edited
+    @jsondata:Name {value: "edits_remaining"}
+    int editsRemaining;
+    # Time when Tweet is no longer editable
+    @jsondata:Name {value: "editable_until"}
+    string editableUntil;
+};
+
+public type Get2UsersIdFollowingResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2UsersIdFollowingResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807)
+public type Problem record {
+    string detail?;
+    string title;
+    string 'type;
+    int status?;
+};
+
+# A count of user-provided stream filtering rules at the application and project levels
+public type RulesCount record {
+    # Cap of number of rules allowed per project
+    @jsondata:Name {value: "cap_per_project"}
+    int:Signed32 capPerProject?;
+    @jsondata:Name {value: "all_project_client_apps"}
+    AllProjectClientApps allProjectClientApps?;
+    # Number of rules for project
+    @jsondata:Name {value: "project_rules_count"}
+    int:Signed32 projectRulesCount?;
+    # Cap of number of rules allowed per client application
+    @jsondata:Name {value: "cap_per_client_app"}
+    int:Signed32 capPerClientApp?;
+    @jsondata:Name {value: "client_app_rules_count"}
+    AppRulesCount clientAppRulesCount?;
+};
+
+public type Get2UsersIdMentionsResponseMeta record {
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type TweetNoticeTweet record {
+    TweetId id;
+    @jsondata:Name {value: "author_id"}
+    UserId authorId;
+};
+
+# URL to which the user will upload their Tweet or user IDs
+public type UploadUrl string;
+
+# The content of the Tweet
+public type TweetText string;
+
+public type UserProfileModificationObjectSchemaUser record {
+    UserId id;
+};
+
+public type TweetHideRequest record {
+    boolean hidden;
+};
+
+# Represents the Queries record for the operation: spaceBuyers
+public type SpaceBuyersQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+public type DmEventReferencedTweets record {
+    TweetId id;
+};
+
+public type Get2ListsIdMembersResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type TweetReferencedTweets record {
+    TweetId id;
+    "retweeted"|"quoted"|"replied_to" 'type;
+};
+
+public type Get2SpacesResponse record {
+    @constraint:Array {minLength: 1}
+    Space[] data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# The the search string by which to query for users
+@constraint:String {pattern: re `^[A-Za-z0-9_]{1,32}$`}
+public type UserSearchQuery string;
+
+# Represents the Queries record for the operation: findTweetById
+public type FindTweetByIdQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# The X handle (screen name) of this user
+@constraint:String {pattern: re `^[A-Za-z0-9_]{1,15}$`}
+public type UserName string;
+
+# Represents the Queries record for the operation: getTweetsFirehoseStreamLangKo
+public type GetTweetsFirehoseStreamLangKoQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 2}
+    int:Signed32 partition;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: getUsageTweets
+public type GetUsageTweetsQueries record {
+    # A comma separated list of Usage fields to display
+    @http:Query {name: "usage.fields"}
+    ("cap_reset_day"|"daily_client_app_usage"|"daily_project_usage"|"project_cap"|"project_id"|"project_usage")[] usageFields?;
+    # The number of days for which you need usage for
+    @constraint:Int {minValue: 1, maxValue: 90}
+    int:Signed32 days = 7;
+};
+
+public type Get2ComplianceJobsResponse record {
+    @constraint:Array {minLength: 1}
+    ComplianceJob[] data?;
+    Get2ComplianceJobsResponseMeta meta?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type CreateDmEventResponseData record {
+    @jsondata:Name {value: "dm_conversation_id"}
+    DmConversationId dmConversationId;
+    @jsondata:Name {value: "dm_event_id"}
+    DmEventId dmEventId;
+};
+
+public type Get2TrendsByWoeidWoeidResponse record {
+    @constraint:Array {minLength: 1}
+    Trend[] data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type UsersLikesDeleteResponseData record {
+    boolean liked?;
+};
+
+# Represents the Queries record for the operation: spaceTweets
+public type SpaceTweetsQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The number of Posts to fetch from the provided space. If not provided, the value will default to the maximum of 100
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+public type StreamingTweetResponse record {
+    Tweet data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2TweetsIdResponse record {
+    Tweet data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country)
+public type TweetWithheld record {
+    # Indicates if the content is being withheld for on the basis of copyright infringement
+    boolean copyright;
+    # Indicates whether the content being withheld is the `tweet` or a `user`
+    "tweet"|"user" scope?;
+    # Provides a list of countries where this content is not available
+    @jsondata:Name {value: "country_codes"}
+    CountryCode[] countryCodes;
+};
+
+# A count of user-provided stream filtering rules at the client application level
+public type AppRulesCount record {
+    @jsondata:Name {value: "client_app_id"}
+    ClientAppId clientAppId?;
+    # Number of rules for client application
+    @jsondata:Name {value: "rule_count"}
+    int:Signed32 ruleCount?;
+};
+
+public type UserProtectComplianceSchema record {
+    @jsondata:Name {value: "user_protect"}
+    UserComplianceSchema userProtect;
+};
+
+public type StreamingLikeResponse record {
+    Like data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: getDmConversationsWithParticipantIdDmEvents
+public type GetDmConversationsWithParticipantIdDmEventsQueries record {
+    # A comma separated list of DmEvent fields to display
+    @http:Query {name: "dm_event.fields"}
+    ("attachments"|"created_at"|"dm_conversation_id"|"entities"|"event_type"|"id"|"participant_ids"|"referenced_tweets"|"sender_id"|"text")[] dmEventFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # The set of event_types to include in the results
+    @http:Query {name: "event_types"}
+    ("MessageCreate"|"ParticipantsJoin"|"ParticipantsLeave")[] eventTypes = ["MessageCreate","ParticipantsLeave","ParticipantsJoin"];
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"participant_ids"|"referenced_tweets.id"|"sender_id")[] expansions?;
+};
+
+# Tweet compliance stream events
+public type TweetComplianceStreamResponse TweetComplianceStreamResponseOneOf1|TweetComplianceStreamResponseTweetComplianceStreamResponseOneOf12;
+
+public type TweetComplianceSchemaTweet record {
+    TweetId id;
+    @jsondata:Name {value: "author_id"}
+    UserId authorId;
+};
+
+public type UserWithheldComplianceSchema record {
+    @jsondata:Name {value: "user_withheld"}
+    UserTakedownComplianceSchema userWithheld;
+};
+
+public type DmMediaAttachment record {
+    @jsondata:Name {value: "media_id"}
+    MediaId mediaId;
+};
+
+# The full-content of the Tweet, including text beyond 280 characters
+public type TweetNoteTweet record {
+    TweetNoteTweetEntities entities?;
+    NoteTweetText text?;
+};
+
+public type Get2UsersIdBlockingResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2UsersIdBlockingResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# The number of results returned in this response
+public type ResultCount int:Signed32;
+
+public type UserSuspendComplianceSchema record {
+    @jsondata:Name {value: "user_suspend"}
+    UserComplianceSchema userSuspend;
+};
+
+public type Get2TweetsIdLikingUsersResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2TweetsIdLikingUsersResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
+@constraint:String {pattern: re `^[0-9]{1,19}$`}
+public type TweetId string;
+
+public type TweetLabelStreamResponseTweetLabelStreamResponseOneOf12 record {
+    @constraint:Array {minLength: 1}
+    Problem[] errors;
+};
+
+# Represents the Queries record for the operation: findTweetsThatQuoteATweet
+public type FindTweetsThatQuoteATweetQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results to be returned
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 10;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # The set of entities to exclude (e.g. 'replies' or 'retweets')
+    @constraint:Array {minLength: 1}
+    ("replies"|"retweets")[] exclude?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: listGetMembers
+public type ListGetMembersQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+public type UserUndeleteComplianceSchema record {
+    @jsondata:Name {value: "user_undelete"}
+    UserComplianceSchema userUndelete;
+};
+
+# Represents the Queries record for the operation: getUsersComplianceStream
+public type GetUsersComplianceStreamQueries record {
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 4}
+    int:Signed32 partition;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+};
+
+public type Get2ListsIdResponse record {
+    List data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: userFollowedLists
+public type UserFollowedListsQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of List fields to display
+    @http:Query {name: "list.fields"}
+    ("created_at"|"description"|"follower_count"|"id"|"member_count"|"name"|"owner_id"|"private")[] listFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("owner_id")[] expansions?;
+};
+
+# The note content of the Tweet
+public type NoteTweetText string;
+
+public type Geo record {
+    @constraint:Array {maxLength: 4, minLength: 4}
+    GeoBboxItemsNumber[] bbox;
+    Point geometry?;
+    "Feature" 'type;
+    record {} properties;
+};
+
+public type Get2UsersIdTweetsResponse record {
+    @constraint:Array {minLength: 1}
+    Tweet[] data?;
+    Get2UsersIdTweetsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2UsersMeResponse record {
+    User data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Tweet compliance data
+public type TweetComplianceData TweetDeleteComplianceSchema|TweetWithheldComplianceSchema|TweetDropComplianceSchema|TweetUndropComplianceSchema|TweetEditComplianceSchema;
+
+public type MuteUserMutationResponse record {
+    MuteUserMutationResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# A user-provided stream filtering rule
+public type Rule record {
+    RuleId id?;
+    RuleTag tag?;
+    RuleValue value;
+};
+
+public type ListFollowedRequest record {
+    @jsondata:Name {value: "list_id"}
+    ListId listId;
+};
+
+public type RulesRequestSummary RulesRequestSummaryOneOf1|RulesRequestSummaryRulesRequestSummaryOneOf12;
+
+public type TweetNoticeSchema record {
+    @jsondata:Name {value: "public_tweet_notice"}
+    TweetNotice publicTweetNotice;
+};
+
+public type TweetNotice record {
+    # The type of label on the Tweet
+    @jsondata:Name {value: "event_type"}
+    string eventType;
+    # If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’
+    string application;
+    # Title/header of the Tweet label
+    @jsondata:Name {value: "label_title"}
+    string labelTitle?;
+    # Information shown on the Tweet label
+    string details?;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    TweetNoticeTweet tweet;
+    # Link to more information about this kind of label
+    @jsondata:Name {value: "extended_details_url"}
+    string extendedDetailsUrl?;
+};
+
+public type TweetHideResponseData record {
+    boolean hidden?;
+};
+
+# Represents the Queries record for the operation: likesSample10Stream
+public type LikesSample10StreamQueries record {
+    # A comma separated list of Like fields to display
+    @http:Query {name: "like.fields"}
+    ("created_at"|"id"|"liked_tweet_id"|"timestamp_ms")[] likeFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 2}
+    int:Signed32 partition;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("liked_tweet_id")[] expansions?;
+};
+
+public type Get2SpacesIdTweetsResponse record {
+    @constraint:Array {minLength: 1}
+    Tweet[] data?;
+    Get2SpacesIdTweetsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: usersIdFollowers
+public type UsersIdFollowersQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+# Represents the Queries record for the operation: addOrDeleteRules
+public type AddOrDeleteRulesQueries record {
+    # Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes
+    @http:Query {name: "dry_run"}
+    boolean dryRun?;
+    # Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered
+    @http:Query {name: "delete_all"}
+    boolean deleteAll?;
+};
+
+public type Get2TweetsIdRetweetedByResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2TweetsIdRetweetedByResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: usersIdMuting
+public type UsersIdMutingQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationTokenLong paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+# Represents the Queries record for the operation: getTweetsLabelStream
+public type GetTweetsLabelStreamQueries record {
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+};
+
+# Represent the portion of text recognized as a URL
+public type UrlFields record {
+    # The URL as displayed in the X client
+    @jsondata:Name {value: "display_url"}
+    string displayUrl?;
+    @constraint:Array {minLength: 1}
+    UrlImage[] images?;
+    @jsondata:Name {value: "expanded_url"}
+    Url expandedUrl?;
+    # Fully resolved url
+    @jsondata:Name {value: "unwound_url"}
+    string unwoundUrl?;
+    # Description of the URL landing page
+    string description?;
+    # Title of the page the URL points to
+    string title?;
+    @jsondata:Name {value: "media_key"}
+    MediaKey mediaKey?;
+    Url url;
+    HttpStatusCode status?;
+};
+
+public type TweetCreateRequest record {|
+    TweetCreateRequestGeo geo?;
+    # Nullcasted (promoted-only) Posts do not appear in the public timeline and are not served to followers
+    boolean nullcast = false;
+    # Exclusive Tweet for super followers
+    @jsondata:Name {value: "for_super_followers_only"}
+    boolean forSuperFollowersOnly = false;
+    @jsondata:Name {value: "quote_tweet_id"}
+    TweetId quoteTweetId?;
+    # Link to take the conversation from the public timeline to a private Direct Message
+    @jsondata:Name {value: "direct_message_deep_link"}
+    string directMessageDeepLink?;
+    # Card Uri Parameter. This is mutually exclusive from Quote Tweet Id, Poll, Media, and Direct Message Deep Link
+    @jsondata:Name {value: "card_uri"}
+    string cardUri?;
+    TweetCreateRequestMedia media?;
+    TweetCreateRequestPoll poll?;
+    TweetText text?;
+    TweetCreateRequestReply reply?;
+    # Settings to indicate who can reply to the Tweet
+    @jsondata:Name {value: "reply_settings"}
+    "following"|"mentionedUsers"|"subscribers" replySettings?;
+|};
+
+public type Get2UsersIdListMembershipsResponse record {
+    @constraint:Array {minLength: 1}
+    List[] data?;
+    Get2UsersIdListMembershipsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2SpacesSearchResponse record {
+    @constraint:Array {minLength: 1}
+    Space[] data?;
+    Get2SpacesSearchResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type TweetDeleteComplianceSchema record {
+    TweetComplianceSchema delete;
+};
+
+public type TweetComplianceSchema record {
+    @jsondata:Name {value: "quote_tweet_id"}
+    TweetId quoteTweetId?;
+    # Event time
+    @jsondata:Name {value: "event_at"}
+    string eventAt;
+    TweetComplianceSchemaTweet tweet;
+};
+
+# Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is inclusive
+public type EntityIndicesInclusiveInclusive record {
+    # Index (zero-based) at which position this entity starts.  The index is inclusive
+    @constraint:Int {minValue: 0}
+    int 'start;
+    # Index (zero-based) at which position this entity ends.  The index is inclusive
+    @constraint:Int {minValue: 0}
+    int end;
+};
+
+public type Get2TweetsSearchAllResponse record {
+    @constraint:Array {minLength: 1}
+    Tweet[] data?;
+    Get2TweetsSearchAllResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2UsersIdTimelinesReverseChronologicalResponseMeta record {
+    @jsondata:Name {value: "oldest_id"}
+    OldestId oldestId?;
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "newest_id"}
+    NewestId newestId?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type ListMutateResponse record {
+    ListMutateResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: sampleStream
+public type SampleStreamQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: tweetsIdRetweetingUsers
+public type TweetsIdRetweetingUsersQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults = 100;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+# Unique identifier of this poll
+@constraint:String {pattern: re `^[0-9]{1,19}$`}
+public type PollId string;
+
+public type Get2TweetsSearchRecentResponse record {
+    @constraint:Array {minLength: 1}
+    Tweet[] data?;
+    Get2TweetsSearchRecentResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: getBatchComplianceJob
+public type GetBatchComplianceJobQueries record {
+    # A comma separated list of ComplianceJob fields to display
+    @http:Query {name: "compliance_job.fields"}
+    ("created_at"|"download_expires_at"|"download_url"|"id"|"name"|"resumable"|"status"|"type"|"upload_expires_at"|"upload_url")[] complianceJobFields?;
+};
+
+# Attachments to a DM Event
+public type DmAttachments DmMediaAttachment[];
+
+# Represents the Queries record for the operation: likesFirehoseStream
+public type LikesFirehoseStreamQueries record {
+    # A comma separated list of Like fields to display
+    @http:Query {name: "like.fields"}
+    ("created_at"|"id"|"liked_tweet_id"|"timestamp_ms")[] likeFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 20}
+    int:Signed32 partition;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("liked_tweet_id")[] expansions?;
+};
+
+# Unique identifier of a DM conversation. This can either be a numeric string, or a pair of numeric strings separated by a '-' character in the case of one-on-one DM Conversations
+@constraint:String {pattern: re `^([0-9]{1,19}-[0-9]{1,19}|[0-9]{15,19})$`}
+public type DmConversationId string;
+
+public type Get2DmConversationsIdDmEventsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type Get2DmEventsResponse record {
+    @constraint:Array {minLength: 1}
+    DmEvent[] data?;
+    Get2DmEventsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# A Like event, with the liking user and the tweet being liked
+public type Like record {
+    @jsondata:Name {value: "liked_tweet_id"}
+    TweetId likedTweetId?;
+    # Creation time of the Tweet
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    @jsondata:Name {value: "liking_user_id"}
+    UserId likingUserId?;
+    # Timestamp in milliseconds of creation
+    @jsondata:Name {value: "timestamp_ms"}
+    int:Signed32 timestampMs?;
+    LikeId id?;
+};
+
+# Represents the Queries record for the operation: findSpacesByCreatorIds
+public type FindSpacesByCreatorIdsQueries record {
+    # A comma separated list of Space fields to display
+    @http:Query {name: "space.fields"}
+    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] spaceFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The IDs of Users to search through
+    @http:Query {name: "user_ids"}
+    UserId[] userIds;
+    # A comma separated list of Topic fields to display
+    @http:Query {name: "topic.fields"}
+    ("description"|"id"|"name")[] topicFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
+};
+
+public type Get2UsersIdBookmarksResponse record {
+    @constraint:Array {minLength: 1}
+    Tweet[] data?;
+    Get2UsersIdBookmarksResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type Get2ComplianceJobsResponseMeta record {
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type UnlikeComplianceSchemaFavorite record {
+    @jsondata:Name {value: "user_id"}
+    UserId userId;
+    TweetId id;
+};
+
+public type Get2DmConversationsWithParticipantIdDmEventsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# A X List is a curated group of accounts
+public type ListCreateResponseData record {
+    # The name of this List
+    string name;
+    ListId id;
+};
+
+public type Get2SpacesByCreatorIdsResponse record {
+    @constraint:Array {minLength: 1}
+    Space[] data?;
+    Get2SpacesByCreatorIdsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# The oldest id in this response
+public type OldestId string;
+
+public type CreateComplianceJobResponse record {
+    ComplianceJob data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type MuteUserMutationResponseData record {
+    boolean muting?;
+};
+
+public type Media record {
+    MediaWidth width?;
+    string 'type;
+    @jsondata:Name {value: "media_key"}
+    MediaKey mediaKey?;
+    MediaHeight height?;
+};
+
+public type UsersRetweetsDeleteResponse record {
+    UsersRetweetsDeleteResponseData data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# IDs and values of all deleted user-specified stream filtering rules
+public type DeleteRulesRequestDelete record {
+    # Values of all deleted user-specified stream filtering rules
+    RuleValue[] values?;
+    # IDs of all deleted user-specified stream filtering rules
+    RuleId[] ids?;
+};
+
+# Nonpublic engagement metrics for the Tweet at the time of the request
+public type TweetNonPublicMetrics record {
+    # Number of times this Tweet has been viewed
+    @jsondata:Name {value: "impression_count"}
+    int:Signed32 impressionCount?;
+};
+
+# Represents the Queries record for the operation: findSpacesByIds
+public type FindSpacesByIdsQueries record {
+    # A comma separated list of Space fields to display
+    @http:Query {name: "space.fields"}
+    ("created_at"|"creator_id"|"ended_at"|"host_ids"|"id"|"invited_user_ids"|"is_ticketed"|"lang"|"participant_count"|"scheduled_start"|"speaker_ids"|"started_at"|"state"|"subscriber_count"|"title"|"topic_ids"|"updated_at")[] spaceFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The list of Space IDs to return
+    @constraint:Array {maxLength: 100, minLength: 1}
+    FindSpacesByIdsQueriesIdsItemsString[] ids;
+    # A comma separated list of Topic fields to display
+    @http:Query {name: "topic.fields"}
+    ("description"|"id"|"name")[] topicFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("creator_id"|"host_ids"|"invited_user_ids"|"speaker_ids"|"topic_ids")[] expansions?;
+};
+
+public type Get2ComplianceJobsIdResponse record {
+    ComplianceJob data?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+public type ListDeleteResponseData record {
+    boolean deleted?;
+};
+
+public type Get2UsersIdResponse record {
+    User data?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: getLikesComplianceStream
+public type GetLikesComplianceStreamQueries record {
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Likes Compliance events will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Likes Compliance events will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+};
+
+# The X User object
+public type User record {
+    @jsondata:Name {value: "pinned_tweet_id"}
+    TweetId pinnedTweetId?;
+    # Returns detailed information about the relationship between two users
+    @jsondata:Name {value: "connection_status"}
+    ("follow_request_received"|"follow_request_sent"|"blocking"|"followed_by"|"following"|"muting")[] connectionStatus?;
+    @jsondata:Name {value: "public_metrics"}
+    UserPublicMetrics publicMetrics?;
+    # Indicate if this User is a verified X User
+    boolean verified?;
+    # Creation time of this User
+    @jsondata:Name {value: "created_at"}
+    string createdAt?;
+    # The text of this User's profile description (also known as bio), if the User provided one
+    string description?;
+    # The URL to the profile image for this User
+    @jsondata:Name {value: "profile_image_url"}
+    string profileImageUrl?;
+    # Indicates if you can send a DM to this User
+    @jsondata:Name {value: "receives_your_dm"}
+    boolean receivesYourDm?;
+    # The X Blue verified type of the user, eg: blue, government, business or none
+    @jsondata:Name {value: "verified_type"}
+    "blue"|"government"|"business"|"none" verifiedType?;
+    UserWithheld withheld?;
+    # The URL specified in the User's profile
+    string url?;
+    @jsondata:Name {value: "most_recent_tweet_id"}
+    TweetId mostRecentTweetId?;
+    # Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private)
+    boolean protected?;
+    UserEntities entities?;
+    # The friendly name of this User, as shown on their profile
+    string name;
+    # The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries
+    string location?;
+    UserId id;
+    # The X Blue subscription type of the user, eg: Basic, Premium, PremiumPlus or None
+    @jsondata:Name {value: "subscription_type"}
+    "Basic"|"Premium"|"PremiumPlus"|"None" subscriptionType?;
+    UserName username;
+};
+
+# Tweet label stream events
+public type TweetLabelStreamResponse TweetLabelStreamResponseOneOf1|TweetLabelStreamResponseTweetLabelStreamResponseOneOf12;
+
+# A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched
+public type FilteredStreamingTweetResponse record {
+    Tweet data?;
+    Expansions includes?;
+    # The list of rules which matched the Tweet
+    @jsondata:Name {value: "matching_rules"}
+    FilteredStreamingTweetResponseMatchingRules[] matchingRules?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Unique identifier of this rule
+@constraint:String {pattern: re `^[0-9]{1,19}$`}
+public type RuleId string;
+
+public type TweetEditComplianceObjectSchemaTweet record {
+    TweetId id;
+};
+
+public type Get2UsersIdMutingResponse record {
+    @constraint:Array {minLength: 1}
+    User[] data?;
+    Get2UsersIdMutingResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: usersIdFollowing
+public type UsersIdFollowingQueries record {
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get a specified 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken32 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("most_recent_tweet_id"|"pinned_tweet_id")[] expansions?;
+};
+
+public type Get2DmConversationsIdDmEventsResponse record {
+    @constraint:Array {minLength: 1}
+    DmEvent[] data?;
+    Get2DmConversationsIdDmEventsResponseMeta meta?;
+    Expansions includes?;
+    @constraint:Array {minLength: 1}
+    Problem[] errors?;
+};
+
+# Represents the Queries record for the operation: getTweetsFirehoseStream
+public type GetTweetsFirehoseStreamQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # The number of minutes of backfill requested
+    @http:Query {name: "backfill_minutes"}
+    int:Signed32 backfillMinutes?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # The partition number
+    @constraint:Int {minValue: 1, maxValue: 20}
+    int:Signed32 partition;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+# Represents the Queries record for the operation: getUsersIdBookmarks
+public type GetUsersIdBookmarksQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+};
+
+public type UserUnsuspendComplianceSchema record {
+    @jsondata:Name {value: "user_unsuspend"}
+    UserComplianceSchema userUnsuspend;
+};
+
+public type TweetEditComplianceSchema record {
+    @jsondata:Name {value: "tweet_edit"}
+    TweetEditComplianceObjectSchema tweetEdit;
+};
+
+public type Get2UsersIdFollowingResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+# Tweet Label event
+public type TweetLabelStreamResponseOneOf1 record {
+    TweetLabelData data;
+};
+
+public type Get2TweetsIdRetweetsResponseMeta record {
+    @jsondata:Name {value: "previous_token"}
+    PreviousToken previousToken?;
+    @jsondata:Name {value: "next_token"}
+    NextToken nextToken?;
+    @jsondata:Name {value: "result_count"}
+    ResultCount resultCount?;
+};
+
+public type UsersLikesCreateRequest record {
+    @jsondata:Name {value: "tweet_id"}
+    TweetId tweetId;
+};
+
+# The unique identifier of this Space
+@constraint:String {pattern: re `^[a-zA-Z0-9]{1,13}$`}
+public type SpaceId string;
+
+public type UserScrubGeoObjectSchemaUser record {
+    UserId id;
+};
+
+public type TweetTakedownComplianceSchemaTweet record {
+    TweetId id;
+    @jsondata:Name {value: "author_id"}
+    UserId authorId;
+};
+
+# Represent a Poll attached to a Tweet
+public type Poll record {
+    @jsondata:Name {value: "voting_status"}
+    "open"|"closed" votingStatus?;
+    @jsondata:Name {value: "duration_minutes"}
+    int:Signed32 durationMinutes?;
+    @jsondata:Name {value: "end_datetime"}
+    string endDatetime?;
+    @constraint:Array {maxLength: 4, minLength: 2}
+    PollOption[] options;
+    PollId id;
+};
+
+# Represents the Queries record for the operation: usersIdTimeline
+public type UsersIdTimelineQueries record {
+    # A comma separated list of Poll fields to display
+    @http:Query {name: "poll.fields"}
+    ("duration_minutes"|"end_datetime"|"id"|"options"|"voting_status")[] pollFields?;
+    # A comma separated list of Tweet fields to display
+    @http:Query {name: "tweet.fields"}
+    ("attachments"|"author_id"|"card_uri"|"context_annotations"|"conversation_id"|"created_at"|"edit_controls"|"edit_history_tweet_ids"|"entities"|"geo"|"id"|"in_reply_to_user_id"|"lang"|"non_public_metrics"|"note_tweet"|"organic_metrics"|"possibly_sensitive"|"promoted_metrics"|"public_metrics"|"referenced_tweets"|"reply_settings"|"scopes"|"source"|"text"|"username"|"withheld")[] tweetFields?;
+    # YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified
+    @http:Query {name: "end_time"}
+    string endTime?;
+    # The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified
+    @http:Query {name: "since_id"}
+    TweetId sinceId?;
+    # YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified
+    @http:Query {name: "start_time"}
+    string startTime?;
+    # A comma separated list of User fields to display
+    @http:Query {name: "user.fields"}
+    ("connection_status"|"created_at"|"description"|"entities"|"id"|"location"|"most_recent_tweet_id"|"name"|"pinned_tweet_id"|"profile_image_url"|"protected"|"public_metrics"|"receives_your_dm"|"subscription_type"|"url"|"username"|"verified"|"verified_type"|"withheld")[] userFields?;
+    # This parameter is used to get the next 'page' of results
+    @http:Query {name: "pagination_token"}
+    PaginationToken36 paginationToken?;
+    # A comma separated list of Media fields to display
+    @http:Query {name: "media.fields"}
+    ("alt_text"|"duration_ms"|"height"|"media_key"|"non_public_metrics"|"organic_metrics"|"preview_image_url"|"promoted_metrics"|"public_metrics"|"type"|"url"|"variants"|"width")[] mediaFields?;
+    # The maximum number of results
+    @http:Query {name: "max_results"}
+    int:Signed32 maxResults?;
+    # A comma separated list of Place fields to display
+    @http:Query {name: "place.fields"}
+    ("contained_within"|"country"|"country_code"|"full_name"|"geo"|"id"|"name"|"place_type")[] placeFields?;
+    # The set of entities to exclude (e.g. 'replies' or 'retweets')
+    ("replies"|"retweets")[] exclude?;
+    # A comma separated list of fields to expand
+    @constraint:Array {minLength: 1}
+    ("attachments.media_keys"|"attachments.media_source_tweet"|"attachments.poll_ids"|"author_id"|"edit_history_tweet_ids"|"entities.mentions.username"|"geo.place_id"|"in_reply_to_user_id"|"entities.note.mentions.username"|"referenced_tweets.id"|"referenced_tweets.id.author_id"|"author_screen_name")[] expansions?;
+    # The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified
+    @http:Query {name: "until_id"}
+    TweetId untilId?;
 };

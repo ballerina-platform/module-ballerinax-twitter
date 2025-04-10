@@ -27,7 +27,7 @@ final twitter:Client twitter = check new ({
 public function main() returns error? {
     twitter:Get2TweetsSearchRecentResponse supportTweets = check twitter->/tweets/search/recent(
         query = "#ballerinaSupport",
-        max_results = 10
+        maxResults = 10
     );
     twitter:Tweet[]? tweets = supportTweets.data;
     if tweets is () {
@@ -45,11 +45,11 @@ public function main() returns error? {
     twitter:UserId[] userIds = [];
     foreach twitter:TweetId tweetId in tweetIds {
         twitter:FindTweetByIdQueries searchQuery = {
-            tweet\.fields: ["author_id"]
+            tweetFields: ["author_id"]
         };
         twitter:Get2TweetsIdResponse tweetResponse = check twitter->/tweets/[tweetId](queries = searchQuery);
-        if tweetResponse.data?.author_id !is () {
-            userIds.push(check tweetResponse.data?.author_id.ensureType(string));
+        if tweetResponse.data?.authorId !is () {
+            userIds.push(check tweetResponse.data?.authorId.ensureType(string));
         }
     }
 
