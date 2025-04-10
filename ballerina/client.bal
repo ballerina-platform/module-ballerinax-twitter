@@ -17,8 +17,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/http;
 import ballerina/data.jsondata;
+import ballerina/http;
 
 # Twitter API v2 available endpoints
 public isolated client class Client {
