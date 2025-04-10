@@ -18,6 +18,7 @@
 // under the License.
 
 import ballerina/http;
+import ballerina/data.jsondata;
 
 # Twitter API v2 available endpoints
 public isolated client class Client {
@@ -51,7 +52,7 @@ public isolated client class Client {
     resource isolated function post compliance/jobs(CreateComplianceJobRequest payload, map<string|string[]> headers = {}) returns CreateComplianceJobResponse|error {
         string resourcePath = string `/compliance/jobs`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -76,7 +77,7 @@ public isolated client class Client {
     resource isolated function post dm_conversations(CreateDmConversationRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
         string resourcePath = string `/dm_conversations`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -102,7 +103,7 @@ public isolated client class Client {
     resource isolated function post dm_conversations/with/[UserId participantId]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
         string resourcePath = string `/dm_conversations/with/${getEncodedUri(participantId)}/messages`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -115,7 +116,7 @@ public isolated client class Client {
     resource isolated function post dm_conversations/[string dmConversationId]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns CreateDmEventResponse|error {
         string resourcePath = string `/dm_conversations/${getEncodedUri(dmConversationId)}/messages`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -195,7 +196,7 @@ public isolated client class Client {
     resource isolated function post lists(ListCreateRequest payload, map<string|string[]> headers = {}) returns ListCreateResponse|error {
         string resourcePath = string `/lists`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -221,7 +222,7 @@ public isolated client class Client {
     resource isolated function put lists/[ListId id](ListUpdateRequest payload, map<string|string[]> headers = {}) returns ListUpdateResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->put(resourcePath, request, headers);
     }
@@ -270,7 +271,7 @@ public isolated client class Client {
     resource isolated function post lists/[ListId id]/members(ListAddUserRequest payload, map<string|string[]> headers = {}) returns ListMutateResponse|error {
         string resourcePath = string `/lists/${getEncodedUri(id)}/members`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -400,7 +401,7 @@ public isolated client class Client {
     resource isolated function post tweets(TweetCreateRequest payload, map<string|string[]> headers = {}) returns TweetCreateResponse|error {
         string resourcePath = string `/tweets`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -532,7 +533,7 @@ public isolated client class Client {
         string resourcePath = string `/tweets/search/stream/rules`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -627,7 +628,7 @@ public isolated client class Client {
     resource isolated function put tweets/[TweetId tweetId]/hidden(TweetHideRequest payload, map<string|string[]> headers = {}) returns TweetHideResponse|error {
         string resourcePath = string `/tweets/${getEncodedUri(tweetId)}/hidden`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->put(resourcePath, request, headers);
     }
@@ -747,7 +748,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/bookmarks(BookmarkAddRequest payload, map<string|string[]> headers = {}) returns BookmarkMutationResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/bookmarks`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -784,7 +785,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/followed_lists(ListFollowedRequest payload, map<string|string[]> headers = {}) returns ListFollowedResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/followed_lists`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -834,7 +835,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/following(UsersFollowingCreateRequest payload, map<string|string[]> headers = {}) returns UsersFollowingCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/following`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -860,7 +861,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/likes(UsersLikesCreateRequest payload, map<string|string[]> headers = {}) returns UsersLikesCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/likes`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -923,7 +924,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/muting(MuteUserRequest payload, map<string|string[]> headers = {}) returns MuteUserMutationResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/muting`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -962,7 +963,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/pinned_lists(ListPinnedRequest payload, map<string|string[]> headers = {}) returns ListPinnedResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/pinned_lists`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
@@ -986,7 +987,7 @@ public isolated client class Client {
     resource isolated function post users/[UserIdMatchesAuthenticatedUser id]/retweets(UsersRetweetsCreateRequest payload, map<string|string[]> headers = {}) returns UsersRetweetsCreateResponse|error {
         string resourcePath = string `/users/${getEncodedUri(id)}/retweets`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
