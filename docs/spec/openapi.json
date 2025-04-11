@@ -8901,7 +8901,7 @@
           "media_source_tweet_id" : {
             "minItems" : 1,
             "type" : "array",
-            "description" : "A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet.",
+            "description" : "A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet",
             "items" : {
               "$ref" : "#/components/schemas/TweetId"
             },
