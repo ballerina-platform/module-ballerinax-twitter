@@ -2415,7 +2415,7 @@ public type UserEntities record {
 
 # Specifies the type of attachments (if any) present in this Tweet
 public type TweetAttachments record {
-    # A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet.
+    # A list of Posts the media on this Tweet was originally posted in. For example, if the media on a tweet is re-used in another Tweet, this refers to the original, source Tweet
     @jsondata:Name {value: "media_source_tweet_id"}
     TweetId[] mediaSourceTweetId?;
     # A list of Media Keys for each one of the media attachments (if media are attached)
