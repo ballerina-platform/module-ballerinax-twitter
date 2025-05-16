@@ -169,12 +169,22 @@ public isolated client class Client {
         return self.clientEp->delete(resourcePath, headers = headers);
     }
 
+    # Likes Compliance stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get likes/compliance/'stream(map<string|string[]> headers = {}, *GetLikesComplianceStreamQueries queries) returns LikesComplianceStreamResponse|error {
         string resourcePath = string `/likes/compliance/stream`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Likes Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get likes/firehose/'stream(map<string|string[]> headers = {}, *LikesFirehoseStreamQueries queries) returns StreamingLikeResponse|error {
         string resourcePath = string `/likes/firehose/stream`;
         map<Encoding> queryParamEncoding = {"like.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -182,6 +192,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Likes Sample 10 stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get likes/sample10/'stream(map<string|string[]> headers = {}, *LikesSample10StreamQueries queries) returns StreamingLikeResponse|error {
         string resourcePath = string `/likes/sample10/stream`;
         map<Encoding> queryParamEncoding = {"like.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -300,6 +315,10 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Returns the OpenAPI Specification document.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - The request was successful 
     resource isolated function get openapi\.json(map<string|string[]> headers = {}) returns record {}|error {
         string resourcePath = string `/openapi.json`;
         return self.clientEp->get(resourcePath, headers);
@@ -317,6 +336,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Space lookup by their creators
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get spaces/'by/creator_ids(map<string|string[]> headers = {}, *FindSpacesByCreatorIdsQueries queries) returns Get2SpacesByCreatorIdsResponse|error {
         string resourcePath = string `/spaces/by/creator_ids`;
         map<Encoding> queryParamEncoding = {"user_ids": {style: FORM, explode: true}, "space.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "topic.fields": {style: FORM, explode: false}};
@@ -375,6 +399,12 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Trends
+    #
+    # + woeid - The WOEID of the place to lookup a trend for
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get trends/'by/woeid/[int:Signed32 woeid](map<string|string[]> headers = {}, *GetTrendsQueries queries) returns Get2TrendsByWoeidWoeidResponse|error {
         string resourcePath = string `/trends/by/woeid/${getEncodedUri(woeid)}`;
         map<Encoding> queryParamEncoding = {"trend.fields": {style: FORM, explode: false}};
@@ -406,6 +436,11 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Posts Compliance stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/compliance/'stream(map<string|string[]> headers = {}, *GetTweetsComplianceStreamQueries queries) returns TweetComplianceStreamResponse|error {
         string resourcePath = string `/tweets/compliance/stream`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
@@ -436,6 +471,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/firehose/'stream(map<string|string[]> headers = {}, *GetTweetsFirehoseStreamQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/firehose/stream`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -443,6 +483,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # English Language Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/firehose/'stream/lang/en(map<string|string[]> headers = {}, *GetTweetsFirehoseStreamLangEnQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/firehose/stream/lang/en`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -450,6 +495,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Japanese Language Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/firehose/'stream/lang/ja(map<string|string[]> headers = {}, *GetTweetsFirehoseStreamLangJaQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/firehose/stream/lang/ja`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -457,6 +507,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Korean Language Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/firehose/'stream/lang/ko(map<string|string[]> headers = {}, *GetTweetsFirehoseStreamLangKoQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/firehose/stream/lang/ko`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -464,6 +519,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Portuguese Language Firehose stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/firehose/'stream/lang/pt(map<string|string[]> headers = {}, *GetTweetsFirehoseStreamLangPtQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/firehose/stream/lang/pt`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -471,12 +531,22 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Posts Label stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/label/'stream(map<string|string[]> headers = {}, *GetTweetsLabelStreamQueries queries) returns TweetLabelStreamResponse|error {
         string resourcePath = string `/tweets/label/stream`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Sample stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/sample/'stream(map<string|string[]> headers = {}, *SampleStreamQueries queries) returns StreamingTweetResponse|error {
         string resourcePath = string `/tweets/sample/stream`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -484,6 +554,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Sample 10% stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/sample10/'stream(map<string|string[]> headers = {}, *GetTweetsSample10StreamQueries queries) returns Get2TweetsSample10StreamResponse|error {
         string resourcePath = string `/tweets/sample10/stream`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -515,6 +590,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Filtered stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/search/'stream(map<string|string[]> headers = {}, *SearchStreamQueries queries) returns FilteredStreamingTweetResponse|error {
         string resourcePath = string `/tweets/search/stream`;
         map<Encoding> queryParamEncoding = {"tweet.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "media.fields": {style: FORM, explode: false}, "poll.fields": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "place.fields": {style: FORM, explode: false}};
@@ -522,6 +602,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Rules lookup
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/search/'stream/rules(map<string|string[]> headers = {}, *GetRulesQueries queries) returns RulesLookupResponse|error {
         string resourcePath = string `/tweets/search/stream/rules`;
         map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: true}};
@@ -529,6 +614,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Add/Delete rules
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function post tweets/search/'stream/rules(AddOrDeleteRulesRequest payload, map<string|string[]> headers = {}, *AddOrDeleteRulesQueries queries) returns AddOrDeleteRulesResponse|error {
         string resourcePath = string `/tweets/search/stream/rules`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
@@ -538,6 +628,11 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, headers);
     }
 
+    # Rules Count
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get tweets/search/'stream/rules/counts(map<string|string[]> headers = {}, *GetRuleCountQueries queries) returns Get2TweetsSearchStreamRulesCountsResponse|error {
         string resourcePath = string `/tweets/search/stream/rules/counts`;
         map<Encoding> queryParamEncoding = {"rules_count.fields": {style: FORM, explode: false}};
@@ -657,6 +752,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # User lookup by usernames
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get users/'by(map<string|string[]> headers = {}, *FindUsersByUsernameQueries queries) returns Get2UsersByResponse|error {
         string resourcePath = string `/users/by`;
         map<Encoding> queryParamEncoding = {"usernames": {style: FORM, explode: false}, "user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -664,6 +764,12 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # User lookup by username
+    #
+    # + username - A username
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get users/'by/username/[string username](map<string|string[]> headers = {}, *FindUserByUsernameQueries queries) returns Get2UsersByUsernameUsernameResponse|error {
         string resourcePath = string `/users/by/username/${getEncodedUri(username)}`;
         map<Encoding> queryParamEncoding = {"user.fields": {style: FORM, explode: false}, "expansions": {style: FORM, explode: false}, "tweet.fields": {style: FORM, explode: false}};
@@ -671,6 +777,11 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, headers);
     }
 
+    # Users Compliance stream
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - The request has succeeded 
     resource isolated function get users/compliance/'stream(map<string|string[]> headers = {}, *GetUsersComplianceStreamQueries queries) returns UserComplianceStreamResponse|error {
         string resourcePath = string `/users/compliance/stream`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
