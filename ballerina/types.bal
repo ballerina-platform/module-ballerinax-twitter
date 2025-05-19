@@ -102,6 +102,7 @@ public type FindUserByUsernameQueries record {
 public type CreateComplianceJobRequest record {
     # If true, this endpoint will return a pre-signed URL with resumable uploads enabled
     boolean resumable?;
+    # User-provided name for a compliance job
     ComplianceJobName name?;
     # Type of compliance job to list
     "tweets"|"users" 'type;
@@ -126,7 +127,6 @@ public type Get2UsersIdOwnedListsResponseMeta record {
     ResultCount resultCount?;
 };
 
-# 
 public type Space record {
     # The topics of a Space, as selected by its creator
     SpaceTopics[] topics?;
@@ -164,6 +164,7 @@ public type Space record {
     # The user ids for the hosts of the Space
     @jsondata:Name {value: "host_ids"}
     UserId[] hostIds?;
+    # The unique identifier of this Space
     SpaceId id;
     # The current state of the Space
     "live"|"scheduled"|"ended" state;
@@ -204,7 +205,9 @@ public type ListPinnedResponseData record {
 
 # Annotation inferred from the Tweet text
 public type ContextAnnotation record {
+    # Represents the data for the context annotation domain
     ContextAnnotationDomainFields domain;
+    # Represents the data for the context annotation entity
     ContextAnnotationEntityFields entity;
 };
 
@@ -265,7 +268,9 @@ public type GetRuleCountQueries record {
 
 # Represent the portion of text recognized as a User mention, and its start and end position within the text
 public type MentionFields record {
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id?;
+    # The X handle (screen name) of this user
     UserName username;
 };
 
@@ -312,6 +317,7 @@ public type GetUserListMembershipsQueries record {
 
 # The location tagged on the Tweet, if the user provided one
 public type TweetGeo record {
+    # A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object
     Point coordinates?;
     @jsondata:Name {value: "place_id"}
     PlaceId placeId?;
@@ -346,10 +352,12 @@ public type Get2UsersSearchResponse record {
 };
 
 public type UserTakedownComplianceSchemaUser record {
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id;
 };
 
 public type DmEvent record {
+    # Specifies the type of attachments (if any) present in this DM
     DmEventAttachments attachments?;
     @constraint:Array {minLength: 1}
     HashtagEntity[] hashtags?;
@@ -373,6 +381,7 @@ public type DmEvent record {
     string eventType;
     @constraint:Array {minLength: 1}
     MentionEntity[] mentions?;
+    # Unique identifier of a DM Event
     DmEventId id;
     string text?;
 };
@@ -412,7 +421,9 @@ public type GetTweetsFirehoseStreamLangEnQueries record {
 };
 
 public type FilteredStreamingTweetResponseMatchingRules record {
+    # Unique identifier of this rule
     RuleId id;
+    # A tag meant for the labeling of user provided rules
     RuleTag tag?;
 };
 
@@ -542,6 +553,7 @@ public type Place record {
     PlaceType placeType?;
     # The human readable name of this place
     string name?;
+    # The identifier for this place
     PlaceId id;
 };
 
@@ -635,6 +647,7 @@ public type List record {
     @jsondata:Name {value: "created_at"}
     string createdAt?;
     string description?;
+    # The unique identifier of this List
     ListId id;
     @jsondata:Name {value: "member_count"}
     int memberCount?;
@@ -847,6 +860,7 @@ public type EntityIndicesInclusiveExclusive record {
 public type PollOption record {
     # Number of users who voted for this choice
     int votes;
+    # The text of a poll choice
     PollOptionLabel label;
     # Position of this choice in the poll
     int position;
@@ -939,6 +953,7 @@ public type FindSpaceByIdQueries record {
 };
 
 public type CreateAttachmentsMessageRequest record {
+    # Attachments to a DM Event
     DmAttachments attachments;
     # Text of the message
     @constraint:String {minLength: 1}
@@ -1027,6 +1042,7 @@ public type ComplianceJob record {
     DownloadExpiration downloadExpiresAt;
     @jsondata:Name {value: "download_url"}
     DownloadUrl downloadUrl;
+    # User-provided name for a compliance job
     ComplianceJobName name?;
     @jsondata:Name {value: "upload_expires_at"}
     UploadExpiration uploadExpiresAt;
@@ -1034,8 +1050,11 @@ public type ComplianceJob record {
     CreatedAt createdAt;
     @jsondata:Name {value: "upload_url"}
     UploadUrl uploadUrl;
+    # Compliance Job ID
     JobId id;
+    # Type of compliance job to list
     ComplianceJobType 'type;
+    # Status of a compliance job
     ComplianceJobStatus status;
 };
 
@@ -1070,6 +1089,7 @@ public type Get2UsersIdListMembershipsResponseMeta record {
 };
 
 public type UsersRetweetsCreateResponseData record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id?;
     boolean retweeted?;
 };
@@ -1282,6 +1302,7 @@ public type TweetsIdLikingUsersQueries record {
 };
 
 public type CreateTextMessageRequest record {
+    # Attachments to a DM Event
     DmAttachments attachments?;
     # Text of the message
     @constraint:String {minLength: 1}
@@ -1409,8 +1430,11 @@ public type Get2TweetsSample10StreamResponse record {
 
 # Represent the information for the URL image
 public type UrlImage record {
+    # The width of the media in pixels
     MediaWidth width?;
+    # A validly formatted URL
     Url url?;
+    # The height of the media in pixels
     MediaHeight height?;
 };
 
@@ -1481,6 +1505,7 @@ public type TweetHideResponse record {
 };
 
 public type Get2UsageTweetsResponse record {
+    # Usage per client app
     Usage data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
@@ -1491,6 +1516,7 @@ public type Get2UsageTweetsResponse record {
 public type MediaWidth int;
 
 public type TweetUnviewableTweet record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
     @jsondata:Name {value: "author_id"}
     UserId authorId;
@@ -1527,7 +1553,9 @@ public type Get2UsersIdTweetsResponseMeta record {
 public type SearchCount record {
     @jsondata:Name {value: "tweet_count"}
     TweetCount tweetCount;
+    # The start time of the bucket
     Start 'start;
+    # The end time of the bucket
     End end;
 };
 
@@ -1776,7 +1804,9 @@ public type RulesRequestSummaryOneOf1 record {
 };
 
 public type TweetCreateResponseData record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
+    # The content of the Tweet
     TweetText text;
 };
 
@@ -1810,6 +1840,7 @@ public type Topic record {
     string name;
     # The description of the given topic
     string description?;
+    # Unique identifier of this Topic
     TopicId id;
 };
 
@@ -1819,6 +1850,7 @@ public type JobId string;
 
 # Compliance event
 public type TweetComplianceStreamResponseOneOf1 record {
+    # Tweet compliance data
     TweetComplianceData data;
 };
 
@@ -1910,6 +1942,7 @@ public type UploadExpiration string;
 
 # A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object
 public type Point record {
+    # A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`
     Position coordinates;
     "Point" 'type;
 };
@@ -2157,10 +2190,12 @@ public type ConnectionConfig record {|
 
 # A response from deleting user-specified stream filtering rules
 public type DeleteRulesRequest record {
+    # IDs and values of all deleted user-specified stream filtering rules
     DeleteRulesRequestDelete delete;
 };
 
 public type UserComplianceSchemaUser record {
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id;
 };
 
@@ -2272,12 +2307,14 @@ public type ListBatchComplianceJobsQueries record {
 };
 
 public type ListCreateResponse record {
+    # A X List is a curated group of accounts
     ListCreateResponseData data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
 };
 
 public type Get2UsersByUsernameUsernameResponse record {
+    # The X User object
     User data?;
     Expansions includes?;
     @constraint:Array {minLength: 1}
@@ -2387,6 +2424,7 @@ public type Get2ListsIdFollowersResponseMeta record {
 };
 
 public type Get2TweetsSearchStreamRulesCountsResponse record {
+    # A count of user-provided stream filtering rules at the application and project levels
     RulesCount data?;
     @constraint:Array {minLength: 1}
     Problem[] errors?;
@@ -2410,6 +2448,7 @@ public type Get2ListsIdFollowersResponse record {
 # A list of metadata found in the User's profile description
 public type UserEntities record {
     FullTextEntities description?;
+    # Expanded details for the URL specified in the User's profile, with start and end indices
     UserEntitiesUrl url?;
 };
 
@@ -2464,15 +2503,18 @@ public type UsersFollowingDeleteResponseData record {
 };
 
 public type Tweet record {
+    # Specifies the type of attachments (if any) present in this Tweet
     TweetAttachments attachments?;
     # Creation time of the Tweet
     @jsondata:Name {value: "created_at"}
     string createdAt?;
     # This is deprecated
     string 'source?;
+    # Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country)
     TweetWithheld withheld?;
     @jsondata:Name {value: "edit_controls"}
     TweetEditControls editControls?;
+    # The location tagged on the Tweet, if the user provided one
     TweetGeo geo?;
     @jsondata:Name {value: "conversation_id"}
     TweetId conversationId?;
@@ -2481,7 +2523,9 @@ public type Tweet record {
     TweetId[] editHistoryTweetIds?;
     @jsondata:Name {value: "in_reply_to_user_id"}
     UserId inReplyToUserId?;
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id?;
+    # The content of the Tweet
     TweetText text?;
     # Language of the Tweet, if detected by X. Returned as a BCP47 language tag
     string lang?;
@@ -2504,11 +2548,13 @@ public type Tweet record {
     FullTextEntities entities?;
     @jsondata:Name {value: "promoted_metrics"}
     TweetPromotedMetrics promotedMetrics?;
+    # The scopes for this tweet
     TweetScopes scopes?;
     @jsondata:Name {value: "author_id"}
     UserId authorId?;
     @jsondata:Name {value: "organic_metrics"}
     TweetOrganicMetrics organicMetrics?;
+    # The X handle (screen name) of this user
     UserName username?;
 };
 
@@ -2556,6 +2602,7 @@ public type ClientAppId string;
 
 # User compliance event
 public type UserComplianceStreamResponseOneOf1 record {
+    # User compliance data
     UserComplianceData data;
 };
 
@@ -2570,7 +2617,9 @@ public type Get2UsersIdMutingResponseMeta record {
 
 # A user-provided stream filtering rule
 public type RuleNoId record {
+    # A tag meant for the labeling of user provided rules
     RuleTag tag?;
+    # The filterlang value of the rule
     RuleValue value;
 };
 
@@ -2695,6 +2744,7 @@ public type Get2UsersIdMentionsResponseMeta record {
 };
 
 public type TweetNoticeTweet record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
     @jsondata:Name {value: "author_id"}
     UserId authorId;
@@ -2707,6 +2757,7 @@ public type UploadUrl string;
 public type TweetText string;
 
 public type UserProfileModificationObjectSchemaUser record {
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id;
 };
 
@@ -2734,6 +2785,7 @@ public type SpaceBuyersQueries record {
 };
 
 public type DmEventReferencedTweets record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
 };
 
@@ -2747,6 +2799,7 @@ public type Get2ListsIdMembersResponseMeta record {
 };
 
 public type TweetReferencedTweets record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
     "retweeted"|"quoted"|"replied_to" 'type;
 };
@@ -2924,6 +2977,7 @@ public type UserProtectComplianceSchema record {
 };
 
 public type StreamingLikeResponse record {
+    # A Like event, with the liking user and the tweet being liked
     Like data?;
     Expansions includes?;
     @constraint:Array {minLength: 1}
@@ -2962,6 +3016,7 @@ public type GetDmConversationsWithParticipantIdDmEventsQueries record {
 public type TweetComplianceStreamResponse TweetComplianceStreamResponseOneOf1|TweetComplianceStreamResponseTweetComplianceStreamResponseOneOf12;
 
 public type TweetComplianceSchemaTweet record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
     @jsondata:Name {value: "author_id"}
     UserId authorId;
@@ -2980,6 +3035,7 @@ public type DmMediaAttachment record {
 # The full-content of the Tweet, including text beyond 280 characters
 public type TweetNoteTweet record {
     TweetNoteTweetEntities entities?;
+    # The note content of the Tweet
     NoteTweetText text?;
 };
 
@@ -3090,6 +3146,7 @@ public type GetUsersComplianceStreamQueries record {
 };
 
 public type Get2ListsIdResponse record {
+    # A X List is a curated group of accounts
     List data?;
     Expansions includes?;
     @constraint:Array {minLength: 1}
@@ -3121,6 +3178,7 @@ public type NoteTweetText string;
 public type Geo record {
     @constraint:Array {maxLength: 4, minLength: 4}
     GeoBboxItemsNumber[] bbox;
+    # A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object
     Point geometry?;
     "Feature" 'type;
     record {} properties;
@@ -3136,6 +3194,7 @@ public type Get2UsersIdTweetsResponse record {
 };
 
 public type Get2UsersMeResponse record {
+    # The X User object
     User data?;
     Expansions includes?;
     @constraint:Array {minLength: 1}
@@ -3153,8 +3212,11 @@ public type MuteUserMutationResponse record {
 
 # A user-provided stream filtering rule
 public type Rule record {
+    # Unique identifier of this rule
     RuleId id?;
+    # A tag meant for the labeling of user provided rules
     RuleTag tag?;
+    # The filterlang value of the rule
     RuleValue value;
 };
 
@@ -3316,11 +3378,14 @@ public type UrlFields record {
     string title?;
     @jsondata:Name {value: "media_key"}
     MediaKey mediaKey?;
+    # A validly formatted URL
     Url url;
+    # HTTP Status Code
     HttpStatusCode status?;
 };
 
 public type TweetCreateRequest record {|
+    # Place ID being attached to the Tweet for geo location
     TweetCreateRequestGeo geo?;
     # Nullcasted (promoted-only) Posts do not appear in the public timeline and are not served to followers
     boolean nullcast = false;
@@ -3335,9 +3400,13 @@ public type TweetCreateRequest record {|
     # Card Uri Parameter. This is mutually exclusive from Quote Tweet Id, Poll, Media, and Direct Message Deep Link
     @jsondata:Name {value: "card_uri"}
     string cardUri?;
+    # Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI
     TweetCreateRequestMedia media?;
+    # Poll options for a Tweet with a poll. This is mutually exclusive from Media, Quote Tweet Id, and Card URI
     TweetCreateRequestPoll poll?;
+    # The content of the Tweet
     TweetText text?;
+    # Tweet information of the Tweet being replied to
     TweetCreateRequestReply reply?;
     # Settings to indicate who can reply to the Tweet
     @jsondata:Name {value: "reply_settings"}
@@ -3539,6 +3608,7 @@ public type Like record {
     # Timestamp in milliseconds of creation
     @jsondata:Name {value: "timestamp_ms"}
     int:Signed32 timestampMs?;
+    # The unique identifier of this Like
     LikeId id?;
 };
 
@@ -3578,6 +3648,7 @@ public type Get2ComplianceJobsResponseMeta record {
 public type UnlikeComplianceSchemaFavorite record {
     @jsondata:Name {value: "user_id"}
     UserId userId;
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
 };
 
@@ -3594,6 +3665,7 @@ public type Get2DmConversationsWithParticipantIdDmEventsResponseMeta record {
 public type ListCreateResponseData record {
     # The name of this List
     string name;
+    # The unique identifier of this List
     ListId id;
 };
 
@@ -3620,10 +3692,12 @@ public type MuteUserMutationResponseData record {
 };
 
 public type Media record {
+    # The width of the media in pixels
     MediaWidth width?;
     string 'type;
     @jsondata:Name {value: "media_key"}
     MediaKey mediaKey?;
+    # The height of the media in pixels
     MediaHeight height?;
 };
 
@@ -3678,6 +3752,7 @@ public type ListDeleteResponseData record {
 };
 
 public type Get2UsersIdResponse record {
+    # The X User object
     User data?;
     Expansions includes?;
     @constraint:Array {minLength: 1}
@@ -3722,6 +3797,7 @@ public type User record {
     # The X Blue verified type of the user, eg: blue, government, business or none
     @jsondata:Name {value: "verified_type"}
     "blue"|"government"|"business"|"none" verifiedType?;
+    # Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country)
     UserWithheld withheld?;
     # The URL specified in the User's profile
     string url?;
@@ -3729,15 +3805,18 @@ public type User record {
     TweetId mostRecentTweetId?;
     # Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private)
     boolean protected?;
+    # A list of metadata found in the User's profile description
     UserEntities entities?;
     # The friendly name of this User, as shown on their profile
     string name;
     # The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries
     string location?;
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id;
     # The X Blue subscription type of the user, eg: Basic, Premium, PremiumPlus or None
     @jsondata:Name {value: "subscription_type"}
     "Basic"|"Premium"|"PremiumPlus"|"None" subscriptionType?;
+    # The X handle (screen name) of this user
     UserName username;
 };
 
@@ -3760,6 +3839,7 @@ public type FilteredStreamingTweetResponse record {
 public type RuleId string;
 
 public type TweetEditComplianceObjectSchemaTweet record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
 };
 
@@ -3883,6 +3963,7 @@ public type Get2UsersIdFollowingResponseMeta record {
 
 # Tweet Label event
 public type TweetLabelStreamResponseOneOf1 record {
+    # Tweet label data
     TweetLabelData data;
 };
 
@@ -3905,10 +3986,12 @@ public type UsersLikesCreateRequest record {
 public type SpaceId string;
 
 public type UserScrubGeoObjectSchemaUser record {
+    # Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     UserId id;
 };
 
 public type TweetTakedownComplianceSchemaTweet record {
+    # Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers
     TweetId id;
     @jsondata:Name {value: "author_id"}
     UserId authorId;
@@ -3924,6 +4007,7 @@ public type Poll record {
     string endDatetime?;
     @constraint:Array {maxLength: 4, minLength: 2}
     PollOption[] options;
+    # Unique identifier of this poll
     PollId id;
 };
 
