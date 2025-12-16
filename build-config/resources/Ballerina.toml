@@ -5,7 +5,7 @@ name = "twitter"
 version = "@toml.version@"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
+keywords = ["Marketing/Social Media Accounts", "Cost/Freemium", "Vendor/Twitter", "Area/Social Media", "Type/Connector"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 
