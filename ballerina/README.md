@@ -1,8 +1,15 @@
 ## Overview
 
-[Twitter(X)](https://about.twitter.com/) is a widely-used social networking service provided by X Corp., enabling users to post and interact with messages known as "tweets".
+[Twitter (X)](https://about.twitter.com/) is a widely-used social networking service provided by X Corp., enabling users to post and interact with messages known as "posts" or "tweets." It serves as a real-time platform for news, information, and global conversation.
 
-The `ballerinax/twitter` package offers APIs to connect and interact with [Twitter(X) API](https://developer.twitter.com/en/docs/twitter-api) endpoints, specifically based on [Twitter(X) API v2](https://developer.x.com/en/docs/twitter-api/migrate/whats-new).
+The Twitter connector offers APIs to connect and interact with Twitter (X) API endpoints, specifically based on Twitter (X) API v2.
+
+### Key Features
+
+- Post and interact with tweets/posts programmatically
+- Access and manage user profiles and timelines
+- Search and stream real-time data from the platform
+- Integration with Twitter (X) API v2 endpoints
 
 ## Setup guide
 
