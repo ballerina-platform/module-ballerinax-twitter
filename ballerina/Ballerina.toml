@@ -2,10 +2,10 @@
 distribution = "2201.12.0"
 org = "ballerinax"
 name = "twitter"
-version = "5.0.0"
+version = "5.0.1"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Marketing/Social Media Accounts", "Cost/Freemium", "Vendor/Twitter", "Area/Social Media", "Type/Connector"]
+keywords = ["Marketing/Social Media Accounts", "Cost/Freemium", "Vendor/Twitter", "Area/Marketing & Social Media", "Type/Connector"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-twitter"
 
